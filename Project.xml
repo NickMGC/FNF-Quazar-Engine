@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+	<!-- App Settings -->
+
+	<app title="Friday Night Funkin': Quazar Engine" file="QuazarEngine" main="Main" version="0.1.0" company="NickNGC"/>
+
+	<window width="1280" height="720" fps="150" background="#000000" hardware="true" vsync="true" orientation="landscape" fullscreen="false" resizable="true"/>
+
+
+	<!-- Path Settings -->
+
+	<source path="source"/>
+	<assets path="assets"/>
+
+	<set name="BUILD_DIR" value="export/debug" if="debug"/>
+	<set name="BUILD_DIR" value="export/release" unless="debug"/>
+
+
+	<!-- Libs -->
+
+	<haxelib name="flixel"/>
+	<haxelib name="flixel-addons"/>
+	<haxelib name="flixel-ui"/>
+	<haxelib name="moonchart"/>
+
+
+	<!-- Haxe Defines -->
+
+	<haxedef name="no_deprecation_warnings"/>
+	<haxedef name="message.reporting" value="pretty"/>
+
+	<haxedef name="NAPE_RELEASE_BUILD" unless="debug"/>
+	<haxedef name="FLX_NO_DEBUG" unless="debug"/>
+
+	<haxedef name="FLX_NO_HEALTH"/>
+	<haxedef name="FLX_NO_TOUCH"/>
+	<haxedef name="FLX_NO_FOCUS_LOST_SCREEN"/>
+
+	<haxedef name="HXCPP_CHECK_POINTER"/>
+	<haxedef name="HXCPP_STACK_LINE"/>
+	<haxedef name="HXCPP_STACK_TRACE"/>
+
+
+	<!-- Macros -->
+
+	<haxeflag name="--macro" value="include('stages')" />
+	<haxeflag name="--macro" value="include('events')" />
+	<haxeflag name="--macro" value="addGlobalMetadata('stages', '@:build(macros.StageMacro.build())')" />
+	<haxeflag name="--macro" value="addGlobalMetadata('events', '@:build(macros.EventMacro.build())')" />
+
+	<haxeflag name="--macro" value="addGlobalMetadata('flixel.FlxBasic', '@:build(macros.ZIndexMacro.build())', false)" />
+	<haxeflag name="--macro" value="addGlobalMetadata('flixel.FlxCamera', '@:build(macros.CameraLerpMacro.build())', false)" />
+
+</project>
