@@ -1,6 +1,6 @@
 package backend;
 
-// import editors.ChartEditor;
+import editors.ChartEditor;
 import substates.GameOverSubState;
 import substates.PauseSubState;
 
@@ -12,7 +12,7 @@ class PlayerInput {
 			Key.onPress(Key.reset, onReset);
 		}
 
-		// Key.onPress([FlxKey.SEVEN], onChartEditor);
+		Key.onPress([FlxKey.SEVEN], onChartEditor);
 		Key.onPress(Key.accept.concat(Key.back), onPause);
 
 		if (playField.playerStrum == null) return;
@@ -23,9 +23,9 @@ class PlayerInput {
 		}
 	}
 
-	// static function onChartEditor():Void {
-	// 	FlxG.switchState(new ChartEditor(playField.chart));
-	// }
+	static function onChartEditor():Void {
+		FlxG.switchState(new ChartEditor(playField.chart));
+	}
 
 	static function onPause():Void {
 		if (playField.songEnded || game == null) return;

@@ -8,7 +8,7 @@ class Conductor {
 	public var beat:Timing = new Timing();
 	public var measure:Timing = new Timing();
 
-	public var time:Float = 0;
+	public var time(default, set):Float = 0;
 
 	public var numerator(default, set):Float = 4;
 	public var denominator(default, set):Float = 4;
@@ -47,15 +47,21 @@ class Conductor {
 		if (song?.playing && Math.abs(time - song.time) >= 25) {
 			time = song.time;
 		}
+	}
+
+	function set_time(value:Float):Float {
+		time = value;
 
 		for (timing in [step, beat, measure]) {
 			timing.last = timing.cur;
-			timing.curDec = (time - Data.offset) / timing.length;
+			timing.curDec = (value - Data.offset) / timing.length;
 
-			if (timing.last != timing.cur) {
+			if (!paused && timing.last != timing.cur) {
 				timing.signal.dispatch();
 			}
 		}
+
+		return time;
 	}
 
 	@:noCompletion function set_song(val:FlxSound):FlxSound {

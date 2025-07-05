@@ -8,6 +8,8 @@ class NoteSprite extends FlxSprite {
         return Note.direction[data % Note.direction.length];
     }
 
+	public var _noteData:NoteJSON;
+
 	public function new(data:Int = 0):Void {
 		super();
 
