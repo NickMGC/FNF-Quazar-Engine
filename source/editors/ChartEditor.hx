@@ -4,7 +4,7 @@ import flixel.addons.display.FlxTiledSprite;
 import flixel.addons.display.FlxGridOverlay;
 
 //FIXME: song stops playing forever after it reaches the finish line
-//TODO: add selection logic to events, audio waveforms, user interface and the ability to export the chart file
+//TODO: add selection logic to events, audio waveforms, user interface and the ability to export the chart file 
 //TODO: recode this entirely when i finish it coz its ass
 class ChartEditor extends MusicScene {
     public static inline var GRID_SIZE:Int = 40;
@@ -26,10 +26,14 @@ class ChartEditor extends MusicScene {
     public var lines:FlxSpriteGroup;
 
     public var time(get, set):Float;
+    public var lastTime:Float;
 
     public var selectedNote:NoteJSON = null;
     public var selectedEvent:EventJSON = null;
 
+    public static var curQuant:Int = 3;
+
+	public var quantizations:Array<Int> = [4, 8, 12, 16, 20, 24, 32, 48, 64, 96, 192];
 
     public function new(chart:Chart = null):Void {
         super();
@@ -78,10 +82,14 @@ class ChartEditor extends MusicScene {
         Key.onPress(Key.accept, toggleSong);
         Key.onPress([FlxKey.P], setTime.bind(inst.length));
         Key.onPress([FlxKey.O], setTime.bind(0));
-        Key.onPress([FlxKey.Q], moveSection.bind(-1));
-        Key.onPress([FlxKey.E], moveSection.bind(1));
-        Key.onPress([FlxKey.W], adjustSustain.bind(-stepLength));
-        Key.onPress([FlxKey.S], adjustSustain.bind(stepLength));
+        Key.onHold([FlxKey.A], moveSection.bind(-1));
+        Key.onHold([FlxKey.D], moveSection.bind(1));
+        Key.onPress([FlxKey.Q], adjustSustain.bind(-stepLength));
+        Key.onPress([FlxKey.E], adjustSustain.bind(stepLength));
+        Key.onHold(Key.up, moveStep.bind(-4));
+        Key.onHold(Key.down, moveStep.bind(4));
+        Key.onPress([FlxKey.LEFT], onQuantChange.bind(-1));
+        Key.onPress([FlxKey.RIGHT], onQuantChange.bind(1));
 
         for (note in chart.notes) {
             createNote(note);
@@ -130,6 +138,10 @@ class ChartEditor extends MusicScene {
 		}
     }
 
+    function onQuantChange(dir:Int = 0):Void {
+        curQuant = (curQuant + dir + quantizations.length) % quantizations.length;
+    }
+
     function createEvent(event:EventJSON):Void {
         events.add(new EventSprite(8 * GRID_SIZE + gridBG.x, getYfromStrum(event.time), event));
     }
@@ -151,24 +163,33 @@ class ChartEditor extends MusicScene {
         time = Math.max(0, Math.min((curMeasure + (FlxG.keys.pressed.SHIFT ? dir * 4 : dir)) * measureLength, inst.length));
     }
 
+    function moveStep(dir:Int):Void {
+        time = Math.max(0, Math.min((curStep + dir) * stepLength, inst.length));
+    }
+
+    public var playSoundBf:Bool = true;
+    public var playSoundDad:Bool = true;
+
     override public function update(elapsed:Float):Void {
         super.update(elapsed);
 
         if (FlxG.mouse.wheel != 0) {
-            time = Math.max(0, Math.min((curStep + (FlxG.mouse.wheel > 0 ? -1 : 1)) * stepLength, inst.length));
+            moveStep(FlxG.mouse.wheel > 0 ? -1 : 1);
             if (!conductor.paused) toggleSong();
 		}
 
         FlxG.camera.scroll.y = getYfromStrum(time) - 200;
 
         if (FlxG.mouse.overlaps(gridBG)) {
-            selectedBox.setPosition(Math.floor(FlxG.mouse.x / GRID_SIZE) * GRID_SIZE, FlxG.keys.pressed.SHIFT ? FlxG.mouse.y : Math.floor(FlxG.mouse.y / GRID_SIZE) * GRID_SIZE);
+            var gridmult = GRID_SIZE / (quantizations[curQuant] / 16);
+    
+            selectedBox.setPosition(Math.floor(FlxG.mouse.x / GRID_SIZE) * GRID_SIZE, Math.floor(FlxG.mouse.y / gridmult) * gridmult);
 
             if (FlxG.mouse.justPressed) {
 				if (FlxG.mouse.overlaps(notes)) {
 					for (note in notes.members.filter(byVisibleNote)) {
 						if (FlxG.mouse.overlaps(note)) {
-							FlxG.keys.pressed.CONTROL ? selectedNote = note._noteData : removeNote(note._noteData);
+							selectedNote = note._noteData;
 						}
 					}
 				} else {
@@ -178,16 +199,51 @@ class ChartEditor extends MusicScene {
                 if (FlxG.mouse.overlaps(events)) {
 					for (event in events.members.filter(byVisibleEvent)) {
 						if (FlxG.mouse.overlaps(event)) {
-							FlxG.keys.pressed.CONTROL ? selectedEvent = event.data : removeEvent(event.data);
+							selectedEvent = event.data;
 						}
 					}
 				} else {
 					addEvent();
 				}
 			}
+
+            if (FlxG.mouse.pressedRight) {
+                if (FlxG.mouse.overlaps(notes)) {
+					for (note in notes.members.filter(byVisibleNote)) {
+						if (FlxG.mouse.overlaps(note)) {
+							removeNote(note._noteData);
+						}
+					}
+				}
+
+                if (FlxG.mouse.overlaps(events)) {
+					for (event in events.members.filter(byVisibleEvent)) {
+						if (FlxG.mouse.overlaps(event)) {
+							removeEvent(event.data);
+						}
+					}
+				}
+            }
 		} else {
             selectedBox.setPosition(-FlxG.width, -FlxG.height);
         }
+
+        for (note in notes.members.filter(byVisibleNote)) {
+            if(note._noteData.time <= time) {
+                var thing:Bool = false;
+
+				if(note._noteData.time > lastTime && conductor.song.playing) {
+                    if(thing) continue;
+
+					if((playSoundBf && note._noteData.data > 3) || (playSoundDad && note._noteData.data < 4)) {
+						FlxG.sound.play(Path.sound('hitsound'));
+						thing = true;
+					}
+				}
+			}
+        }
+
+        lastTime = time;
     }
 
     function byVisibleNote(note:NoteSprite):Bool {
