@@ -12,6 +12,8 @@
 	<source path="source"/>
 	<assets path="assets"/>
 
+	<!-- <define name="RELEASE_BUILD"/> -->
+
 	<set name="BUILD_DIR" value="export/debug" if="debug"/>
 	<set name="BUILD_DIR" value="export/release" unless="debug"/>
 
@@ -22,6 +24,7 @@
 	<haxelib name="flixel-addons"/>
 	<haxelib name="flixel-ui"/>
 	<haxelib name="moonchart"/>
+	<haxelib name="flixel-waveform"/>
 
 
 	<!-- Haxe Defines -->

@@ -65,9 +65,9 @@ class PlayState extends Scene {
 	override function update(elapsed:Float):Void {
 		super.update(elapsed);
 
-		if (!playField.paused) {
-			FlxG.camera.followLerp = 2.4 * cameraSpeed;
-		}
+		if (playField.paused) return;
+
+		FlxG.camera.followLerp = 2.4 * cameraSpeed;
 
 		if (playField.songStarted && !playField.songEnded) {
 			FlxG.camera.zoom = FlxMath.lerp(defaultCamZoom, FlxG.camera.zoom, Math.exp(-elapsed * 3.125));
@@ -78,13 +78,13 @@ class PlayState extends Scene {
 	}
 
 	function triggerEvents():Void {
-		if (playField.chart.events.length <= 0 || playField.conductor.time < playField.chart.events[0].time) return;
+		if (playField.events.length <= 0 || playField.conductor.time < playField.events[0].time) return;
 
-		for (eventData in playField.chart.events[0].events) {
+		for (eventData in playField.events[0].events) {
         	Event.trigger(eventData.name, eventData.values);
         }
 
-		playField.chart.events.shift();
+		playField.events.shift();
     }
 
 	public function moveCamera(character:Character):Void {

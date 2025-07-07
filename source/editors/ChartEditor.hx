@@ -2,388 +2,372 @@ package editors;
 
 import flixel.addons.display.FlxTiledSprite;
 import flixel.addons.display.FlxGridOverlay;
+import flixel.addons.display.waveform.FlxWaveform;
 
-//FIXME: song stops playing forever after it reaches the finish line
-//TODO: add selection logic to events, audio waveforms, user interface and the ability to export the chart file 
-//TODO: recode this entirely when i finish it coz its ass
 class ChartEditor extends MusicScene {
-    public static inline var GRID_SIZE:Int = 40;
+	public static var chart:Chart;
 
-    public var chart:Chart;
+	public static inline var GRID_SIZE:Int = 40;
 
-    public var inst:FlxSound;
-    public var voices:FlxSound;
-    public var voicesOpponent:FlxSound;
+	public static final quants:Array<Int> = [4, 8, 12, 16, 20, 24, 32, 48, 64, 96, 192];
+	public static var curQuant:Int = 3;
 
-	public var gridBG:FlxSprite;
+	var inst:FlxSound;
+	var voices:FlxSound;
+	var voicesOpponent:FlxSound;
+
+	var gridBG:FlxSprite;
 	var selectedBox:FlxSprite;
 
-    public var notes:FlxTypedSpriteGroup<NoteSprite>;
-	public var sustains:Array<LeSustain> = [];
-    public var displaySustains:FlxSpriteGroup;
-    public var events:FlxTypedSpriteGroup<EventSprite>;
+	var lines:FlxSpriteGroup;
 
-    public var lines:FlxSpriteGroup;
+	var sustains:FlxTypedGroup<ChartSustain>;
+	var notes:FlxTypedGroup<ChartNote>;
+	var events:FlxTypedGroup<ChartEvent>;
 
-    public var time(get, set):Float;
-    public var lastTime:Float;
+	var iconP1:HealthIcon;
+	var iconP2:HealthIcon;
 
-    public var selectedNote:NoteJSON = null;
-    public var selectedEvent:EventJSON = null;
+	var selectedNote:NoteJSON;
+	var selectedEvent:EventJSON;
 
-    public static var curQuant:Int = 3;
+	var playerHitVolume:Float = 1;
+	var opponentHitVolume:Float = 1;
 
-	public var quantizations:Array<Int> = [4, 8, 12, 16, 20, 24, 32, 48, 64, 96, 192];
+	var playerWaveform:FlxWaveform;
+	var opponentWaveform:FlxWaveform;
 
-    public function new(chart:Chart = null):Void {
-        super();
-        this.chart = chart ?? Path.chart('Test', 'normal');
-    }
+	var time(get, set):Float;
+	var lastTime:Float;
 
-    override public function create():Void {
-        super.create();
+	public function new(chart:Chart = null):Void {
+		super();
+		ChartEditor.chart = chart ?? Path.chart('Test', 'normal');
+	}
 
-        inst = Path.song('Inst', chart.song);
-	    voices = Path.song('Voices-Player', chart.song);
+	override public function create():Void {
+		super.create();
+
+		var bg = new FlxSprite().loadGraphic(Path.image('menuDesat'));
+		bg.color = 0xFF252525;
+		bg.scrollFactor.set();
+		add(bg);
+
+		inst = Path.song('Inst', chart.song);
+		voices = Path.song('Voices-Player', chart.song);
 		voicesOpponent = Path.song('Voices-Opponent', chart.song);
 
-        conductor.paused = true;
-        conductor.bpm = chart.bpm;
-        conductor.song = inst;
+		conductor.paused = true;
+		conductor.bpm = chart.bpm;
+		conductor.song = inst;
 
-        for (val in [inst, voices, voicesOpponent]) {
-            val.play();
-            val.pause();
-        }
-
-        var bg:FlxSprite = new FlxSprite().loadGraphic(Path.image('menuDesat'));
-        bg.color = 0xFF252525;
-        bg.scrollFactor.set();
-        add(bg);
-
-		add(gridBG = new FlxTiledSprite(FlxGridOverlay.createGrid(GRID_SIZE, GRID_SIZE, GRID_SIZE * 9, GRID_SIZE * 16, true, 0xFFAAAAAA, 0xFF616060), GRID_SIZE * 9, GRID_SIZE * 16));
-        gridBG.x = 440;
-
-        add(lines = new FlxSpriteGroup());
-
-        regenGrid();
-
-        add(selectedBox = new FlxSprite(-FlxG.width, -FlxG.height).makeGraphic(GRID_SIZE, GRID_SIZE));
-
-        add(displaySustains = new FlxSpriteGroup());
-        add(notes = new FlxTypedSpriteGroup());
-        add(events = new FlxTypedSpriteGroup());
-
-        var spr:FlxSprite = new FlxSprite(440, 200).makeGraphic(Math.floor(gridBG.width), 4, FlxColor.RED);
-        spr.alpha = 0.5;
-        spr.scrollFactor.set();
-        add(spr);
-
-        Key.onPress(Key.accept, toggleSong);
-        Key.onPress([FlxKey.P], setTime.bind(inst.length));
-        Key.onPress([FlxKey.O], setTime.bind(0));
-        Key.onHold([FlxKey.A], moveSection.bind(-1));
-        Key.onHold([FlxKey.D], moveSection.bind(1));
-        Key.onPress([FlxKey.Q], adjustSustain.bind(-stepLength));
-        Key.onPress([FlxKey.E], adjustSustain.bind(stepLength));
-        Key.onHold(Key.up, moveStep.bind(-4));
-        Key.onHold(Key.down, moveStep.bind(4));
-        Key.onPress([FlxKey.LEFT], onQuantChange.bind(-1));
-        Key.onPress([FlxKey.RIGHT], onQuantChange.bind(1));
-
-        for (note in chart.notes) {
-            createNote(note);
+		for (val in [inst, voices, voicesOpponent]) {
+			val.play();
+			val.pause();
 		}
 
-        for (event in chart.events) {
-            createEvent(event);
-        }
-    }
+		add(gridBG = new FlxTiledSprite(FlxGridOverlay.createGrid(GRID_SIZE, GRID_SIZE, GRID_SIZE * 9, GRID_SIZE * 16, true, 0xFFAAAAAA, 0xFF616060), GRID_SIZE * 9, GRID_SIZE * 16));
+		gridBG.x = 440;
 
-    function regenGrid():Void {//reminder for myself to call this function when a bpm/time signature change occurs
-        var section:Float = inst.length / measureLength;
+		add(lines = new FlxSpriteGroup());
+
+		add(selectedBox = new FlxSprite(-FlxG.width, -FlxG.height).makeGraphic(GRID_SIZE, GRID_SIZE));
+
+		add(sustains = new FlxTypedGroup());
+		add(notes = new FlxTypedGroup());
+		add(events = new FlxTypedGroup());
+
+		var timeline = new FlxSprite(440, 200).makeGraphic(Std.int(gridBG.width), 4, 0x50FF0000);
+		timeline.scrollFactor.set();
+		add(timeline);
+
+		// add(playerWaveform = new FlxWaveform(400, 200, 80, 720 * 4, 0x00FF0000, 0x00FF0000, COMBINED));
+		// playerWaveform.scrollFactor.set();
+
+		// add(opponentWaveform = new FlxWaveform(0, 200, 80, 720 * 4, 0x00FF0000, 0x00FF0000, COMBINED));
+		// opponentWaveform.scrollFactor.set();
+
+        // playerWaveform.waveformRMSColor = opponentWaveform.waveformRMSColor = 0xFFFFFFFF;
+        // playerWaveform.waveformDrawRMS = opponentWaveform.waveformDrawRMS = true;
+        // playerWaveform.waveformOrientation = opponentWaveform.waveformOrientation = VERTICAL;
+
+		// playerWaveform.loadDataFromFlxSound(voices);
+        // opponentWaveform.loadDataFromFlxSound(voicesOpponent);
+
+		add(iconP2 = new HealthIcon(gridBG.x - 160, 125, chart.player2));
+		iconP2.scrollFactor.set();
+		iconP2.scale.set(0.5, 0.5);
+		iconP2.updateHitbox();
+
+		add(iconP1 = new HealthIcon(gridBG.x + gridBG.width + 10, 125, chart.player1, true));
+		iconP1.scrollFactor.set();
+		iconP1.scale.set(0.5, 0.5);
+		iconP1.updateHitbox();
+
+		//kill me
+		Key.onPress([FlxKey.ENTER], onBack);
+		Key.onPress([FlxKey.SPACE], toggleSong);
+		Key.onPress([FlxKey.P], setTime.bind(inst.length));
+		Key.onPress([FlxKey.O], setTime.bind(0));
+		Key.onHold([FlxKey.A], moveSection.bind(-1));
+		Key.onHold([FlxKey.D], moveSection.bind(1));
+		Key.onHold(Key.up, moveStep.bind(-4));
+		Key.onHold(Key.down, moveStep.bind(4));
+		Key.onPress([FlxKey.LEFT], onQuantChange.bind(-1));
+		Key.onPress([FlxKey.RIGHT], onQuantChange.bind(1));
+		Key.onPress([FlxKey.Q], adjustSustain.bind(-stepLength));
+		Key.onPress([FlxKey.E], adjustSustain.bind(stepLength));
+
+		chart.notes.iter(createNote);
+		chart.events.iter(createEvent);
+
+		regenGrid();
+	}
+
+	function regenGrid():Void {
+		var section:Float = inst.length / measureLength;
 
 		gridBG.height = GRID_SIZE * 16 * section;
 
-        for (line in lines) {
-            lines.remove(line, true);
-        }
+		lines.clear();
 
-        for (i in 0...Math.floor(section)) {
+		for (i in 0...Math.floor(section)) {
 			lines.add(new FlxSprite(gridBG.x, getYfromStrum(measureLength * i)).makeGraphic(Std.int(gridBG.width), 2, 0xFF000000));
 		}
 
-        lines.add(new FlxSprite(gridBG.x + 160).makeGraphic(2, Math.floor(gridBG.height), 0xFF000000));
-        lines.add(new FlxSprite(gridBG.x + 320).makeGraphic(2, Math.floor(gridBG.height), 0xFF000000));
-    }
+		lines.add(new FlxSprite(gridBG.x + 160).makeGraphic(2, Std.int(gridBG.height), 0xFF000000));
+		lines.add(new FlxSprite(gridBG.x + 320).makeGraphic(2, Std.int(gridBG.height), 0xFF000000));
+	}
 
-    function createNote(note:NoteJSON):Void {
-        var noteSpr:NoteSprite = new NoteSprite(note.data);
-        noteSpr.setGraphicSize(GRID_SIZE, GRID_SIZE);
-        noteSpr.updateHitbox();
-        noteSpr.setPosition(note.data * GRID_SIZE + gridBG.x, getYfromStrum(note.time));
-        noteSpr.animation.play('note${noteSpr.dir}');
-        noteSpr._noteData = note;
-        notes.add(noteSpr);
+	function onBack():Void {
+		PlayField._chart = true;
+		FlxG.switchState(new PlayState());
+	}
 
-		if (note.length > 0) {
-            var sustainHeight:Int = Math.floor((FlxMath.remapToRange(note.length, 0, stepLength * 16, 0, GRID_SIZE * 16)) - (noteSpr.height * 0.5));
-
-            var sustain:FlxSprite = new FlxSprite(noteSpr.x + (noteSpr.width - 4) * 0.5, noteSpr.y + (noteSpr.height * 0.5)).makeGraphic(1, 1);
-            sustain.origin.y = 0;
-            sustain.scale.set(8, sustainHeight);
-            sustain.updateHitbox();
-			sustains.push({sprite: sustain, note: noteSpr._noteData});
-            displaySustains.add(sustain);
-		}
-    }
-
-    function onQuantChange(dir:Int = 0):Void {
-        curQuant = (curQuant + dir + quantizations.length) % quantizations.length;
-    }
-
-    function createEvent(event:EventJSON):Void {
-        events.add(new EventSprite(8 * GRID_SIZE + gridBG.x, getYfromStrum(event.time), event));
-    }
-
-    function toggleSong():Void {
-        conductor.paused = !conductor.paused;
-
-        for (val in [inst, voices, voicesOpponent]) {
+	function toggleSong():Void {
+		conductor.paused = !conductor.paused;
+		for (val in [inst, voices, voicesOpponent]) {
 			conductor.paused ? val.pause() : val.resume();
 		}
-    }
+	}
 
-    function setTime(value:Float):Void {
-        time = value;
-        if (!conductor.paused) toggleSong();
-    }
+	function setTime(value:Float):Void {
+		time = value;
+		if (!conductor.paused) {
+			toggleSong();
+		}
+	}
 
-    function moveSection(dir:Int):Void {
-        time = Math.max(0, Math.min((curMeasure + (FlxG.keys.pressed.SHIFT ? dir * 4 : dir)) * measureLength, inst.length));
-    }
+	function moveSection(dir:Int):Void {
+		time = FlxMath.bound((curMeasure + dir * (FlxG.keys.pressed.SHIFT ? 4 : 1)) * measureLength, 0, inst.length);
+	}
 
-    function moveStep(dir:Int):Void {
-        time = Math.max(0, Math.min((curStep + dir) * stepLength, inst.length));
-    }
+	function moveStep(dir:Int):Void {
+		time = FlxMath.bound((curStep + dir) * stepLength, 0, inst.length); //cant just divide measureLength because time signatures exist
+	}
 
-    public var playSoundBf:Bool = true;
-    public var playSoundDad:Bool = true;
+	function onQuantChange(dir:Int):Void {
+		curQuant = (curQuant + dir + quants.length) % quants.length;
+	}
 
-    override public function update(elapsed:Float):Void {
-        super.update(elapsed);
+	function createNote(note:NoteJSON):Void {
+		notes.add(new ChartNote(note.data * GRID_SIZE + gridBG.x, getYfromStrum(note.time), note));
 
-        if (FlxG.mouse.wheel != 0) {
-            moveStep(FlxG.mouse.wheel > 0 ? -1 : 1);
-            if (!conductor.paused) toggleSong();
+		if (note.length > 0) {
+			createSustain(note);
+		}
+	}
+
+	function createSustain(note:NoteJSON):Void {
+		var noteSpr = notes.members.find(n -> n.data == note);
+		if (noteSpr == null) return;
+
+		sustains.add(new ChartSustain(noteSpr.x + (noteSpr.width - 4) * 0.5, noteSpr.y + (noteSpr.height * 0.5), note, stepLength));
+	}
+
+	function createEvent(event:EventJSON):Void {
+		events.add(new ChartEvent(8 * GRID_SIZE + gridBG.x, getYfromStrum(event.time), event));
+	}
+
+	function removeNote(note:NoteJSON):Void {
+		chart.notes.remove(note);
+
+		var visualNote = notes.members.find(n -> n.data == note);
+		if (visualNote == null) return;
+
+		notes.remove(visualNote, true);
+		removeSustain(note);
+	}
+
+	function removeSustain(note:NoteJSON):Void {
+		var sustain = sustains.members.find(s -> s.data == note);
+		if (sustain == null) return;
+
+		sustains.remove(sustain, true);
+	}
+
+	function removeEvent(event:EventJSON):Void {
+		chart.events.remove(event);
+
+		var visualEvent = events.members.find(e -> e.data == event);
+		if (visualEvent == null) return;
+
+		events.remove(visualEvent, true);
+	}
+
+	function addNote():Void {
+		var direction = Math.floor((FlxG.mouse.x - GRID_SIZE) / GRID_SIZE) - 10;
+		if (direction > 7) return;
+
+		selectedNote = {time: getStrumTime(selectedBox.y), data: direction, type: '', length: 0};
+
+		chart.notes.push(selectedNote);
+		createNote(selectedNote);
+	}
+
+	function adjustSustain(delta:Float):Void {
+		if (selectedNote == null) return;
+		
+		selectedNote.length += FlxG.keys.pressed.SHIFT ? delta * 2 : delta;
+		if (selectedNote.length < 0) selectedNote.length = 0;
+
+		var sustain = sustains.members.find(s -> s.data == selectedNote);
+
+		selectedNote.length > 0 ? (sustain != null ? sustain.setHeight(selectedNote.length, stepLength) : createSustain(selectedNote)) : removeSustain(selectedNote);
+	}
+
+
+	function addEvent():Void {
+		var direction = Math.floor((FlxG.mouse.x - GRID_SIZE) / GRID_SIZE) - 10;
+		if (direction < 8) return;
+
+		selectedEvent = {time: getStrumTime(selectedBox.y), events: []};
+
+		chart.events.push(selectedEvent);
+		createEvent(selectedEvent);
+	}
+
+	override public function update(elapsed:Float):Void {
+		super.update(elapsed);
+
+		if (FlxG.mouse.wheel != 0) {
+			moveStep(FlxG.mouse.wheel > 0 ? -1 : 1);
+
+			if (!conductor.paused) {
+				toggleSong();
+			}
 		}
 
-        FlxG.camera.scroll.y = getYfromStrum(time) - 200;
+		FlxG.camera.scroll.y = getYfromStrum(time) - 200;
 
-        if (FlxG.mouse.overlaps(gridBG)) {
-            var gridmult = GRID_SIZE / (quantizations[curQuant] / 16);
-    
-            selectedBox.setPosition(Math.floor(FlxG.mouse.x / GRID_SIZE) * GRID_SIZE, Math.floor(FlxG.mouse.y / gridmult) * gridmult);
+		checkNoteHits();
+		mouseInput();
 
-            if (FlxG.mouse.justPressed) {
-				if (FlxG.mouse.overlaps(notes)) {
-					for (note in notes.members.filter(byVisibleNote)) {
-						if (FlxG.mouse.overlaps(note)) {
-							selectedNote = note._noteData;
-						}
-					}
-				} else {
-					addNote();
-				}
+		lastTime = time;
 
-                if (FlxG.mouse.overlaps(events)) {
-					for (event in events.members.filter(byVisibleEvent)) {
-						if (FlxG.mouse.overlaps(event)) {
-							selectedEvent = event.data;
-						}
-					}
-				} else {
-					addEvent();
-				}
+		//playerWaveform.waveformTime = opponentWaveform.waveformTime = time;
+	}
+
+	var hitOffset:Float = 15;
+	function checkNoteHits():Void {
+		if (!conductor.song.playing) return;
+
+		for (note in notes.members.filter(byVisibleNote)) {
+			if (note.data.time > time + hitOffset || note.data.time <= lastTime + hitOffset) continue;
+
+			FlxG.sound.play(Path.sound('hitsound'), note.data.data > 3 ? playerHitVolume : opponentHitVolume);
+		}
+	}
+
+	function mouseInput():Void {
+		if (!FlxG.mouse.overlaps(gridBG)) {
+			selectedBox.setPosition(-FlxG.width, -FlxG.height);
+
+			if (!FlxG.mouse.justPressed) return;
+
+			selectedNote = null;
+			selectedEvent = null;
+
+			return;
+		}
+
+		var gridmult:Float = GRID_SIZE / (quants[curQuant] / 16);
+		selectedBox.setPosition(Math.floor(FlxG.mouse.x / GRID_SIZE) * GRID_SIZE, Math.floor(FlxG.mouse.y / gridmult) * gridmult);
+
+		//HACK: Hacky way to get an overlapped group, but it's less code so it will do for now...
+		if (FlxG.mouse.justPressed) {
+			var overlappedNote = getOverlapped(notes, byVisibleNote);
+			overlappedNote != null ? selectedNote = overlappedNote.data : addNote();
+
+			var overlappedEvent = getOverlapped(events, byVisibleEvent);
+			overlappedEvent != null ? selectedEvent = overlappedEvent.data : addEvent();
+		}
+
+		if (FlxG.mouse.pressedRight) {
+			var noteToRemove = getOverlapped(notes, byVisibleNote);
+			if (noteToRemove != null) {
+				removeNote(noteToRemove.data);
 			}
 
-            if (FlxG.mouse.pressedRight) {
-                if (FlxG.mouse.overlaps(notes)) {
-					for (note in notes.members.filter(byVisibleNote)) {
-						if (FlxG.mouse.overlaps(note)) {
-							removeNote(note._noteData);
-						}
-					}
-				}
-
-                if (FlxG.mouse.overlaps(events)) {
-					for (event in events.members.filter(byVisibleEvent)) {
-						if (FlxG.mouse.overlaps(event)) {
-							removeEvent(event.data);
-						}
-					}
-				}
-            }
-		} else {
-            selectedBox.setPosition(-FlxG.width, -FlxG.height);
-        }
-
-        for (note in notes.members.filter(byVisibleNote)) {
-            if(note._noteData.time <= time) {
-                var thing:Bool = false;
-
-				if(note._noteData.time > lastTime && conductor.song.playing) {
-                    if(thing) continue;
-
-					if((playSoundBf && note._noteData.data > 3) || (playSoundDad && note._noteData.data < 4)) {
-						FlxG.sound.play(Path.sound('hitsound'));
-						thing = true;
-					}
-				}
+			var eventToRemove = getOverlapped(events, byVisibleEvent);
+			if (eventToRemove != null) {
+				removeEvent(eventToRemove.data);
 			}
-        }
+		}
+	}
 
-        lastTime = time;
-    }
+	function getOverlapped<T:FlxBasic>(group:FlxTypedGroup<T>, filter:T -> Bool):T {
+		if (!FlxG.mouse.overlaps(group)) return null;
+		return group.members.find(item -> filter(item) && FlxG.mouse.overlaps(item));
+	}
 
-    function byVisibleNote(note:NoteSprite):Bool {
-        return note.isOnScreen();
-    }
+	function byVisibleNote(note:ChartNote):Bool {
+		return note.isOnScreen();
+	}
 
-    function byVisibleEvent(event:EventSprite):Bool {
-        return event.isOnScreen();
-    }
+	function byVisibleEvent(event:ChartEvent):Bool {
+		return event.isOnScreen();
+	}
 
-    function get_time():Float {
-        return conductor.time;
-    }
-
-    function set_time(value:Float):Float {
-        conductor.time = value;
-        for (val in [inst, voices, voicesOpponent, conductor.song]) {
-            val.time = value;
-        }
-
-        return conductor.time;
-    }
-
-    function getYfromStrum(time:Float):Float {
+	function getYfromStrum(time:Float):Float {
 		return FlxMath.remapToRange(time, 0, 16 * stepLength, gridBG.y, gridBG.y + (GRID_SIZE * 16));
 	}
 
-    function getStrumTime(y:Float):Float {
+	function getStrumTime(y:Float):Float {
 		return FlxMath.remapToRange(y, gridBG.y, gridBG.y + (GRID_SIZE * 16), 0, 16 * stepLength);
 	}
 
-    function removeNote(note:NoteJSON):Void {
-        chart.notes.remove(note);
-        
-        for (n in notes.members.filter(byVisibleNote)) {
-            if (n._noteData == note) {
-                notes.remove(n, true);
-
-                for (sustain in sustains) {
-                    if (sustain.note == note) {
-                        sustains.remove(sustain);
-                        displaySustains.remove(sustain.sprite, true);
-                    }
-                }
-            }
-        }
-    }
-
-    public function adjustSustain(dir:Float = 0) {
-        if (selectedNote == null) return;
-
-        selectedNote.length += FlxG.keys.pressed.SHIFT ? dir * 2 : dir;
-        if (selectedNote.length < 0) selectedNote.length = 0;
-
-        var existingSustain:LeSustain = null;
-        for (sustain in sustains) if (sustain.note == selectedNote) existingSustain = sustain;
-
-        if (selectedNote.length > 0) {
-            existingSustain == null ? createSustainForNote(selectedNote) : updateSustainHeight(existingSustain);
-        } else {
-            if (existingSustain != null) {
-                removeSustainForNote(selectedNote);
-            }
-        }
-    }
-
-    function createSustainForNote(note:NoteJSON):Void {
-        var noteSpr:NoteSprite = null;
-
-        for (n in notes) if (n._noteData == note) noteSpr = n;
-
-        if (noteSpr == null) return;
-
-        var sustainHeight:Int = Math.floor((FlxMath.remapToRange(note.length, 0, stepLength * 16, 0, GRID_SIZE * 16)) - (noteSpr.height * 0.5));
-        var sustain:FlxSprite = new FlxSprite(noteSpr.x + (noteSpr.width - 4) * 0.5, noteSpr.y + (noteSpr.height * 0.5)).makeGraphic(1, 1);
-        sustain.origin.y = 0;
-        sustain.scale.set(8, sustainHeight);
-        sustain.updateHitbox();
-
-        var leSustain:LeSustain = {sprite: sustain, note: note};
-        sustains.push(leSustain);
-        displaySustains.add(sustain);
-    }
-
-    function removeSustainForNote(note:NoteJSON):Void {
-        for (sustain in sustains) {
-            if (sustain.note == note) {
-                displaySustains.remove(sustain.sprite, true);
-                sustains.remove(sustain);
-            }
-        }
-    }
-
-    function updateSustainHeight(sustain:LeSustain):Void {
-        var noteSpr:NoteSprite = null;
-
-        for (n in notes) if (n._noteData == sustain.note) noteSpr = n;
-
-        if (noteSpr == null) return;
-
-        var newHeight:Int = Math.floor((FlxMath.remapToRange(sustain.note.length, 0, stepLength * 16, 0, GRID_SIZE * 16)) - (noteSpr.height * 0.5));
-        sustain.sprite.scale.y = newHeight;
-        sustain.sprite.updateHitbox();
-    }
-
-    function addNote():Void {
-		var direction:Int = Math.floor((FlxG.mouse.x - GRID_SIZE) / GRID_SIZE) - 10;
-
-        if (direction > 7) return;
-
-		var noteData:NoteJSON = {time: getStrumTime(selectedBox.y), data: direction, type: ''};
-
-		chart.notes.push(noteData);
-        createNote(noteData);
-		selectedNote = noteData;
+	function get_time():Float {
+		return conductor.time;
 	}
 
-    function addEvent():Void {
-        var direction:Int = Math.floor((FlxG.mouse.x - GRID_SIZE) / GRID_SIZE) - 10;
+	function set_time(value:Float):Float {
+		conductor.time = value;
 
-        if (direction < 8) return;
-
-        var eventData:EventJSON = {time: getStrumTime(selectedBox.y), events: []};
-
-        chart.events.push(eventData);
-        createEvent(eventData);
-        selectEvent(eventData);
-    }
-
-    function removeEvent(event:EventJSON):Void {
-        chart.events.remove(event);
-        
-        for (e in events) {
-            if (e.data == event) {
-                events.remove(e, true);
-            }
-        }
-    }
-
-    function selectEvent(event:EventJSON):Void {}
+		for (val in [inst, voices, voicesOpponent, conductor.song]) {
+			val.time = value;
+		}
+		return value;
+	}
 }
 
-typedef LeSustain = {sprite:FlxSprite, note:NoteJSON}
+/**
+	ok i think imma organize mah plans so i dont get lost in the sauce
+
+	BUGS:
+	- The song stops playing after it reaches the finish line.
+	- Dispatched Events disappear from the Chart Editor after Playtesting the chart. [FIXED]
+
+	TODOS:
+	- Player/Opponent Icons [DONE]
+	- Hit sounds [DONE]
+	- Audio waveforms [GOAL] (https://github.com/ACrazyTown/flixel-waveform)
+	- User Interface
+	- Grid zooming
+	- Support different Time signatures (глп)
+	- Ability to import chart files
+	- Ability to export chart files
+	- Get rid of every instance of me using anonymous functions
+
+	oh and also reorganize all this shit when its done so its under 1000 lines
+**/

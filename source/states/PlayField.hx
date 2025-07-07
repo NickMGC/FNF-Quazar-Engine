@@ -1,5 +1,6 @@
 package states;
 
+import editors.ChartEditor;
 import substates.GameOverSubState;
 import flixel.util.FlxStringUtil;
 import haxe.ds.ArraySort;
@@ -11,6 +12,8 @@ class PlayField extends MusicState {
 	public static var songs:Array<String> = ['Puns', 'Test'];
 	public static var difficulty:String = 'normal';
 	public static var isStoryMode:Bool = false;
+
+	public static var _chart:Bool = false;
 
 	public var curSong:String = songs[0];
 
@@ -57,6 +60,8 @@ class PlayField extends MusicState {
 	public var healthBar:HealthBar;
 	public var scoreText:BitmapText;
     public var comboGroup:FlxSpriteGroup;
+
+	public var events:Array<EventJSON> = [];
 
     public function new(camera:FlxCamera):Void {
         super();
@@ -159,7 +164,13 @@ class PlayField extends MusicState {
 	}
 
 	public function loadSong(curSong:String, difficulty:String):Void {
-        chart = Path.chart(curSong, difficulty);
+        if (!_chart) {
+			chart = Path.chart(curSong, difficulty);
+		} else {
+			chart = ChartEditor.chart;
+		}
+
+		events = chart.events.copy();
 
 		inst = Path.song('Inst', curSong);
 		playerStrum.voices = Path.song('Voices-Player', curSong);

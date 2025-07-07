@@ -31,6 +31,8 @@ class Init extends FlxState {
 		FlxG.switchState(PlayState.new);
 
 		super.create();
+
+		#if !RELEASE_BUILD Logger.init(); #end
 	}
 
 	function onError(e:UncaughtErrorEvent):Void {

@@ -7,7 +7,7 @@ class Countdown extends FlxSpriteGroup {
 	public function new():Void {
 		super();
 
-		playField.conductor.time = -playField.beatLength * 4;
+		playField.conductor.time = -playField.beatLength * 5;
 		playField.addBeatSignal(countdown);
 	}
 
