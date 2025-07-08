@@ -1,10 +1,12 @@
 package editors;
 
+import flixel.ui.FlxButton;
 import flixel.addons.display.FlxTiledSprite;
 import flixel.addons.display.FlxGridOverlay;
 import flixel.addons.display.waveform.FlxWaveform;
+import flixel.addons.ui.*;
 
-class ChartEditor extends MusicScene {
+class ChartEditor extends UIMusicScene {
 	public static var chart:Chart;
 
 	public static inline var GRID_SIZE:Int = 40;
@@ -18,6 +20,9 @@ class ChartEditor extends MusicScene {
 
 	var gridBG:FlxSprite;
 	var selectedBox:FlxSprite;
+	var timeline:FlxSprite;
+
+	var timelineY:Float = 100; //TODO: make this adjustable
 
 	var lines:FlxSpriteGroup;
 
@@ -39,6 +44,8 @@ class ChartEditor extends MusicScene {
 
 	var time(get, set):Float;
 	var lastTime:Float;
+
+	var chartInfo:FlxUITabMenu;
 
 	public function new(chart:Chart = null):Void {
 		super();
@@ -77,29 +84,27 @@ class ChartEditor extends MusicScene {
 		add(notes = new FlxTypedGroup());
 		add(events = new FlxTypedGroup());
 
-		var timeline = new FlxSprite(440, 200).makeGraphic(Std.int(gridBG.width), 4, 0x50FF0000);
+		add(timeline = new FlxSprite(440, timelineY).makeGraphic(Std.int(gridBG.width), 4, 0x50FF0000));
 		timeline.scrollFactor.set();
-		add(timeline);
 
-		add(playerWaveform = new FlxWaveform(gridBG.x + gridBG.width - 20, 200, 80, FlxG.height * 3, 0xFFBBBBBB, 0x00FF0000, COMBINED));
+		add(playerWaveform = new FlxWaveform(gridBG.x + gridBG.width - 20, timelineY, 80, FlxG.height * 3, 0x00FFFFFF, 0x00FF0000, COMBINED));
+		playerWaveform.loadDataFromFlxSound(voices);
 		playerWaveform.scrollFactor.set();
 
-		add(opponentWaveform = new FlxWaveform(gridBG.x - 60, 200, 80, FlxG.height * 3, 0xFFBBBBBB, 0x00FF0000, COMBINED));
+		add(opponentWaveform = new FlxWaveform(gridBG.x - 60, timelineY, 80, FlxG.height * 3, 0x00FFFFFF, 0x00FF0000, COMBINED));
+		opponentWaveform.loadDataFromFlxSound(voicesOpponent);
 		opponentWaveform.scrollFactor.set();
 
         playerWaveform.waveformRMSColor = opponentWaveform.waveformRMSColor = 0xFFFFFFFF;
         playerWaveform.waveformDrawBaseline = opponentWaveform.waveformDrawBaseline = playerWaveform.waveformDrawRMS = opponentWaveform.waveformDrawRMS = true;
         playerWaveform.waveformOrientation = opponentWaveform.waveformOrientation = VERTICAL;
 
-		playerWaveform.loadDataFromFlxSound(voices);
-        opponentWaveform.loadDataFromFlxSound(voicesOpponent);
-
-		add(iconP2 = new HealthIcon(gridBG.x - 94, 125, chart.player2));
+		add(iconP2 = new HealthIcon(gridBG.x - 94, timelineY - 75, chart.player2));
 		iconP2.scrollFactor.set();
 		iconP2.scale.set(0.5, 0.5);
 		iconP2.updateHitbox();
 
-		add(iconP1 = new HealthIcon(gridBG.x + gridBG.width - 54, 125, chart.player1, true));
+		add(iconP1 = new HealthIcon(gridBG.x + gridBG.width - 54, timelineY - 75, chart.player1, true));
 		iconP1.scrollFactor.set();
 		iconP1.scale.set(0.5, 0.5);
 		iconP1.updateHitbox();
@@ -122,6 +127,55 @@ class ChartEditor extends MusicScene {
 		chart.events.iter(createEvent);
 
 		regenGrid();
+
+		var tabs:Array<{name:String, label:String}> = [
+			{name: 'Song', label: 'Song'},
+			{name: 'Section', label: 'Section'},
+			{name: 'Note', label: 'Note'},
+			{name: 'Event', label: 'Event'},
+			{name: 'Charting', label: 'Charting'}
+		];
+
+		add(chartInfo = new FlxUITabMenu(tabs, true));
+		chartInfo.selected_tab_id = 'Song';
+		chartInfo.scrollFactor.set();
+		chartInfo.x = chartInfo.y = 20;
+		chartInfo.resize(250, 320);
+
+		addSongUI();
+	}
+
+	var speed:Float;
+	function addSongUI() {
+		var tab_group = new FlxUI(chartInfo);
+		tab_group.name = 'Song';
+
+		speed = chart.speed;
+
+		tab_group.add(new FlxButton(15, 15, "Save", function() {}));
+
+		tab_group.add(new FlxButton(110, 15, "Reload Chart", () -> {
+			FlxG.switchState(new ChartEditor(Path.chart(chart.song, PlayField.difficulty)));
+		}));
+
+		var stepperBPM:FlxUINumericStepper = new FlxUINumericStepper(15, 70, 1, 1, 1, 400, 3);
+		stepperBPM.value = conductor.bpm;
+		stepperBPM.name = 'song_bpm';
+
+		tab_group.add(new FlxText(stepperBPM.x, stepperBPM.y - 15, 0, 'Song BPM:'));
+		tab_group.add(stepperBPM);
+
+		var speedSlider:FlxUISlider = new FlxUISlider(this, 'speed', 10, 100, 0.1, 10, 210, null, 5, FlxColor.WHITE, FlxColor.BLACK);
+		speedSlider.nameLabel.text = 'Scroll Speed:';
+		speedSlider.decimals = 1;
+		speedSlider.callback = function(relativePos:Float) {
+			chart.speed = speed;
+		};
+		speedSlider.value = speed;
+
+		tab_group.add(speedSlider);
+
+		chartInfo.addGroup(tab_group);
 	}
 
 	function regenGrid():Void {
@@ -137,6 +191,17 @@ class ChartEditor extends MusicScene {
 
 		lines.add(new FlxSprite(gridBG.x + 160).makeGraphic(2, Std.int(gridBG.height), 0xFF000000));
 		lines.add(new FlxSprite(gridBG.x + 320).makeGraphic(2, Std.int(gridBG.height), 0xFF000000));
+	}
+
+	override function getEvent(id:String, sender:Dynamic, data:Dynamic, ?params:Array<Dynamic>):Void {
+		if (id == FlxUINumericStepper.CHANGE_EVENT && (sender is FlxUINumericStepper)) {
+			var nums:FlxUINumericStepper = cast sender;
+	
+			switch(nums.name) {
+				case 'song_bpm':
+					chart.bpm = conductor.bpm = nums.value; //TODO: fix the visuals fucking up when changing the bpm
+			}
+		}
 	}
 
 	function onBack():Void {
@@ -258,7 +323,7 @@ class ChartEditor extends MusicScene {
 			}
 		}
 
-		FlxG.camera.scroll.y = getYfromStrum(time) - 200;
+		FlxG.camera.scroll.y = getYfromStrum(time) - timelineY;
 
 		checkNoteHits();
 		mouseInput();
@@ -362,11 +427,12 @@ class ChartEditor extends MusicScene {
 	- Player/Opponent Icons [DONE]
 	- Hit sounds [DONE]
 	- Audio waveforms [DONE]
-	- User Interface
-	- Support different Time signatures (глп)
+	- User Interface [WIP]
 	- Ability to import chart files
 	- Ability to export chart files
 	- Get rid of every instance of me using anonymous functions
+	- Adjust visuals to BPM changes (глп)
+	- Support different Time signatures (глп)
 
 	oh and also reorganize all this shit when its done so its under 1000 lines
 **/

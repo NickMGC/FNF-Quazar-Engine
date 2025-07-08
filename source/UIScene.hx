@@ -1,6 +1,8 @@
 package;
 
-class Scene extends FlxState {
+import flixel.addons.ui.FlxUIState;
+
+class UIScene extends FlxUIState {
 	var transitions:FlxSpriteGroup;
 
 	override function create():Void {

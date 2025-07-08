@@ -87,8 +87,11 @@ class Note extends NoteSprite {
 			playField.score += Std.int(250 * elapsed);
 			playField.health += 0.085 * elapsed;
 
-			if (Data.keybinds[Note.notebindNames[data % Note.notebindNames.length]].foreach(unpressedKey)) {
-				kill();
+			if ((time + length) - playField.conductor.time > 0.4) {
+				if (Data.keybinds[Note.notebindNames[data % Note.notebindNames.length]].foreach(unpressedKey)) {
+					sustaining = false;
+					miss();
+				}
 			}
 		}
 
