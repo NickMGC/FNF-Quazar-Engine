@@ -45,9 +45,8 @@ class Init extends FlxState {
 			}
 		}
 
-		Application.current.window.alert(errorMessage += '\n${e.error}', "Error");
-		trace('\n$errorMessage');
-
+		Application.current.window.alert(errorMessage += '\n${e.error}', 'Error');
+		Sys.println(errorMessage);
 		Sys.exit(1);
 	}
 }

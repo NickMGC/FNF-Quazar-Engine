@@ -81,25 +81,25 @@ class ChartEditor extends MusicScene {
 		timeline.scrollFactor.set();
 		add(timeline);
 
-		// add(playerWaveform = new FlxWaveform(400, 200, 80, 720 * 4, 0x00FF0000, 0x00FF0000, COMBINED));
-		// playerWaveform.scrollFactor.set();
+		add(playerWaveform = new FlxWaveform(gridBG.x + gridBG.width - 20, 200, 80, FlxG.height * 3, 0xFFBBBBBB, 0x00FF0000, COMBINED));
+		playerWaveform.scrollFactor.set();
 
-		// add(opponentWaveform = new FlxWaveform(0, 200, 80, 720 * 4, 0x00FF0000, 0x00FF0000, COMBINED));
-		// opponentWaveform.scrollFactor.set();
+		add(opponentWaveform = new FlxWaveform(gridBG.x - 60, 200, 80, FlxG.height * 3, 0xFFBBBBBB, 0x00FF0000, COMBINED));
+		opponentWaveform.scrollFactor.set();
 
-        // playerWaveform.waveformRMSColor = opponentWaveform.waveformRMSColor = 0xFFFFFFFF;
-        // playerWaveform.waveformDrawRMS = opponentWaveform.waveformDrawRMS = true;
-        // playerWaveform.waveformOrientation = opponentWaveform.waveformOrientation = VERTICAL;
+        playerWaveform.waveformRMSColor = opponentWaveform.waveformRMSColor = 0xFFFFFFFF;
+        playerWaveform.waveformDrawBaseline = opponentWaveform.waveformDrawBaseline = playerWaveform.waveformDrawRMS = opponentWaveform.waveformDrawRMS = true;
+        playerWaveform.waveformOrientation = opponentWaveform.waveformOrientation = VERTICAL;
 
-		// playerWaveform.loadDataFromFlxSound(voices);
-        // opponentWaveform.loadDataFromFlxSound(voicesOpponent);
+		playerWaveform.loadDataFromFlxSound(voices);
+        opponentWaveform.loadDataFromFlxSound(voicesOpponent);
 
-		add(iconP2 = new HealthIcon(gridBG.x - 160, 125, chart.player2));
+		add(iconP2 = new HealthIcon(gridBG.x - 94, 125, chart.player2));
 		iconP2.scrollFactor.set();
 		iconP2.scale.set(0.5, 0.5);
 		iconP2.updateHitbox();
 
-		add(iconP1 = new HealthIcon(gridBG.x + gridBG.width + 10, 125, chart.player1, true));
+		add(iconP1 = new HealthIcon(gridBG.x + gridBG.width - 54, 125, chart.player1, true));
 		iconP1.scrollFactor.set();
 		iconP1.scale.set(0.5, 0.5);
 		iconP1.updateHitbox();
@@ -265,7 +265,7 @@ class ChartEditor extends MusicScene {
 
 		lastTime = time;
 
-		//playerWaveform.waveformTime = opponentWaveform.waveformTime = time;
+		playerWaveform.waveformTime = opponentWaveform.waveformTime = time;
 	}
 
 	var hitOffset:Float = 15;
@@ -361,9 +361,8 @@ class ChartEditor extends MusicScene {
 	TODOS:
 	- Player/Opponent Icons [DONE]
 	- Hit sounds [DONE]
-	- Audio waveforms [GOAL] (https://github.com/ACrazyTown/flixel-waveform)
+	- Audio waveforms [DONE]
 	- User Interface
-	- Grid zooming
 	- Support different Time signatures (глп)
 	- Ability to import chart files
 	- Ability to export chart files

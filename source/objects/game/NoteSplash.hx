@@ -33,6 +33,7 @@ class NoteSplash extends FlxSprite {
 		splash.loadSkin(strum.strumline.splashFrames);
 		splash.setPosition(strum.x + (strum.width - splash.width) * 0.5, strum.y + (strum.height - splash.height) * 0.5);
 		splash.animation.play('splash${FlxG.random.int(1, 2)}' + Note.direction[strum.data % Note.direction.length]);
+		splash.camera = strum.camera;
 	}
 	
 	static function newSplash():NoteSplash {

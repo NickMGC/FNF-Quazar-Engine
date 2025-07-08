@@ -75,6 +75,13 @@ class PlayState extends Scene {
 		}
 
 		triggerEvents();
+
+		#if !RELEASE_BUILD
+		if (FlxG.keys.justPressed.F5) {
+			PlayField._chart = false;
+			playField.endSong();
+		}
+		#end
 	}
 
 	function triggerEvents():Void {
