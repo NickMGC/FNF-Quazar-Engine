@@ -15,6 +15,7 @@ Quazar Engine is a light weight engine built from the ground up, taylored for so
 * HaxeFlixel (flixel, flixel-addons, flixel-ui)
 * HxVLC
 * Moonchart
+* flixel-waveform
 
 ## Todo list:
 - [x] Core Gameplay
