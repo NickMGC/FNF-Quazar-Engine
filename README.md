@@ -24,7 +24,6 @@ Quazar Engine is a light weight engine built from the ground up, taylored for so
 - [ ] Character Editor
 - [ ] Stage Editor
 - [x] Class based event system
-- [x] Support for different chart formats (Psych only for now)
 - [ ] The ability to change settings without restarting the song
 - [ ] PlayState soft reload on Song restart/Game Over
 
