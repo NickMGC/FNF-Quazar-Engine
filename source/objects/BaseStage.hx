@@ -3,26 +3,54 @@ package objects;
 import flixel.group.FlxContainer;
 
 class BaseStage extends FlxContainer {
-	public var bf:Character;
+    public var characterMap:Map<String, Character> = new Map();
+    public var props:Map<String, FlxSprite> = new Map();
+
     public var gf:Character;
     public var dad:Character;
+    public var bf:Character;
 
+    public var data:StageData;
     public var name:String;
 
-    public var props:Map<String, FlxSprite> = new Map();
-    public var data:StageData;
+    var prevBgColor:Int;
 
     public function new(name:String):Void {
         super();
 
-        this.name = name;
+        prevBgColor = FlxG.camera.bgColor;
 
-        data = Path.stage(name);
+        add(gf = new Character(playField.chart.player3));
+        add(dad = new Character(playField.chart.player2));
+        add(bf = new Character(playField.chart.player1, true));
 
-        add(gf = new Character(data.gf.position[0], data.gf.position[1], playField.chart.player3));
-        add(dad = new Character(data.dad.position[0], data.dad.position[1], playField.chart.player2));
-        add(bf = new Character(data.bf.position[0], data.bf.position[1], playField.chart.player1, true));
-    
+        gf.onAnimPlay.add(onGFAnim);
+        dad.onAnimPlay.add(onDadAnim);
+        bf.onAnimPlay.add(onBFAnim);
+
+        loadStage(this.name = name);
+        create();
+    }
+
+    function onBFAnim(animation:String):Void {}
+    function onGFAnim(animation:String):Void {}
+    function onDadAnim(animation:String):Void {}
+
+    public function loadStage(stage:String):Void {
+        data = Path.stage(stage);
+
+        if (props != null) {
+            for (prop in props) {
+                remove(prop, true);
+                prop.destroy();
+                prop = null;
+            }
+        }
+
+        gf.setPosition(data.gf.position[0], data.gf.position[1]);
+        dad.setPosition(data.dad.position[0], data.dad.position[1]);
+        bf.setPosition(data.bf.position[0], data.bf.position[1]);
+
         gf.cameraOffset = data.gf.cameraPosition;
         dad.cameraOffset = data.dad.cameraPosition;
         bf.cameraOffset = data.bf.cameraPosition;
@@ -31,29 +59,18 @@ class BaseStage extends FlxContainer {
         if (data.dad.scroll != null) dad.scrollFactor.set(data.dad.scroll[0], data.dad.scroll[1]);
         if (data.bf.scroll != null) bf.scrollFactor.set(data.bf.scroll[0], data.bf.scroll[1]);
 
-        if (data.gf.hide) gf.visible = false;
-        if (data.dad.hide) dad.visible = false;
-        if (data.bf.hide) bf.visible = false;
+        if (data.bgColor != null) {
+            FlxG.camera.bgColor = FlxColor.fromString(data.bgColor);
+        }
 
-        gf.onAnimPlay.add(onGFAnim);
-        dad.onAnimPlay.add(onDadAnim);
-        bf.onAnimPlay.add(onBFAnim);
+        gf.visible = !data.gf.hide;
+        dad.visible = !data.dad.hide;
+        bf.visible = !data.bf.hide;
 
         gf.zIndex = data.gf.zIndex;
         dad.zIndex = data.dad.zIndex;
         bf.zIndex = data.bf.zIndex;
 
-        loadStage();
-        refresh();
-
-        create();
-    }
-
-    function onBFAnim(animation:String):Void {}
-    function onGFAnim(animation:String):Void {}
-    function onDadAnim(animation:String):Void {}
-
-    public function loadStage():Void {
         if (data.objects == null) return;
 
         for (obj in data.objects) {
@@ -64,7 +81,7 @@ class BaseStage extends FlxContainer {
                     if (animData.indices == null || animData.indices.length == 0) {
                         sprite.animation.addByPrefix(animData.name, animData.prefix, animData.fps, animData.looped);
                     } else {
-                        sprite.animation.addByIndices(animData.name, animData.prefix, animData.indices, "", animData.fps, animData.looped);
+                        sprite.animation.addByIndices(animData.name, animData.prefix, animData.indices, '', animData.fps, animData.looped);
                     }
                 }
             } else {
@@ -73,9 +90,9 @@ class BaseStage extends FlxContainer {
 
             if (obj.scroll != null) sprite.scrollFactor.set(obj.scroll[0], obj.scroll[1]);
             if (obj.scale != null) sprite.scale.set(obj.scale[0], obj.scale[1]);
+            if (obj.color != null) sprite.color = FlxColor.fromString(obj.color);
             if (obj.angle != null) sprite.angle = obj.angle;
             if (obj.alpha != null) sprite.alpha = obj.alpha;
-            if (obj.color != null) sprite.color = FlxColor.fromString(obj.color);
             if (obj.flipX != null) sprite.flipX = obj.flipX;
             if (obj.flipY != null) sprite.flipY = obj.flipY;
 
@@ -85,6 +102,8 @@ class BaseStage extends FlxContainer {
             props.set(obj.name, sprite);
             add(sprite);
         }
+
+        refresh();
     }
 
     public function create():Void {}
@@ -108,9 +127,11 @@ class BaseStage extends FlxContainer {
         gf.onAnimPlay.remove(onGFAnim);
         dad.onAnimPlay.remove(onDadAnim);
         bf.onAnimPlay.remove(onBFAnim);
+
+        FlxG.camera.bgColor = prevBgColor;
     }
 
-    function byZIndex(order:Int, obj1:FlxBasic, obj2:FlxBasic):Int {
+    @:noCompletion function byZIndex(order:Int, obj1:FlxBasic, obj2:FlxBasic):Int {
 		return FlxSort.byValues(order, obj1.zIndex, obj2.zIndex);
 	}
 }

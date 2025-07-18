@@ -15,15 +15,13 @@ class NoteSprite extends FlxSprite {
 
 		this.data = data;
 
-		loadSkin('default');
+		loadSkin(Path.sparrow('noteSkins/default/notes'));
 
 		scale.set(0.7, 0.7);
 		updateHitbox();
 	}
 
-	public function loadSkin(path:String = 'default'):Void {
-		var newFrames = Path.sparrow('noteSkins/$path/notes');
-
+	public function loadSkin(newFrames:FlxAtlasFrames):Void {
 		if (frames == newFrames) return;
 
 		frames = newFrames ?? frames;

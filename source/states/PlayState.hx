@@ -5,8 +5,6 @@ import flixel.FlxSubState;
 class PlayState extends Scene {
 	public static var game:PlayState;
 
-	public var characterMap:Map<String, Character> = new Map();
-
 	public var camHUD:FlxCamera;
 	public var camOther:FlxCamera;
 
@@ -34,18 +32,6 @@ class PlayState extends Scene {
 		playField.opponentStrum.character = stage.dad;
 		playField.playerStrum.character = stage.bf;
 
-		setupCamera();
-
-		playField.addBeatSignal(onBeat);
-		playField.addStepSignal(onStep);
-		playField.addMeasureSignal(onMeasure);
-
-		super.create();
-
-		stage.createPost();
-	}
-
-	function setupCamera():Void {
 		add(camFollow = new FlxObject(0, 0, 1, 1));
 		moveCamera(stage.gf);
 
@@ -54,12 +40,20 @@ class PlayState extends Scene {
 			prevCamFollow = null;
 		}
 
-		FlxG.camera.follow(camFollow, LOCKON, 0);
+		FlxG.camera.follow(camFollow, 0);
 		FlxG.camera.snapToTarget();
 		FlxG.camera.followLerp = 2.4 * cameraSpeed;
 		FlxG.camera.zoom = defaultCamZoom = stage.data.cameraZoom;
 
 		moveCamera(stage.dad);
+
+		playField.addBeatSignal(onBeat);
+		playField.addStepSignal(onStep);
+		playField.addMeasureSignal(onMeasure);
+
+		super.create();
+
+		stage.createPost();
 	}
 
 	override function update(elapsed:Float):Void {
@@ -75,17 +69,10 @@ class PlayState extends Scene {
 		}
 
 		triggerEvents();
-
-		#if !RELEASE_BUILD
-		if (FlxG.keys.justPressed.F5) {
-			PlayField._chart = false;
-			playField.endSong();
-		}
-		#end
 	}
 
 	function triggerEvents():Void {
-		if (playField.events.length <= 0 || playField.conductor.time < playField.events[0].time) return;
+		if (playField.events == null || playField.events.length <= 0 || playField.conductor.time < playField.events[0].time) return;
 
 		for (eventData in playField.events[0].events) {
         	Event.trigger(eventData.name, eventData.values);
@@ -114,9 +101,8 @@ class PlayState extends Scene {
 		if (playField.songEnded) return;
 
 		for (char in [stage.bf, stage.dad, stage.gf]) {
-			if (playField.curBeat % Math.round(char.speed * char.danceEveryNumBeats) == 0 && !char.animation.curAnim.name.startsWith('sing')) {
-				char.dance();
-			}
+			if (playField.curBeat % Math.round(char.speed * char.danceEveryNumBeats) != 0 || char.animation.curAnim.name.startsWith('sing')) continue;
+			char.dance();
 		}
 
 		for (icon in [playField.healthBar.iconP1, playField.healthBar.iconP2]) {

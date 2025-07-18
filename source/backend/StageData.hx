@@ -22,6 +22,7 @@ typedef StageObject = {
     var path:String;
     var position:Array<Float>;
     var zIndex:Int;
+    @:optional var antialiasing:Bool;
     @:optional var prefix:String;
     @:optional var scale:Array<Float>;
     @:optional var scroll:Array<Float>;
@@ -41,6 +42,8 @@ typedef StageData = {
 
 	var cameraZoom:Float;
     var cameraSpeed:Float;
+
+    @:optional var bgColor:String;
 
 	@:optional var preload:Array<String>;
 	@:optional var objects:Array<StageObject>;

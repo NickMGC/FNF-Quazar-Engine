@@ -1,0 +1,24 @@
+{
+    "image": "covers",
+    "scale": [0.95, 0.95],
+
+    "globalAnimData": {"fps": 24, "loop": false},
+
+    "animations": [
+        {"name": "start left", "anim": "start left", "offsets": [0, 0]},
+        {"name": "hold left", "anim": "hold left", "offsets": [0, 0], "loop": true},
+        {"name": "end left", "anim": "end left", "offsets": [0, 0]},
+
+        {"name": "start down", "anim": "start down", "offsets": [0, 0]},
+        {"name": "hold down", "anim": "hold down", "offsets": [0, 0], "loop": true},
+        {"name": "end down", "anim": "end down", "offsets": [0, 0]},
+
+        {"name": "start up", "anim": "start up", "offsets": [0, 0]},
+        {"name": "hold up", "anim": "hold up", "offsets": [0, 0], "loop": true},
+        {"name": "end up", "anim": "end up", "offsets": [0, 0]},
+
+        {"name": "start right", "anim": "start right", "offsets": [0, 0]},
+        {"name": "hold right", "anim": "hold right", "offsets": [0, 0], "loop": true},
+        {"name": "end right", "anim": "end right", "offsets": [0, 0]}
+    ]
+}

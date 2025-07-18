@@ -1,15 +1,15 @@
 package objects.game;
 
-class Sustain extends TailedSprite {
+class Sustain extends FlxTailedSprite {
 	public function setup(note:Note):Sustain {
-		if (frames != note.frames && animation != null) {
+		if (frames != note.frames) {
 			animation.destroyAnimations();
 			frames = note.frames;
 			animation.copyFrom(note.animation);
 		}
 	
 		animation.play('hold${note.dir}');
-		setTail('tail${note.dir}');
+		setTailAnim('tail${note.dir}');
 
 		camera = note.camera;
 		scale = note.scale;

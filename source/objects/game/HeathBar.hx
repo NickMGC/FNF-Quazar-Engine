@@ -10,14 +10,11 @@ class HealthBar extends FlxSpriteGroup {
 	public function new(y:Float = 0):Void {
 		super(0, y);
 
-		var playerColor:String = Path.character(playField.chart.player1).healthbarColor;
-		var opponentColor:String = Path.character(playField.chart.player2).healthbarColor;
+		add(playerBar = new FlxSprite(Path.image('healthBar')));
+		playerBar.color = FlxColor.fromString(Path.character(playField.chart.player1).healthbarColor);
 
-		add(playerBar = new FlxSprite().loadGraphic(Path.image('healthBar')));
-		playerBar.color = FlxColor.fromString(playerColor);
-
-		add(opponentBar = new FlxSprite().loadGraphic(Path.image('healthBar')));
-		opponentBar.color = FlxColor.fromString(opponentColor);
+		add(opponentBar = new FlxSprite(Path.image('healthBar')));
+		opponentBar.color = FlxColor.fromString(Path.character(playField.chart.player2).healthbarColor);
 		opponentBar.clipRect = FlxRect.get(0, 0, playerBar.width, playerBar.height);
 		opponentBar.clipRect.width = playerBar.width * (1 - playField.health);
 

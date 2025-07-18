@@ -54,7 +54,7 @@ class Conductor {
 
 		for (timing in [step, beat, measure]) {
 			timing.last = timing.cur;
-			timing.curDec = (value - Data.offset) / timing.length;
+			timing.curDec = (value - Data.songOffset) / timing.length;
 
 			if (!paused && timing.last != timing.cur) {
 				timing.signal.dispatch();

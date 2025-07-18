@@ -9,11 +9,12 @@ import objects.game.HeathBar;
 class PlayField extends MusicState {
 	public static var instance:PlayField;
 
-	public static var songs:Array<String> = ['Puns', 'Test'];
+	public static var songs:Array<String> = ['Puns'];
 	public static var difficulty:String = 'normal';
 	public static var isStoryMode:Bool = false;
 
-	public static var _chart:Bool = false;
+	public static var chartingMode:Bool = false;
+	public var chart:Chart;
 
 	public var curSong:String = songs[0];
 
@@ -50,8 +51,6 @@ class PlayField extends MusicState {
 	public var rating:String = '?';
 	public var ratingPercent:Float;
 
-	public var chart:Chart;
-
     public var playerStrum:Strumline;
 	public var opponentStrum:Strumline;
 
@@ -84,35 +83,38 @@ class PlayField extends MusicState {
 
 		add(healthBar = new HealthBar(Data.downScroll ? FlxG.height * 0.15 : FlxG.height * 0.85));
 
-        add(scoreText = new BitmapText(0, healthBar.y + 40, 'vcr', 'Score: 0 • Misses: 0 • Rating: ?'));
-        scoreText.setFormat('vcr', 0.9, FlxColor.WHITE, CENTER, OUTLINE, FlxColor.BLACK);
-		scoreText.setAlign(CENTER, camera.width);
-		scoreText.screenCenter(X);
+        add(scoreText = new BitmapText(healthBar.x + healthBar.width - 190, healthBar.y + 30, 'vcr', 'Score: 0'));
+        scoreText.setFormat('vcr', 0.8, FlxColor.WHITE, LEFT, OUTLINE, FlxColor.BLACK);
         scoreText.borderSize = 2;
 
         add(comboGroup = new FlxSpriteGroup());
 
 		this.camera = camera;
 
+		for (val in [inst, playerStrum.voices, opponentStrum.voices]) {
+			val.play();
+			val.stop();
+		}
+
 		skipCountdown ? startSong() : add(new Countdown());
     }
 
 	function set_score(value:Int):Int {
-		scoreText.text = 'Score: ${FlxStringUtil.formatMoney(value, false, true)} • Misses: $misses • Rating: $rating - ${FlxMath.roundDecimal(FlxMath.bound(ratingPercent * 100, 0, 100), 2)}%';
+		scoreText.text = 'Score: ${FlxStringUtil.formatMoney(value, false, true)}';
 		return score = value;
 	}
 
-	public function recalculateRating():Void {//couldn't bother making my own ratings, just yoinked from psych (eww)
+	public function recalculateRating():Void {
 		if(totalPlayed == 0) return;
 
-		ratingPercent = Math.min(1, Math.max(0, totalHit / totalPlayed));
+		ratingPercent = FlxMath.bound(totalHit / totalPlayed, 0, 1);
 
 		rating = ratings[ratings.length - 1].name;
 
 		for (rat in ratings) {
 			if (ratingPercent < rat.value) {
-        		rating = rat.name;
-        		break;
+				rating = rat.name;
+				break;
 			}
     	}
 	}
@@ -133,7 +135,7 @@ class PlayField extends MusicState {
 
 	public function startSong():Void {
 		for (val in [inst, playerStrum.voices, opponentStrum.voices]) {
-			val.play(true);
+			val.play();
 		}
 
 		songStarted = true;
@@ -145,6 +147,11 @@ class PlayField extends MusicState {
 	}
 	
 	public function endSong():Void {
+		if (chartingMode) {
+			FlxG.switchState(new ChartEditor(ChartEditor.chart));
+			return;
+		}
+
 		if (songs.length > 0) {
 			songs.shift();
 
@@ -164,13 +171,11 @@ class PlayField extends MusicState {
 	}
 
 	public function loadSong(curSong:String, difficulty:String):Void {
-        if (!_chart) {
-			chart = Path.chart(curSong, difficulty);
-		} else {
-			chart = ChartEditor.chart;
-		}
+		chart = chartingMode ? ChartEditor.chart : Path.chart(curSong, difficulty);
 
-		events = chart.events.copy();
+		if (chart.events != null) {
+			events = chart.events.copy();
+		}
 
 		inst = Path.song('Inst', curSong);
 		playerStrum.voices = Path.song('Voices-Player', curSong);

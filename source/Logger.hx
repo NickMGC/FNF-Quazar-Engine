@@ -32,7 +32,10 @@ class Logger {
     }
 
     public static function trace(v:Dynamic, ?infos:PosInfos):Void {
-        logText.text += '\n${Log.formatOutput(v, infos)}';
+        final text:String = Log.formatOutput(v, infos);
+
+        logText.text += '\n$text';
+        Sys.println(text);
     }
 
     static function onPostDraw():Void {

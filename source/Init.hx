@@ -28,12 +28,30 @@ class Init extends FlxState {
 
 		FlxObject.defaultMoves = false;
 
+		// cacheSkins();
+
 		FlxG.switchState(PlayState.new);
 
 		super.create();
 
 		#if !RELEASE_BUILD Logger.init(); #end
 	}
+
+	//really shitty and bad and shitty
+	// function cacheSkins():Void {
+    //     final noteSkinsPath:String = 'assets/images/noteSkins';
+
+    //     for (skin in FileSystem.readDirectory(noteSkinsPath)) {
+    //         if (FileSystem.isDirectory('$noteSkinsPath/$skin') && !Path.cachedSkins.exists(skin)) {
+    //             try {
+    //                 Path.cachedSkins.set(skin, NoteSkinData.get(skin));
+    //                 trace('Cached skin: $skin');
+    //             } catch(e:Dynamic) {
+    //                 trace('Failed to cache skin "$skin": $e');
+    //             }
+    //         }
+    //     }
+    // }
 
 	function onError(e:UncaughtErrorEvent):Void {
 		var errorMessage:String = '';

@@ -20,6 +20,7 @@ import moonchart.formats.fnf.legacy.FNFPsych;
 	public static var localAssets:Array<String> = [];
 	public static var trackedImages:Map<String, FlxGraphic> = [];
 	public static var trackedAudio:Map<String, OpenFLSound> = [];
+	// public static var cachedSkins:Map<String, NoteSkinData> = [];
 
 	public static var exclusions:Array<String> = [
 		'assets/audio/music/freakyMenu.ogg', 'assets/audio/music/breakfast.ogg',
@@ -99,8 +100,9 @@ import moonchart.formats.fnf.legacy.FNFPsych;
 	}
 
 	inline public static function chart(song:String, difficulty:String):Chart {
-		//TODO: parse my own chart format instead of doing this clusterfuck
 
+		/**
+		//this code will be used for importing psych engine charts inside of the chart editor, i decided i wont be supporting other chart formats
 		var chartPath:String = Path.json('songs/$song/$difficulty');
 		var legacyJson = new FNFPsych().fromFile(chartPath);
 
@@ -180,11 +182,13 @@ import moonchart.formats.fnf.legacy.FNFPsych;
 		chart.events.sort(byTime);
 
 		return chart;
+		**/
+
+		return parseJSON(Path.json('songs/$song/$difficulty'));
 	}
 
-
-	static function byTime(a:EventJSON, b:EventJSON):Int {
-		return (a.time < b.time ? -1 : (a.time > b.time ? 1 : 0));
+	inline public static function parseJSON(key:String):Dynamic {
+		return Json.parse(File.getContent(key));
 	}
 
 	inline public static function font(key:String):String {
@@ -212,11 +216,11 @@ import moonchart.formats.fnf.legacy.FNFPsych;
 	}
 
 	inline public static function stage(key:String):StageData {
-		return Json.parse(File.getContent(json('stages/$key/$key')));
+		return parseJSON(json('stages/$key/$key'));
 	}
 
 	inline public static function character(key:String):CharacterData {
-		return Json.parse(File.getContent(json('characters/$key/$key')));
+		return parseJSON(json('characters/$key/$key'));
 	}
 
 	inline public static function characterPath(key:String):String {
@@ -251,14 +255,6 @@ import moonchart.formats.fnf.legacy.FNFPsych;
 
 	inline public static function sparrow(key:String, ?prefix:String = 'images'):FlxAtlasFrames {
 		return FlxAtlasFrames.fromSparrow(image(key, prefix), xml('$prefix/$key'));
-	}
-
-	inline public static function aseprite(key:String, ?prefix:String = 'images'):FlxAtlasFrames {
-		return FlxAtlasFrames.fromAseprite(image(key, prefix), json('$prefix/$key'));
-	}
-
-	inline public static function packer(key:String, ?prefix:String = 'images'):FlxAtlasFrames {
-		return FlxAtlasFrames.fromSpriteSheetPacker(image(key, prefix), txt('$prefix/$key'));
 	}
 
 	inline public static function exists(key:String):Bool {

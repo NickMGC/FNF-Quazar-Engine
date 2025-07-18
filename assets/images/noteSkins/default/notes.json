@@ -1,0 +1,36 @@
+{
+    "image": "notes",
+    "scale": [0.7, 0.7],
+
+    "globalAnimData": {"fps": 24, "loop": false},
+
+    "animations": [
+        {"name": "note left", "anim": "note left", "offset": [0, 0]},
+        {"name": "strum left", "anim": "strum left", "offset": [0, 0]},
+        {"name": "press left", "anim": "press left", "offset": [0, 0]},
+        {"name": "confirm left", "anim": "confirm left", "offset": [0, 0]},
+        {"name": "tail left", "anim": "tail left", "offset": [0, 0]},
+        {"name": "hold left", "anim": "hold left", "offset": [0, 0]},
+
+        {"name": "note down", "anim": "note down", "offset": [0, 0]},
+        {"name": "strum down", "anim": "strum down", "offset": [0, 0]},
+        {"name": "press down", "anim": "press down", "offset": [0, 0]},
+        {"name": "confirm down", "anim": "confirm down", "offset": [0, 0]},
+        {"name": "tail down", "anim": "tail down", "offset": [0, 0]},
+        {"name": "hold down", "anim": "hold down", "offset": [0, 0]},
+
+        {"name": "note up", "anim": "note up", "offset": [0, 0]},
+        {"name": "strum up", "anim": "strum up", "offset": [0, 0]},
+        {"name": "press up", "anim": "press up", "offset": [0, 0]},
+        {"name": "confirm up", "anim": "confirm up", "offset": [0, 0]},
+        {"name": "tail up", "anim": "tail up", "offset": [0, 0]},
+        {"name": "hold up", "anim": "hold up", "offset": [0, 0]},
+
+        {"name": "note right", "anim": "note right", "offset": [0, 0]},
+        {"name": "strum right", "anim": "strum right", "offset": [0, 0]},
+        {"name": "press right", "anim": "press right", "offset": [0, 0]},
+        {"name": "confirm right", "anim": "confirm right", "offset": [0, 0]},
+        {"name": "tail right", "anim": "tail right", "offset": [0, 0]},
+        {"name": "hold right", "anim": "hold right", "offset": [0, 0]}
+    ]
+}   

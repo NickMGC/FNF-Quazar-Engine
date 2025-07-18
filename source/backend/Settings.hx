@@ -3,6 +3,9 @@ package backend;
 @:structInit class DataVariables {
 	//Gameplay
 	public var downScroll:Bool = false;
+	public var middleScroll:Bool = false;
+
+	public var opponentNotes:Bool = true;
 	public var ghostTapping:Bool = true;
 	public var reset:Bool = true;
 
@@ -27,14 +30,16 @@ package backend;
 	];
 
 	//Visual
+	public var hideHud:Bool = false;
 	public var flashingLights:Bool = true;
-	public var showFPS:Bool = true;
+	public var cameraZooms:Bool = true;
 
-	public var offset:Int = 0;
+	public var songOffset:Int = 0;
 
 	public var comboOffsets:Array<Float> = [0, 0];
 
 	//Graphics
+	public var showDebugStats:Bool = true;
 	public var framerate:Int = 60;
 
 	public var antialiasing:Bool = true;

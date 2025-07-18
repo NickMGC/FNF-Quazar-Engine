@@ -14,7 +14,7 @@ class StrumNote extends NoteSprite {
 	}
 
 	public function onSkinChange():Void {
-		loadSkin(strumline.skin);
+		loadSkin(strumline.noteFrames);
 		playAnim('strum$dir');
 	}
 

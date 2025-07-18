@@ -24,7 +24,9 @@ class PlayerInput {
 	}
 
 	static function onChartEditor():Void {
-		FlxG.switchState(new ChartEditor(playField.chart));
+		//FIXME: it doesnt remember the chart if you open the chart editor twice FUCK
+		FlxG.switchState(new ChartEditor(PlayField.chartingMode ? ChartEditor.chart : playField.chart));
+		PlayField.chartingMode = true;
 	}
 
 	static function onPause():Void {

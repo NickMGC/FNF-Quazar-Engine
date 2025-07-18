@@ -9,17 +9,16 @@ class CameraLerpMacro {
 		var fields:Array<Field> = Context.getBuildFields();
 
     	for (field in fields) {
-			if (field.name == 'updateLerp') {
-			    switch (field.kind) {
-          			case FFun(f):
-            			f.expr = macro {
-            				var mult:Float = 1 - Math.exp(-elapsed * followLerp);
-            				scroll.x += (_scrollTarget.x - scroll.x) * mult;
-            				scroll.y += (_scrollTarget.y - scroll.y) * mult;
-            			}
-          			default:
-        		}	
-			}
+			if (field.name != 'updateLerp') continue;
+
+			switch (field.kind) {
+          		case FFun(f):
+            		f.expr = macro {
+            			final mult:Float = 1 - Math.exp(-elapsed * followLerp);
+						scroll.add((_scrollTarget.x - scroll.x) * mult, (_scrollTarget.y - scroll.y) * mult);
+            		}
+          		default:
+        	}	
     	}
 
 		return fields;

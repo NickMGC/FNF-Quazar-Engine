@@ -10,6 +10,7 @@ class Note extends NoteSprite {
 
 	public var parent:StrumNote;
 	public var sustain:Sustain;
+	public var sustainCover:SustainCover;
 
 	public var sustaining:Bool = false;
 	public var hittable:Bool = true;
@@ -27,6 +28,7 @@ class Note extends NoteSprite {
 		animation.play('note$dir');
 
 		parent = strumline.strums[data % strumline.strums.length];
+		sustainCover = strumline.sustainCovers[data % strumline.sustainCovers.length];
 
 		if (length > 0) {
 			sustain = strumline.sustains.recycle(Sustain, newSustain).setup(this);
@@ -34,7 +36,7 @@ class Note extends NoteSprite {
 	}
 
 	public function onSkinChange():Void {
-		loadSkin(parent.strumline.skin);
+		loadSkin(parent.strumline.noteFrames);
 		if (length > 0) {
 			sustain.setup(this);
 		}
@@ -50,6 +52,7 @@ class Note extends NoteSprite {
 		hittable = false;
 
 		if (length > 0) {
+			sustainCover.start();
 			parent.confirm(false);
 			sustaining = true;
 			visible = false;
@@ -66,11 +69,14 @@ class Note extends NoteSprite {
 
 		sustaining ? holding(elapsed) : hitting();
 
-		if (!parent.strumline.autoHit && hittable && (playField.conductor.time >= time + ((FlxG.height / camera.zoom) * 0.5) / (playField.scrollSpeed * 0.45))) {
+		var missedNote:Bool = !parent.strumline.autoHit && hittable && (playField.conductor.time >= time + ((FlxG.height / camera.zoom) * 0.5) / (playField.scrollSpeed * 0.45));
+		var offScreen:Bool = playField.conductor.time >= time + length + ((FlxG.height / camera.zoom) * 0.5) / (playField.scrollSpeed * 0.45);
+
+		if (missedNote) {
 			miss();
 		}
 
-		if (playField.conductor.time >= time + length + ((FlxG.height / camera.zoom) * 0.5) / (playField.scrollSpeed * 0.45)) {
+		if (offScreen) {
 			kill();
 		}
 	}
@@ -87,17 +93,21 @@ class Note extends NoteSprite {
 			playField.score += Std.int(250 * elapsed);
 			playField.health += 0.085 * elapsed;
 
-			if ((time + length) - playField.conductor.time > 0.4) {
-				if (Data.keybinds[Note.notebindNames[data % Note.notebindNames.length]].foreach(unpressedKey)) {
-					sustaining = false;
-					miss();
-				}
+			if ((time + length) - playField.conductor.time > 0.55 && Data.keybinds[Note.notebindNames[data % Note.notebindNames.length]].foreach(unpressedKey)) {
+				parent.strumline.sustainCovers[data % parent.strumline.sustainCovers.length].alpha = 0;
+				miss();
+				kill();
+			}
+
+			if (playField.conductor.time >= time + length) {
+				SustainCover.spawn(parent, data);
 			}
 		}
 
 		if (playField.conductor.time >= time + length) {
 			if (parent.strumline.autoHit) {
 				parent.resetAnim();
+				SustainCover.spawn(parent, data);
 			}
 			kill();
 		}

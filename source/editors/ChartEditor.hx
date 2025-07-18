@@ -6,6 +6,10 @@ import flixel.addons.display.FlxGridOverlay;
 import flixel.addons.display.waveform.FlxWaveform;
 import flixel.addons.ui.*;
 
+import openfl.net.FileReference;
+import openfl.events.Event;
+import openfl.events.IOErrorEvent;
+
 class ChartEditor extends UIMusicScene {
 	public static var chart:Chart;
 
@@ -47,6 +51,8 @@ class ChartEditor extends UIMusicScene {
 
 	var chartInfo:FlxUITabMenu;
 
+	var _file:FileReference;
+
 	public function new(chart:Chart = null):Void {
 		super();
 		ChartEditor.chart = chart ?? Path.chart('Test', 'normal');
@@ -55,10 +61,7 @@ class ChartEditor extends UIMusicScene {
 	override public function create():Void {
 		super.create();
 
-		var bg = new FlxSprite().loadGraphic(Path.image('menuDesat'));
-		bg.color = 0xFF252525;
-		bg.scrollFactor.set();
-		add(bg);
+		bgColor = 0xFF252525;
 
 		inst = Path.song('Inst', chart.song);
 		voices = Path.song('Voices-Player', chart.song);
@@ -152,11 +155,8 @@ class ChartEditor extends UIMusicScene {
 
 		speed = chart.speed;
 
-		tab_group.add(new FlxButton(15, 15, "Save", function() {}));
-
-		tab_group.add(new FlxButton(110, 15, "Reload Chart", () -> {
-			FlxG.switchState(new ChartEditor(Path.chart(chart.song, PlayField.difficulty)));
-		}));
+		tab_group.add(new FlxButton(15, 15, 'Save', saveChart));
+		tab_group.add(new FlxButton(110, 15, 'Reload Chart', FlxG.switchState.bind(new ChartEditor(Path.chart(chart.song, PlayField.difficulty)))));
 
 		var stepperBPM:FlxUINumericStepper = new FlxUINumericStepper(15, 70, 1, 1, 1, 400, 3);
 		stepperBPM.value = conductor.bpm;
@@ -167,11 +167,11 @@ class ChartEditor extends UIMusicScene {
 
 		var speedSlider:FlxUISlider = new FlxUISlider(this, 'speed', 10, 100, 0.1, 10, 210, null, 5, FlxColor.WHITE, FlxColor.BLACK);
 		speedSlider.nameLabel.text = 'Scroll Speed:';
+		speedSlider.value = chart.speed;
 		speedSlider.decimals = 1;
 		speedSlider.callback = function(relativePos:Float) {
 			chart.speed = speed;
 		};
-		speedSlider.value = speed;
 
 		tab_group.add(speedSlider);
 
@@ -205,7 +205,6 @@ class ChartEditor extends UIMusicScene {
 	}
 
 	function onBack():Void {
-		PlayField._chart = true;
 		FlxG.switchState(new PlayState());
 	}
 
@@ -284,7 +283,7 @@ class ChartEditor extends UIMusicScene {
 		var direction = Math.floor((FlxG.mouse.x - GRID_SIZE) / GRID_SIZE) - 10;
 		if (direction > 7) return;
 
-		selectedNote = {time: getStrumTime(selectedBox.y), data: direction, type: '', length: 0};
+		selectedNote = {time: getStrumTime(selectedBox.y), data: direction};
 
 		chart.notes.push(selectedNote);
 		createNote(selectedNote);
@@ -414,6 +413,55 @@ class ChartEditor extends UIMusicScene {
 		}
 		return value;
 	}
+
+	function saveChart():Void {
+		if(chart.events != null && chart.events.length > 1) {
+			chart.events.sort(sortEventbyTime);
+		}
+
+		if(chart.notes != null && chart.notes.length > 1) {
+			chart.notes.sort(sortNotebyTime);
+		}
+
+		var data:String = haxe.Json.stringify(chart, '\t');
+
+		if (data == null || data.length <= 0) return; 
+
+		_file = new FileReference();
+		_file.addEventListener(#if desktop Event.SELECT #else Event.COMPLETE #end, onSaveComplete);
+		_file.addEventListener(Event.CANCEL, onSaveCancel);
+		_file.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
+		_file.save(data.trim(), 'normal.json');
+	}
+
+	function reset_file():Void {
+		_file.removeEventListener(Event.COMPLETE, onSaveComplete);
+		_file.removeEventListener(Event.CANCEL, onSaveCancel);
+		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
+		_file = null;
+	}
+
+	function onSaveComplete(_):Void {
+		reset_file();
+		FlxG.log.notice('Successfully saved chart.');
+	}
+
+	function onSaveCancel(_):Void {
+		reset_file();
+	}
+
+	function onSaveError(_):Void {
+		reset_file();
+		FlxG.log.error('An error has occured while saving the chart.');
+	}
+
+	static function sortEventbyTime(a:EventJSON, b:EventJSON):Int {
+		return (a.time < b.time ? -1 : (a.time > b.time ? 1 : 0));
+	}
+
+	static function sortNotebyTime(a:NoteJSON, b:NoteJSON):Int {
+		return (a.time < b.time ? -1 : (a.time > b.time ? 1 : 0));
+	}
 }
 
 /**
@@ -429,7 +477,7 @@ class ChartEditor extends UIMusicScene {
 	- Audio waveforms [DONE]
 	- User Interface [WIP]
 	- Ability to import chart files
-	- Ability to export chart files
+	- Ability to export chart files [DONE]
 	- Get rid of every instance of me using anonymous functions
 	- Adjust visuals to BPM changes (глп)
 	- Support different Time signatures (глп)

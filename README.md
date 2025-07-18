@@ -13,12 +13,12 @@ Quazar Engine is a light weight engine built from the ground up, taylored for so
 3. Download libraries listed below:
 
 * HaxeFlixel (flixel, flixel-addons, flixel-ui)
-* HxVLC
 * Moonchart
 * flixel-waveform
 
 ## Todo list:
 - [x] Core Gameplay
+- [ ] Note Skin rewrite
 - [ ] User interface
 - [ ] Chart Editor
 - [ ] Character Editor
