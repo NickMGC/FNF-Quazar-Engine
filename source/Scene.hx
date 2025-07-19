@@ -1,6 +1,8 @@
 package;
 
-class Scene extends FlxState {
+import flixel.addons.ui.FlxUIState;
+
+class Scene extends FlxUIState {
 	var transitions:FlxSpriteGroup;
 
 	override function create():Void {
@@ -15,7 +17,7 @@ class Scene extends FlxState {
 			transitions.add(new Transition());
 		}
 
-		skipNextTransOut = Controls.block = false;
+		skipNextTransOut = false;
 
 		Path.clearUnusedMemory();
 	}

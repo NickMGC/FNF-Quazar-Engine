@@ -1,4 +1,4 @@
-package objects.game;
+package objects;
 
 class HealthBar extends FlxSpriteGroup {
 	public var playerBar:FlxSprite;
@@ -10,10 +10,10 @@ class HealthBar extends FlxSpriteGroup {
 	public function new(y:Float = 0):Void {
 		super(0, y);
 
-		add(playerBar = new FlxSprite(Path.image('healthBar')));
+		add(playerBar = new FlxSprite(Path.image('game/healthBar')));
 		playerBar.color = FlxColor.fromString(Path.character(playField.chart.player1).healthbarColor);
 
-		add(opponentBar = new FlxSprite(Path.image('healthBar')));
+		add(opponentBar = new FlxSprite(Path.image('game/healthBar')));
 		opponentBar.color = FlxColor.fromString(Path.character(playField.chart.player2).healthbarColor);
 		opponentBar.clipRect = FlxRect.get(0, 0, playerBar.width, playerBar.height);
 		opponentBar.clipRect.width = playerBar.width * (1 - playField.health);

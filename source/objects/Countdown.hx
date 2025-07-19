@@ -1,4 +1,4 @@
-package objects.game;
+package objects;
 
 class Countdown extends FlxSpriteGroup {
 	public static var spriteNames:Array<String> = ['ready', 'set', 'go'];
@@ -21,7 +21,7 @@ class Countdown extends FlxSpriteGroup {
 
 		if (playField.curBeat > -4) {
 			var countdownItem:FlxSprite = new FlxSprite();
-			countdownItem.frames = Path.sparrow('countdown');
+			countdownItem.frames = Path.sparrow('game/countdown');
 			countdownItem.animation.addByNames(spriteNames[playField.curBeat + 3], [spriteNames[playField.curBeat + 3]], 0, false);
 			countdownItem.animation.play(spriteNames[playField.curBeat + 3]);
 			countdownItem.updateHitbox();

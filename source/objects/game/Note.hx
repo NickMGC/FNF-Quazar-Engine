@@ -25,20 +25,31 @@ class Note extends NoteSprite {
 		length = json.length ?? 0;
 		type = json.type ?? '';
 
-		animation.play('note$dir');
+		playAnim('note $dir');
 
 		parent = strumline.strums[data % strumline.strums.length];
-		sustainCover = strumline.sustainCovers[data % strumline.sustainCovers.length];
+
+		if (strumline.skinData.metadata.hasSustainCovers) {
+			sustainCover = strumline.sustainCovers[data % strumline.sustainCovers.length];
+		}
 
 		if (length > 0) {
 			sustain = strumline.sustains.recycle(Sustain, newSustain).setup(this);
+			sustain.height = length * playField.scrollSpeed * 0.45;
 		}
+
+		onSkinChange();
 	}
 
 	public function onSkinChange():Void {
-		loadSkin(parent.strumline.noteFrames);
-		if (length > 0) {
-			sustain.setup(this);
+		loadSkin(parent.strumline.skinData);
+
+		var prevHeight:Float = 0;
+		if (sustain != null && length > 0) {
+			
+			prevHeight = sustain.height;
+			sustain.onSkinChange(this);
+			sustain.height = prevHeight; //no clue why but the height resets upon changing the texture
 		}
 	}
 
@@ -52,7 +63,9 @@ class Note extends NoteSprite {
 		hittable = false;
 
 		if (length > 0) {
-			sustainCover.start();
+			if (parent.strumline.skinData.metadata.hasSustainCovers) {
+				sustainCover.start();
+			}
 			parent.confirm(false);
 			sustaining = true;
 			visible = false;
@@ -94,12 +107,14 @@ class Note extends NoteSprite {
 			playField.health += 0.085 * elapsed;
 
 			if ((time + length) - playField.conductor.time > 0.55 && Data.keybinds[Note.notebindNames[data % Note.notebindNames.length]].foreach(unpressedKey)) {
-				parent.strumline.sustainCovers[data % parent.strumline.sustainCovers.length].alpha = 0;
+				if (parent.strumline.skinData.metadata.hasSustainCovers) {
+					parent.strumline.sustainCovers[data % parent.strumline.sustainCovers.length].alpha = 0;
+				}
 				miss();
 				kill();
 			}
 
-			if (playField.conductor.time >= time + length) {
+			if (playField.conductor.time >= time + length && parent.strumline.skinData.metadata.hasSustainCovers) {
 				SustainCover.spawn(parent, data);
 			}
 		}
@@ -107,7 +122,9 @@ class Note extends NoteSprite {
 		if (playField.conductor.time >= time + length) {
 			if (parent.strumline.autoHit) {
 				parent.resetAnim();
-				SustainCover.spawn(parent, data);
+				if (parent.strumline.skinData.metadata.hasSustainCovers) {
+					SustainCover.spawn(parent, data);
+				}
 			}
 			kill();
 		}

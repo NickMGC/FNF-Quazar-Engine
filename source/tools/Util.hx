@@ -102,4 +102,8 @@ class Util {
             default: null;
         }
 	}
+
+	public static function lerpColor(Color1:FlxColor, Color2:FlxColor, Factor:Float = 0.5):FlxColor {
+		return FlxColor.interpolate(Color1, Color2, Factor);
+	}
 }

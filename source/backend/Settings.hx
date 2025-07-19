@@ -26,7 +26,10 @@ package backend;
 		'accept' => [ENTER, SPACE],
 		'back' => [BACKSPACE, ESCAPE],
 		'pause' => [ENTER, ESCAPE],
-		'reset' => [R, NONE]
+		'reset' => [R, NONE],
+
+		'debug' => [SEVEN],
+		'debug2' => [EIGHT]
 	];
 
 	//Visual
@@ -46,7 +49,7 @@ package backend;
 	public var gpuRendering:Bool = true;
 	public var shaders:Bool = true;
 
-	public var hitWindows:Array<Float> = [10, 40, 100, 135];
+	public var hitWindows:Array<Float> = [30, 90, 135, 160];
 }
 
 class Settings {

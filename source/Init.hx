@@ -30,7 +30,7 @@ class Init extends FlxState {
 
 		// cacheSkins();
 
-		FlxG.switchState(PlayState.new);
+		FlxG.switchState(new TitleState());
 
 		super.create();
 

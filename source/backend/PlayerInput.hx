@@ -1,21 +1,16 @@
 package backend;
 
-import editors.ChartEditor;
 import substates.GameOverSubState;
 import substates.PauseSubState;
+import states.editors.ChartEditor;
 
 class PlayerInput {
-	public static var safeMS:Float = Data.safeFrames * 4;
+	public static var safeMS:Float = (Data.safeFrames / 60) * 250;
 
 	public static function init():Void {
-		if (Data.reset) {
-			Key.onPress(Key.reset, onReset);
-		}
-
-		Key.onPress([FlxKey.SEVEN], onChartEditor);
+		Key.onPress(Key.reset, onReset);
+		Key.onPress(Key.debug, onChartEditor); //if the game shits itself here, reset your save file by going to `AppData/Roaming` and deleting the folder `NickNGC`
 		Key.onPress(Key.accept.concat(Key.back), onPause);
-
-		if (playField.playerStrum == null) return;
 
 		for (i => bind in Note.notebindNames) {
 			Key.onPress(Data.keybinds[bind], onPress.bind(i));
@@ -35,7 +30,7 @@ class PlayerInput {
 	}
 
 	static function onReset():Void {
-		if (playField.songEnded || game == null) return;
+		if (playField.songEnded || game == null || !Data.reset) return;
 		game.openSubState(new GameOverSubState());
 	}
 

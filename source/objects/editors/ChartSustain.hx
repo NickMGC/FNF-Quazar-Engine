@@ -1,4 +1,6 @@
-package editors;
+package objects.editors;
+
+import states.editors.ChartEditor;
 
 class ChartSustain extends FlxSprite {
     public var data:NoteJSON;

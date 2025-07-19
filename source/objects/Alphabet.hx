@@ -19,4 +19,14 @@ class Alphabet extends BitmapText {
 			lineSpacing = 0;
 		}
 	}
+
+	override function setAlign(alignment:FlxTextAlign, fieldWidth:Int):Alphabet {
+		super.setAlign(alignment, fieldWidth);
+		return cast this;
+	}
+
+	override function setFieldWidth(fieldWidth:Int):Alphabet {
+		super.setFieldWidth(fieldWidth);
+		return cast this;
+	}
 }

@@ -26,6 +26,7 @@ import backend.StageData;
 import objects.*;
 import objects.game.*;
 import objects.game.ui.*;
+import objects.editors.*;
 import states.*;
 import tools.*;
 import sys.FileSystem;

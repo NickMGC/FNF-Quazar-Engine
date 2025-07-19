@@ -1,48 +1,41 @@
-//dont look at this code im embarrassed (spoiler alert its ass)
-// package backend;
+package backend;
 
-// import objects.Character.AnimArray;
-// import objects.Character.GlobalAnimData;
+import objects.Character.AnimArray;
+import objects.Character.GlobalAnimData;
 
-// class NoteSkinData {
-//     public var noteData:BaseData;
-//     public var coverData:BaseData;
-//     public var splashData:BaseData;
-//     public var metadata:NoteMetadata;
+class NoteSkinData {
+    public var noteData:BaseData;
+    public var coverData:BaseData;
+    public var splashData:BaseData;
+    public var metadata:NoteMetadata;
 
-//     public var skin:String;
-//     public var path:String;
+    public var skin:String;
 
-//     public var noteFrames:FlxAtlasFrames;
-//     public var splashFrames:FlxAtlasFrames;
-// 	public var coverFrames:FlxAtlasFrames;
+    public var noteFrames:FlxAtlasFrames;
+    public var splashFrames:FlxAtlasFrames;
+	public var coverFrames:FlxAtlasFrames;
 
-//     public function new(skin:String):Void {
-//         loadSkin(skin);
-//     }
+    public function new(skin:String):Void {
+        loadSkin(skin);
+    }
 
-//     public function loadSkin(key:String):Void {
-//         skin = key;
-//         path = Path.get('images/noteSkins/$skin');
+    public function loadSkin(key:String):Void {
+        skin = key;
 
-//         noteData = loadData('notes');
-//         coverData = loadData('covers');
-//         splashData = loadData('splashes');
-//         metadata = loadData('metadata');
+        noteData = loadData('notes');
+        coverData = loadData('covers');
+        splashData = loadData('splashes');
+        metadata = loadData('metadata');
 
-//         noteFrames = Path.sparrow('noteSkins/$skin/notes');
-//         splashFrames = Path.sparrow('noteSkins/$skin/splashes');
-// 		coverFrames = Path.sparrow('noteSkins/$skin/covers');
-//     }
+        noteFrames = Path.sparrow('game/noteSkins/$skin/${noteData.image}');
+        splashFrames = Path.sparrow('game/noteSkins/$skin/${splashData.image}');
+		coverFrames = Path.sparrow('game/noteSkins/$skin/${coverData.image}');
+    }
 
-//     function loadData<T>(key:String):T {
-//         return Path.parseJSON('$path/$key.json');
-//     }
+    function loadData<T>(key:String):T {
+        return Path.parseJSON('assets/images/game/noteSkins/$skin/$key.json');
+    }
+}
 
-//     public static function get(name:String):NoteSkinData {
-//         return new NoteSkinData(name);
-//     }
-// }
-
-// typedef BaseData = {name:String, scale:Array<Float>, ?globalAnimData:GlobalAnimData, animations:Array<AnimArray>}
-// typedef NoteMetadata = {name:String, ?sustainRender:String}
+typedef BaseData = {image:String, scale:Array<Float>, ?globalAnimData:GlobalAnimData, animations:Array<AnimArray>}
+typedef NoteMetadata = {name:String, hasSustainCovers:Bool, hasNoteSplashes:Bool, ?autoOffsetStrums:Bool, ?sustainRender:String}

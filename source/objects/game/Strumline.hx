@@ -17,13 +17,9 @@ class Strumline extends FlxSpriteGroup {
 	public var autoHit:Bool = false;
 
 	public var skin:String = 'default';
-	public var noteFrames:FlxAtlasFrames = Path.sparrow('noteSkins/default/notes');
-	public var splashFrames:FlxAtlasFrames = Path.sparrow('noteSkins/default/splashes');
-	public var coverFrames:FlxAtlasFrames = Path.sparrow('noteSkins/default/covers');
+	public var skinData:NoteSkinData = new NoteSkinData('default');
 
 	public var character:Character;
-
-	public static var NOTE_SPACING:Float = 112;
 
 	public function new(x:Float, y:Float, camera:FlxCamera, autoHit:Bool = false):Void {
 		super(x, y);
@@ -36,15 +32,27 @@ class Strumline extends FlxSpriteGroup {
 
 		add(sustains = new FlxTypedSpriteGroup());
 
-		for (i in 0...4) {
-			sustainCovers.push(new SustainCover(i));
-			sustainCovers[i].x = strums[i].x + (strums[i].width - sustainCovers[i].width) * 0.5;
-			add(sustainCovers[i]);
+		if (skinData.metadata.hasSustainCovers) {
+			for (i in 0...4) {
+				if (skinData.metadata.hasSustainCovers) {
+					sustainCovers.push(new SustainCover(i, this));
+					sustainCovers[i].loadSkin(skinData);
+					sustainCovers[i].x = (115 * i) + (strums[i].width - sustainCovers[i].width) * 0.5;
+					sustainCovers[i].y = -85;
+					add(sustainCovers[i]);
+				}
+			}
 		}
 
 		add(notes = new FlxTypedSpriteGroup());
-		add(splashes = new FlxTypedSpriteGroup());
-		add(endSplashes = new FlxTypedSpriteGroup());
+		
+		if (skinData.metadata.hasNoteSplashes) {
+			add(splashes = new FlxTypedSpriteGroup());
+		}
+
+		if (skinData.metadata.hasSustainCovers) {
+			add(endSplashes = new FlxTypedSpriteGroup());
+		}
 
 		this.autoHit = autoHit;
 
@@ -52,21 +60,26 @@ class Strumline extends FlxSpriteGroup {
 	}
 
 	public function loadSkin(path:String = 'default'):Void {
-		skin = path;
-		noteFrames = Path.sparrow('noteSkins/$skin/notes');
-		splashFrames = Path.sparrow('noteSkins/$skin/splashes');
-		coverFrames = Path.sparrow('noteSkins/$skin/covers');
+		skinData.loadSkin(skin = path);
 
 		for (strum in strums) {
-			strum.onSkinChange();
-		}
-
-		for (cover in sustainCovers) {
-			cover.loadSkin(coverFrames);
+			strum.loadSkin(skinData);
 		}
 
 		for (note in notes) {
 			note.onSkinChange();
+		}
+
+		for (splash in splashes) {
+			splash.loadSkin(skinData);
+		}
+
+		for (cover in sustainCovers) {
+			cover.loadSkin(skinData);
+		}
+
+		for (endSplash in endSplashes) {
+			endSplash.loadSkin(skinData);
 		}
 	}
 
@@ -83,7 +96,7 @@ class Strumline extends FlxSpriteGroup {
     }
 
 	function newNote():Note {
-		var note = new Note();
+		var note = new Note(this);
 		note.camera = camera;
 		return note;
 	}

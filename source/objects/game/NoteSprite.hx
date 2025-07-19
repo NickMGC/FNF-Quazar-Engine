@@ -1,5 +1,7 @@
 package objects.game;
 
+import flixel.animation.FlxAnimation;
+
 class NoteSprite extends FlxSprite {
 	public var data:Int = 0;
 
@@ -8,35 +10,63 @@ class NoteSprite extends FlxSprite {
         return Note.direction[data % Note.direction.length];
     }
 
-	public var _noteData:NoteJSON;
+	public var offsets:Map<String, Array<Float>> = new Map();
+	public var strumline:Strumline;
 
-	public function new(data:Int = 0):Void {
+	public function new(data:Int = 0, strumline:Strumline):Void {
 		super();
 
 		this.data = data;
+		this.strumline = strumline;
 
-		loadSkin(Path.sparrow('noteSkins/default/notes'));
-
-		scale.set(0.7, 0.7);
-		updateHitbox();
+		loadSkin(strumline.skinData);
 	}
 
-	public function loadSkin(newFrames:FlxAtlasFrames):Void {
-		if (frames == newFrames) return;
+	public function loadSkin(skin:NoteSkinData):Void {
+        if (skin == null || frames == skin.noteFrames) return;
 
-		frames = newFrames ?? frames;
-		animation.destroyAnimations();
+		var lastAnim:FlxAnimation = null;
+		var lastAnimName:String = null;
 
-		for (dir in Note.direction) {
-			for (name in ['strum', 'note', 'tail', 'hold']) {
-				animation.addByPrefix('$name$dir', '$name $dir', 24);
-			}
-
-			animation.addByPrefix('confirm$dir', 'confirm $dir', 24, false);
-			animation.addByPrefix('press$dir', 'press $dir', 24, false);
+		if (animation.curAnim != null) {
+			lastAnim = animation.curAnim;
+			lastAnimName = animation.name;
 		}
 
-		animation.play('note$dir');
+		frames = skin.noteFrames ?? frames;
+
+        for (anim in skin.noteData.animations) {
+		    if (anim.indices != null && anim.indices.length > 0) {
+		    	animation.addByIndices(anim.anim, anim.name, anim.indices, "",
+                    anim.fps == null ? skin.noteData.globalAnimData.fps ?? 24 : anim.fps,
+                    anim.loop == null ? skin.noteData.globalAnimData.loop ?? false : anim.loop
+                );
+		    } else {
+		    	animation.addByPrefix(anim.anim, anim.name,
+                    anim.fps == null ? skin.noteData.globalAnimData.fps ?? 24 : anim.fps,
+                    anim.loop == null ? skin.noteData.globalAnimData.loop ?? false : anim.loop
+                );
+		    }
+
+            var leOffset = anim.offsets == null ? skin.noteData.globalAnimData.offsets : anim.offsets;
+
+		    if (leOffset != null) {
+				offsets.set(anim.anim, [leOffset[0], leOffset[1]]);
+			}
+		}
+
+		scale.set(skin.noteData.scale[0] ?? 1, skin.noteData.scale[1] ?? 1);
+		playAnim('note $dir');
 		updateHitbox();
+
+        if (lastAnim != null) {
+			playAnim(lastAnimName, true, lastAnim.reversed, lastAnim.curFrame);
+		}
+	}
+
+	@:inheritDoc(flixel.animation.FlxAnimationController.play)
+	public function playAnim(name:String, force:Bool = false, reversed:Bool = false, frame:Int = 0):Void {
+		animation.play(name, force, reversed, frame);
+		if (offsets.exists(name)) offset.set(offsets[name][0] ?? 0, offsets[name][1] ?? 0);
 	}
 }

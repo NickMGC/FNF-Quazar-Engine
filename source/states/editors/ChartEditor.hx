@@ -1,4 +1,4 @@
-package editors;
+package states.editors;
 
 import flixel.ui.FlxButton;
 import flixel.addons.display.FlxTiledSprite;
@@ -10,7 +10,7 @@ import openfl.net.FileReference;
 import openfl.events.Event;
 import openfl.events.IOErrorEvent;
 
-class ChartEditor extends UIMusicScene {
+class ChartEditor extends MusicScene {
 	public static var chart:Chart;
 
 	public static inline var GRID_SIZE:Int = 40;

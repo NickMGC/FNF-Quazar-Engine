@@ -6,7 +6,7 @@ class Controls {
     public static var callbacks:Map<String, Map<Int, Array<Void -> Void>>> = ['press' => [], 'hold' => [], 'release' => []];
 	public static var pressedKeys:Map<Int, Bool> = [];
 
-    public static var block:Bool = true;
+    public static var block:Bool = false;
 
 	public static var key:KeyAbstract;
 
@@ -25,6 +25,7 @@ class Controls {
 		}
 
 		pressedKeys.clear();
+		block = false;
 	}
 
 	@:noCompletion static function onKeyDown(event:KeyboardEvent):Void {

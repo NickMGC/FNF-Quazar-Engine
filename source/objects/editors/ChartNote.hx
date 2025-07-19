@@ -1,4 +1,6 @@
-package editors;
+package objects.editors;
+
+import states.editors.ChartEditor;
 
 class ChartNote extends FlxSprite {
 	public var index:Int = 0;
@@ -16,7 +18,7 @@ class ChartNote extends FlxSprite {
         this.data = data;
 		index = data.data;
 
-		frames = Path.sparrow('noteSkins/default/notes');
+		frames = Path.sparrow('game/noteSkins/default/notes');
 
 		for (dir in Note.direction) {
 			for (name in ['strum', 'note', 'tail', 'hold']) {

@@ -27,7 +27,7 @@ class PauseSubState extends SubScene {
 		}
 
 		Key.onPress(Key.accept, onAccept);
-		Key.onPress(Key.back, onBack);
+		Key.onPress(Key.back, close);
 		Key.onPress(Key.up, changeItem.bind(-1));
 		Key.onPress(Key.down, changeItem.bind(1));
 
@@ -54,12 +54,9 @@ class PauseSubState extends SubScene {
 			case 'Restart Song':
 				FlxG.resetState();
 			case 'Exit to menu':
-				FlxG.switchState(PlayState.new);
+				FlxG.sound.playMusic(Path.music('freakyMenu'), 0.5);
+				FlxG.switchState(new MainMenuState());
 		}
-	}
-
-	function onBack():Void {
-		close();
 	}
 
 	function changeItem(dir:Int = 0):Void {

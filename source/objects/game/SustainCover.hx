@@ -1,5 +1,7 @@
 package objects.game;
 
+import flixel.animation.FlxAnimation;
+
 class SustainCover extends FlxSprite {
     var data:Int = 0;
 
@@ -8,61 +10,94 @@ class SustainCover extends FlxSprite {
         return Note.direction[data % Note.direction.length];
     }
 
-    public function new(data:Int = 0):Void {
+    public var offsets:Map<String, Array<Float>> = new Map();
+    public var strumline:Strumline;
+
+    public function new(data:Int = 0, strumline:Strumline):Void {
 		super();
 
         this.data = data;
+        this.strumline = strumline;
 
+        loadSkin(strumline.skinData);
         animation.onFinish.add(onFinish);
-        loadSkin(Path.sparrow('noteSkins/default/covers'));
-
         alpha = 0;
-
-        scale.set(0.95, 0.95);
-        updateHitbox();
 	}
 
-    public function loadSkin(skin:FlxAtlasFrames):Void {
-		if (frames == skin) return;
+    public function loadSkin(skin:NoteSkinData):Void {
+        if (skin == null || frames == skin.coverFrames) return;
 
-		frames = skin ?? frames;
-		animation.destroyAnimations();
+		var lastAnim:FlxAnimation = null;
+		var lastAnimName:String = null;
 
-        for (dir in Note.direction) {
-            animation.addByPrefix('start $dir', 'start $dir', 24, false);
-            animation.addByPrefix('hold $dir', 'hold $dir', 24, true);
-            animation.addByPrefix('end $dir', 'end $dir', 24, false);
+		if (animation.curAnim != null) {
+			lastAnim = animation.curAnim;
+			lastAnimName = animation.name;
 		}
+
+		frames = skin.coverFrames ?? frames;
+
+        for (anim in skin.coverData.animations) {
+		    if (anim.indices != null && anim.indices.length > 0) {
+		    	animation.addByIndices(anim.anim, anim.name, anim.indices, "",
+                    anim.fps == null ? skin.coverData.globalAnimData.fps ?? 24 : anim.fps,
+                    anim.loop == null ? skin.coverData.globalAnimData.loop ?? false : anim.loop
+                );
+		    } else {
+		    	animation.addByPrefix(anim.anim, anim.name,
+                    anim.fps == null ? skin.coverData.globalAnimData.fps ?? 24 : anim.fps,
+                    anim.loop == null ? skin.coverData.globalAnimData.loop ?? false : anim.loop
+                );
+		    }
+
+            var leOffset = anim.offsets == null ? skin.noteData.globalAnimData.offsets : anim.offsets;
+
+		    if (leOffset != null) {
+				offsets.set(anim.anim, [leOffset[0], leOffset[1]]);
+			}
+		}
+
+		scale.set(skin.coverData.scale[0] ?? 1, skin.coverData.scale[1] ?? 1);
 		updateHitbox();
+
+        if (lastAnim != null) {
+			playAnim(lastAnimName, true, lastAnim.reversed, lastAnim.curFrame);
+		}
 	}
 
     public function start():Void {
         alpha = 1;
-        animation.play('start $dir', true);
+        playAnim('start $dir', true);
     }
 
     function onFinish(name:String):Void {
         if (name != 'start $dir') return;
-        animation.play('hold $dir', true);
+        playAnim('hold $dir', true);
 	}
 
     public static function spawn(strum:StrumNote, data:Int):Void {
         strum.strumline.sustainCovers[data % strum.strumline.sustainCovers.length].alpha = 0;
 
-        var endSplash:SustainCover = strum.strumline.endSplashes.recycle(SustainCover, newEndSplash);
-        endSplash.loadSkin(strum.strumline.coverFrames);
-        endSplash.setPosition(strum.x, strum.y);
-        endSplash.animation.play('end ${Note.direction[data % Note.direction.length]}', true);
-        endSplash.animation.onFinish.add(killSustain.bind(endSplash));
+        var sustainCover:SustainCover = strum.strumline.endSplashes.recycle(SustainCover, newSustainCover.bind(strum.strumline));
+        sustainCover.alpha = 1;
+        sustainCover.loadSkin(strum.strumline.skinData);
+        sustainCover.setPosition(strum.x + (strum.width - sustainCover.width) * 0.5, strum.y + (strum.height - sustainCover.height) * 0.5);
+        sustainCover.playAnim('end ${Note.direction[data % Note.direction.length]}', true);
+        sustainCover.animation.onFinish.add(killSustain.bind(sustainCover));
+        sustainCover.camera = strum.camera;
     }
 
-    static function killSustain(spr:SustainCover, anim:String):Void {
-        spr.kill();
+    @:inheritDoc(flixel.animation.FlxAnimationController.play)
+	public function playAnim(name:String, force:Bool = false, reversed:Bool = false, frame:Int = 0):Void {
+		animation.play(name, force, reversed, frame);
+		if (offsets.exists(name)) offset.set(offsets[name][0] ?? 0, offsets[name][1] ?? 0);
+	}
+
+    static function killSustain(sustainCover:SustainCover, anim:String):Void {
+        sustainCover.kill();
     }
 
-    static function newEndSplash():SustainCover {
-        var endSplash = new SustainCover();
-        endSplash.camera = game.camHUD;
-        return endSplash;
+    static function newSustainCover(strumline:Strumline):SustainCover {
+        return new SustainCover(strumline);
     }
 }

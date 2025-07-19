@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <TextureAtlas imagePath="covers.png" width="1046" height="1004">
-	<SubTexture name="start left0001" x="932" y="2" width="93" height="91" frameX="-111" frameY="-108" frameWidth="300" frameHeight="400"/>
+	<SubTexture name="start left0001" x="932" y="2" width="93" height="91" frameX="-111" frameY="-108" frameWidth="93" frameHeight="91"/>
 
 	<SubTexture name="hold left0001" x="510" y="861" width="136" height="104" frameX="-95" frameY="-96" frameWidth="300" frameHeight="400"/>
 	<SubTexture name="hold left0002" x="122" y="903" width="118" height="94" frameX="-101" frameY="-105" frameWidth="300" frameHeight="400"/>
@@ -18,7 +18,7 @@
 	<SubTexture name="end left0008" x="246" y="586" width="242" height="167" frameX="-53" frameY="-113" frameWidth="300" frameHeight="400"/>
 
 
-	<SubTexture name="start down0001" x="941" y="374" width="93" height="91" frameX="-111" frameY="-108" frameWidth="300" frameHeight="400"/>
+	<SubTexture name="start down0001" x="941" y="374" width="93" height="91" frameX="-111" frameY="-108" frameWidth="93" frameHeight="91"/>
 
 	<SubTexture name="hold down0001" x="786" y="892" width="130" height="96" frameX="-98" frameY="-100" frameWidth="300" frameHeight="400"/>
 	<SubTexture name="hold down0002" x="362" y="903" width="114" height="88" frameX="-103" frameY="-108" frameWidth="300" frameHeight="400"/>
@@ -35,7 +35,7 @@
 	<SubTexture name="end down0008" x="698" y="391" width="241" height="165" frameX="-53" frameY="-114" frameWidth="300" frameHeight="400"/>
 
 
-	<SubTexture name="start up0001" x="904" y="744" width="93" height="91" frameX="-111" frameY="-108" frameWidth="300" frameHeight="400"/>
+	<SubTexture name="start up0001" x="904" y="744" width="93" height="91" frameX="-111" frameY="-108" frameWidth="93" frameHeight="91"/>
 
 	<SubTexture name="hold up0001" x="510" y="755" width="136" height="104" frameX="-95" frameY="-96" frameWidth="300" frameHeight="400"/>
 	<SubTexture name="hold up0002" x="2" y="903" width="118" height="94" frameX="-101" frameY="-105" frameWidth="300" frameHeight="400"/>
@@ -52,7 +52,7 @@
 	<SubTexture name="end up0008" x="2" y="586" width="242" height="167" frameX="-53" frameY="-113" frameWidth="300" frameHeight="400"/>
 
 
-	<SubTexture name="start right0001" x="932" y="95" width="93" height="91" frameX="-111" frameY="-108" frameWidth="300" frameHeight="400"/>
+	<SubTexture name="start right0001" x="932" y="95" width="93" height="91" frameX="-111" frameY="-108" frameWidth="93" frameHeight="91"/>
 
 	<SubTexture name="hold right0001" x="648" y="892" width="136" height="104" frameX="-95" frameY="-96" frameWidth="300" frameHeight="400"/>
 	<SubTexture name="hold right0002" x="242" y="903" width="118" height="94" frameX="-101" frameY="-105" frameWidth="300" frameHeight="400"/>

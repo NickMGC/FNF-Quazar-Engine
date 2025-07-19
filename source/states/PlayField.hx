@@ -1,10 +1,13 @@
 package states;
 
-import editors.ChartEditor;
+import substates.PauseSubState;
 import substates.GameOverSubState;
+
+import states.editors.ChartEditor;
+
 import flixel.util.FlxStringUtil;
 import haxe.ds.ArraySort;
-import objects.game.HeathBar;
+import objects.HeathBar;
 
 class PlayField extends MusicState {
 	public static var instance:PlayField;
@@ -62,11 +65,15 @@ class PlayField extends MusicState {
 
 	public var events:Array<EventJSON> = [];
 
-    public function new(camera:FlxCamera):Void {
+    public function new(?camera:FlxCamera):Void {
         super();
 
+		FlxG.sound.music.stop();
+
+		if (camera != null) this.camera = camera;
+
 		Path.preloadAudios(['three:sounds', 'two:sounds', 'one:sounds', 'go:sounds', 'firstDeath:sounds', 'deathLoop:music', 'deathConfirm:sounds', 'breakfast:music', 'songs/$curSong/Inst', 'songs/$curSong/Voices-Player', 'songs/$curSong/Voices-Opponent']);
-		Path.preloadImages(['healthBar', 'rating', 'countdown']);
+		Path.preloadImages(['game/healthBar', 'game/rating', 'game/countdown']);
 
 		for (i in 1...3) {
 			Path.preloadAudio('miss$i:sounds');
@@ -79,7 +86,6 @@ class PlayField extends MusicState {
         playerStrum.x = FlxG.width - playerStrum.width - 50;
 
 		loadSong(curSong, difficulty);
-		PlayerInput.init();
 
 		add(healthBar = new HealthBar(Data.downScroll ? FlxG.height * 0.15 : FlxG.height * 0.85));
 
@@ -89,14 +95,14 @@ class PlayField extends MusicState {
 
         add(comboGroup = new FlxSpriteGroup());
 
-		this.camera = camera;
-
 		for (val in [inst, playerStrum.voices, opponentStrum.voices]) {
 			val.play();
 			val.stop();
 		}
 
 		skipCountdown ? startSong() : add(new Countdown());
+
+		PlayerInput.init();
     }
 
 	function set_score(value:Int):Int {
@@ -152,21 +158,21 @@ class PlayField extends MusicState {
 			return;
 		}
 
-		if (songs.length > 0) {
-			songs.shift();
+		if (songs.length <= 0) return;
 
-			songEnded = true;
-			canResync = false;
+		songs.shift();
 
-			if (game == null) return;
+		songEnded = true;
+		canResync = false;
 
-			if (songs.length == 0) {
-				// FlxG.switchState(isStoryMode ? StoryModeState.new : FreeplayState.new);
-			} else {
-				PlayState.prevCamFollow = game.camFollow;
-				skipNextTransIn = skipNextTransOut = true;
-				FlxG.switchState(PlayState.new);
-			}
+		if (game == null) return;
+
+		if (songs.length == 0) {
+			// FlxG.switchState(isStoryMode ? new StoryModeState() : new FreeplayState());
+		} else {
+			PlayState.prevCamFollow = game.camFollow;
+			skipNextTransIn = skipNextTransOut = true;
+			FlxG.switchState(new PlayState());
 		}
 	}
 

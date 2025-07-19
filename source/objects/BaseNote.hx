@@ -1,9 +1,6 @@
 package objects;
 
-/*
- * For now I will just lay out what things can be modified in a note type.
- */
-class BaseNote {
+interface BaseNote {
     public var healthGain:Float;
     public var healthLoss:Float;
     public var healthGainHold:Float;
@@ -11,12 +8,14 @@ class BaseNote {
     public var mustPress:Bool;
     public var hitByOpponent:Bool;
 
-    public var skin:String;
+    public var texture:String;
+    public var splashTexture:String;
+    public var coverTexture:String;
 
-    public function onHit():Void {}
-    public function onMiss():Void {}
+    public function onHit():Void;
+    public function onMiss():Void;
 
-    public function onHold():Void {}
-    public function onHoldFinish():Void {}
-    public function onHoldRelease():Void {}
+    public function onHold():Void;
+    public function onHoldFinish():Void;
+    public function onHoldRelease():Void;
 }

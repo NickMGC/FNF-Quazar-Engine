@@ -1,4 +1,4 @@
-package objects.game;
+package objects;
 
 class HealthIcon extends FlxSprite {
     var iconOffset:Array<Float> = [0, 0];
@@ -16,7 +16,7 @@ class HealthIcon extends FlxSprite {
 		this.flipX = flipX;
 
 		var graphic = Path.image('icon-$character', 'characters/$character');
-        if (graphic == null) graphic = Path.image('icon-face');
+        if (graphic == null) graphic = Path.image('game/icon-face');
 
 		loadGraphic(graphic, true, Std.int(graphic.width / 2), graphic.height);
 		updateHitbox();

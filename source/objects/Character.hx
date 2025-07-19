@@ -2,8 +2,8 @@ package objects;
 
 typedef CharacterData = {animations:Array<AnimArray>, image:String, healthbarColor:String, ?singDuration:Float, ?cameraPosition:Array<Float>, ?scale:Float, ?flipX:Bool, ?flipY:Bool, ?pixel:Bool}
 
-typedef AnimArray = {anim:String, name:String, ?fps:Int, ?loop:Bool, ?indices:Array<Int>, ?offsets:Array<Int>}
-typedef GlobalAnimData = {?offset:Array<Int>, ?fps:Int, ?loop:Bool}
+typedef AnimArray = {anim:String, name:String, offsets:Array<Int>, ?fps:Int, ?loop:Bool, ?indices:Array<Int>}
+typedef GlobalAnimData = {?offsets:Array<Int>, ?fps:Int, ?loop:Bool}
 
 class Character extends FlxSprite {
 	public var offsets:Map<String, Array<Float>> = new Map();

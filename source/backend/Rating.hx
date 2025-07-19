@@ -1,4 +1,4 @@
-package objects.game;
+package backend;
 
 class Rating {
 	static var the_____counter:Int = 0;
@@ -14,7 +14,9 @@ class Rating {
 
 		var ratingName:String = switch diff {
 			case(_ <= Data.hitWindows[0] + PlayerInput.safeMS) => true:
-				NoteSplash.spawn(playField.playerStrum.strums[id]);
+				if (playField.playerStrum.skinData.metadata.hasNoteSplashes) {
+					NoteSplash.spawn(playField.playerStrum.strums[id]);
+				}
 				playField.totalHit += 1;
 				'sick';
 			case(_ <= Data.hitWindows[1] + PlayerInput.safeMS) => true:
@@ -89,7 +91,7 @@ class Rating {
 
 	static function newRating():FlxSprite {
 		var rating:FlxSprite = new FlxSprite();
-		rating.frames = Path.sparrow('rating');
+		rating.frames = Path.sparrow('game/rating');
 		rating.updateHitbox();
 
 		for (name in ['sick', 'good', 'bad', 'shit']) {
