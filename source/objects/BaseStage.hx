@@ -15,20 +15,20 @@ class BaseStage extends FlxContainer {
 
     var prevBgColor:Int;
 
-    public function new(name:String):Void {
+    public function new(name:String, player1:String = 'bf', player2:String = 'dad', player3:String = 'gf'):Void {
         super();
 
         prevBgColor = FlxG.camera.bgColor;
 
-        add(gf = new Character(playField.chart.player3));
-        add(dad = new Character(playField.chart.player2));
-        add(bf = new Character(playField.chart.player1, true));
+        add(gf = new Character(player3));
+        add(dad = new Character(player2));
+        add(bf = new Character(player1, true));
 
         gf.onAnimPlay.add(onGFAnim);
         dad.onAnimPlay.add(onDadAnim);
         bf.onAnimPlay.add(onBFAnim);
 
-        loadStage(this.name = name);
+        load(name);
         create();
     }
 
@@ -36,8 +36,8 @@ class BaseStage extends FlxContainer {
     function onGFAnim(animation:String):Void {}
     function onDadAnim(animation:String):Void {}
 
-    public function loadStage(stage:String):Void {
-        data = Path.stage(stage);
+    public function load(stage:String):Void {
+        data = Path.stage(name = stage);
 
         if (props != null) {
             for (prop in props) {
@@ -51,9 +51,9 @@ class BaseStage extends FlxContainer {
         dad.setPosition(data.dad.position[0], data.dad.position[1]);
         bf.setPosition(data.bf.position[0], data.bf.position[1]);
 
-        gf.cameraOffset = data.gf.cameraPosition;
-        dad.cameraOffset = data.dad.cameraPosition;
-        bf.cameraOffset = data.bf.cameraPosition;
+        gf.cameraPosition = data.gf.cameraPosition;
+        dad.cameraPosition = data.dad.cameraPosition;
+        bf.cameraPosition = data.bf.cameraPosition;
 
         if (data.gf.scroll != null) gf.scrollFactor.set(data.gf.scroll[0], data.gf.scroll[1]);
         if (data.dad.scroll != null) dad.scrollFactor.set(data.dad.scroll[0], data.dad.scroll[1]);
@@ -85,7 +85,7 @@ class BaseStage extends FlxContainer {
                     }
                 }
             } else {
-                sprite.loadGraphic(Path.image(obj.path, obj.prefix == null ? 'stages/$name' : obj.prefix));
+                sprite.loadGraphic(Path.image(obj.path, data.imagePath != null ? data.imagePath : obj.prefix != null ? obj.prefix : 'images/stages/$name'));
             }
 
             if (obj.scroll != null) sprite.scrollFactor.set(obj.scroll[0], obj.scroll[1]);
@@ -110,16 +110,16 @@ class BaseStage extends FlxContainer {
 	public function createPost():Void {}
 
     public function refresh():Void {
-        sort(byZIndex);
+        sort(Util.sortByZIndex);
     }
 
     public function getProp(prop:String):FlxSprite {
         return props.exists(prop) ? props.get(prop) : null;
     }
 
-    public function onBeat():Void {}
-    public function onStep():Void {}
-    public function onMeasure():Void {}
+    public function onBeat(curBeat:Int):Void {}
+    public function onStep(curStep:Int):Void {}
+    public function onMeasure(curMeasure:Int):Void {}
 
     override function destroy():Void {
         super.destroy();
@@ -130,8 +130,4 @@ class BaseStage extends FlxContainer {
 
         FlxG.camera.bgColor = prevBgColor;
     }
-
-    @:noCompletion function byZIndex(order:Int, obj1:FlxBasic, obj2:FlxBasic):Int {
-		return FlxSort.byValues(order, obj1.zIndex, obj2.zIndex);
-	}
 }

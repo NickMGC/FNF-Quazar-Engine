@@ -11,13 +11,11 @@ import flixel.FlxCamera;
 
 using flixel.util.FlxColorTransformUtil;
 
-//too lazy to update my repo rn
-
 /**
- * A specialized sprite that extends `FlxSprite` with additional functionality for tail rendering.
+ * A specialized sprite that extends `FlxSprite` with additional functionality for tiled rendering alongside having a tail sprite at the end.
  *
  * ### Limitations
- * - Tail animations must be in the same texture. I plan on fixing this.
+ * - The tail's animation playback depends on the body's amount of frames.
  *
  * ## Basic Usage
  * ```haxe
@@ -56,6 +54,21 @@ class FlxTailedSprite extends FlxSprite {
 		return this;
 	}
 
+	@:noCompletion inline function adjustFrame(frame:FlxFrame):Void { //Frame gap fix made by RapperGF.
+		if (frame == null) return;
+
+		frame.sourceSize.y -= 2;
+		frame.frame.height -= 2;
+		frame.frame.y += 1;
+	}
+
+	@:noCompletion function updateTailFrame():Void {
+        if (frames == null || animation == null || tailAnim == null || animation.getByName(tailAnim) == null) return;
+
+        tailFrame = frames.frames[animation.getByName(tailAnim).frames[animation.curAnim.curFrame]].copyTo(tailFrame);
+        adjustFrame(tailFrame);
+    }
+
 	@:noCompletion override function drawComplex(camera:FlxCamera):Void {
 		if (frames == null || tiles <= 0 || !dirty) return;
 
@@ -84,6 +97,11 @@ class FlxTailedSprite extends FlxSprite {
 		final bodyIndex:Int = flipY ? tileCount - 1 : 0;
         final tailIndex:Int = flipY ? 0 : tileCount - 1;
 		final absScaleY:Float = Math.abs(scale.y);
+
+		if (flipY) {
+			final tailOffset:Float = (_frame.frame.height - (tailFrame ?? _frame).frame.height) * absScaleY;
+			_matrix.translate(tailOffset * _sinAngle, -tailOffset * _cosAngle);
+		}
 
 		for (i in 0...tileCount) {
 			final frameToDraw:FlxFrame = i == tailIndex ? tailFrame ?? _frame : _frame;
@@ -114,31 +132,29 @@ class FlxTailedSprite extends FlxSprite {
 		}
 	}
 
-	@:noCompletion inline function adjustFrame(frame:FlxFrame):Void { //Frame gap fix made by RapperGF.
-		if (frame == null) return;
-
-		frame.sourceSize.y -= 2;
-		frame.frame.height -= 2;
-		frame.frame.y += 1;
-	}
-
-	@:noCompletion function updateTailAnim():Void {
-		if (frames == null || animation == null || tailAnim == null || animation.getByName(tailAnim) == null) return;
-
-		tailFrame = frames.frames[animation.getByName(tailAnim).frames[animation.curAnim.curFrame]].copyTo(tailFrame);
-		adjustFrame(tailFrame);
-	}
-
 	override public function getScreenBounds(?newRect:FlxRect, ?camera:FlxCamera):FlxRect {
-		return super.getScreenBounds(newRect, camera).setSize(frameWidth * Math.abs(scale.x), height);
+		if (newRect == null)
+			newRect = FlxRect.get();
+		
+		if (camera == null)
+			camera = getDefaultCamera();
+		
+		newRect.setPosition(x, y);
+		if (pixelPerfectPosition)
+			newRect.floor();
+		_scaledOrigin.set(origin.x * scale.x, origin.y * scale.y);
+		newRect.x += -Std.int(camera.scroll.x * scrollFactor.x) - offset.x + origin.x - _scaledOrigin.x;
+		newRect.y += -Std.int(camera.scroll.y * scrollFactor.y) - offset.y + origin.y - _scaledOrigin.y;
+		if (isPixelPerfectRender(camera))
+			newRect.floor();
+		newRect.setSize(frameWidth * Math.abs(scale.x), height); //Use the height instead of frameHeight to avoid rendering problems
+		return newRect.getRotatedBounds(angle, _scaledOrigin, newRect);
 	}
 
 	@:noCompletion override function set_frame(value:FlxFrame):FlxFrame {
 		super.set_frame(value);
-
 		adjustFrame(_frame);
-		updateTailAnim();
-
+		updateTailFrame();
 		return value;
 	}
 

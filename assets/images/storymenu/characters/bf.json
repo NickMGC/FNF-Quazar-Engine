@@ -1,0 +1,8 @@
+{
+    "image": "bf",
+    "danceEvery": 1,
+    "offsets": [20, -10],
+
+    "idleAnim": {"name": "idle", "fps": 24, "offsets": [0, 0]},
+    "confirmAnim": {"name": "confirm", "fps": 24, "offsets": [0, 0]}
+}

@@ -1,0 +1,25 @@
+{
+	"name": "Week 2",
+	"desc": "spoopy dudes",
+
+    "titleImage": "week2",
+
+	"weekBefore": "week1",
+	"characters": ["dad", "bf", "gf"],
+
+	"difficulties": [
+		{"name": "easy", "displayName": "Easy"},
+        {"name": "normal", "displayName": "Normal"},
+		{"name": "hard", "displayName": "Hard"}
+    ],
+
+	"songs": [
+		{"name": "Spookeez", "icon": "dad", "color": "#9271fd"},
+		{"name": "South", "icon": "dad", "color": "#9271fd"}
+	],
+
+	"locked": false,
+
+	"hideStory": false,
+	"hideFreeplay": false
+}

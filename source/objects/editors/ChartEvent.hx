@@ -5,7 +5,7 @@ class ChartEvent extends FlxSprite {
     public var data:EventJSON;
 
     public function new(x:Float = 0, y:Float = 0, data:EventJSON = null):Void {
-        super(x, y, Path.image('editors/event'));
+        super(x, y, Path.image('misc/event'));
         this.data = data;
     }
 }

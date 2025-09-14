@@ -20,7 +20,7 @@ class Sustain extends FlxTailedSprite {
 		scale = note.scale;
 		updateHitbox();
 
-		offset.y = -note.height * (Data.downScroll ? 0.65 : 0.5);
+		offset.y = -note.height * 0.5;
 		origin.y = 0;
 
 		flipY = Data.downScroll;

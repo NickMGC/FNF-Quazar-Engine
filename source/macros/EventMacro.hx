@@ -4,7 +4,6 @@ package macros;
 import haxe.macro.Context;
 import haxe.macro.Expr;
 
-//TODO: Make a macro that generates a Event/Stage/NoteType macro thing so I don't have to copy and paste the same macro 3 times
 class EventMacro {
     public static macro function build():Array<Field> {
         var fields = Context.getBuildFields();

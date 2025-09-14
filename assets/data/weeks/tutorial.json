@@ -1,0 +1,21 @@
+{
+	"name": "Tutorial",
+	"desc": "Teaching time",
+
+	"titleImage": "tutorial",
+	
+	"weekBefore": "",
+	"characters": ["", "bf", "gf"],
+
+	"difficulties": [
+		{"name": "easy", "displayName": "Easy"},
+        {"name": "normal", "displayName": "Normal"},
+		{"name": "hard", "displayName": "Hard"},
+		{"name": "erect", "displayName": "Erect"},
+        {"name": "nightmare", "displayName": "Nightmare"}
+    ],
+
+	"songs": [
+		{"name": "puns", "icon": "bf", "color": "#71e3fd"}
+	]
+}

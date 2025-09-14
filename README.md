@@ -18,14 +18,15 @@ Quazar Engine is a light weight engine built from the ground up, taylored for so
 
 ## Todo list:
 - [x] Core Gameplay
-- [ ] Note Skin rewrite
+- [x] Note Skin rewrite
+- [x] Note Types
 - [ ] User interface
 - [ ] Chart Editor
 - [ ] Character Editor
 - [ ] Stage Editor
+- [ ] Note Skin Editor
 - [x] Class based event system
 - [ ] The ability to change settings without restarting the song
-- [ ] PlayState soft reload on Song restart/Game Over
 
 ## Credits:
 * [Nick](https://x.com/nickngc) - Owner, Programmer, Artist, Composer

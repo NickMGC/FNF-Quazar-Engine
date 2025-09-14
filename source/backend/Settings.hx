@@ -9,28 +9,10 @@ package backend;
 	public var ghostTapping:Bool = true;
 	public var reset:Bool = true;
 
-	public var safeFrames:Float = 10;
+	public var safeFrames:Float = 0;
 
 	//Controls
-	public var keybinds:Map<String, Array<Int>> = [
-		'left_note' => [LEFT, A],
-		'down_note' => [DOWN, S],
-		'up_note' => [UP, W],
-		'right_note' => [RIGHT, D],
-
-		'left' => [LEFT, A],
-		'down' => [DOWN, S],
-		'up' => [UP, W],
-		'right' => [RIGHT, D],
-
-		'accept' => [ENTER, SPACE],
-		'back' => [BACKSPACE, ESCAPE],
-		'pause' => [ENTER, ESCAPE],
-		'reset' => [R, NONE],
-
-		'debug' => [SEVEN],
-		'debug2' => [EIGHT]
-	];
+	public var keybinds:Map<String, Array<Int>> = Settings.getDefaultKeys();
 
 	//Visual
 	public var hideHud:Bool = false;
@@ -42,28 +24,56 @@ package backend;
 	public var comboOffsets:Array<Float> = [0, 0];
 
 	//Graphics
-	public var showDebugStats:Bool = true;
 	public var framerate:Int = 60;
+	public var fullscrenType:String = 'Windowed';
+	public var screenRes:String = '1280x720';
 
 	public var antialiasing:Bool = true;
 	public var gpuRendering:Bool = true;
 	public var shaders:Bool = true;
 
-	public var hitWindows:Array<Float> = [30, 90, 135, 160];
+	//Scores
+	public var weekScores:Map<String, Int> = new Map();
+	public var songScores:Map<String, Int> = new Map<String, Int>();
+	public var songPercent:Map<String, Float> = new Map<String, Float>();
+
+	public var completedWeeks:Map<String, Bool> = new Map();
 }
 
 class Settings {
 	public static var Data:DataVariables = {};
 	public static var DefaultData:DataVariables = {};
 
+	public static function getDefaultKeys():Map<String, Array<Int>> {
+		return [
+			'left_note' => [LEFT, A],
+			'down_note' => [DOWN, S],
+			'up_note' => [UP, W],
+			'right_note' => [RIGHT, D],
+
+			'left' => [LEFT, A],
+			'down' => [DOWN, S],
+			'up' => [UP, W],
+			'right' => [RIGHT, D],
+
+			'accept' => [ENTER, SPACE],
+			'back' => [BACKSPACE, ESCAPE],
+			'pause' => [ENTER, ESCAPE],
+			'reset' => [R, NONE],
+
+			'volume_up' => [PLUS, NONE],
+			'volume_down' => [MINUS, NONE],
+			'mute' => [ZERO, NONE],
+
+			'debug' => [SEVEN, NONE],
+			'debug2' => [EIGHT, NONE]
+		];
+	}
+
 	public static function save():Void {
 		for (key in Reflect.fields(Data)) {
 			Reflect.setField(FlxG.save.data, key, Reflect.field(Data, key));
 		}
-
-		FlxG.save.data.volume = FlxG.sound.volume;
-		FlxG.save.data.muted = FlxG.sound.muted;
-		FlxG.save.flush();
 	}
 
 	public static function load():Void {
@@ -72,9 +82,6 @@ class Settings {
 				Reflect.setField(Data, key, Reflect.field(FlxG.save.data, key));
 			}
 		}
-
-		FlxG.sound.volume = FlxG.save.data.volume ?? 1;
-		FlxG.sound.muted = FlxG.save.data.muted ?? false;
 
 		if (Data.framerate > FlxG.drawFramerate) {
 			FlxG.updateFramerate = Data.framerate;

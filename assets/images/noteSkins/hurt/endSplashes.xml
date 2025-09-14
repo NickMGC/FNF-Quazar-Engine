@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="endSplashes.png">
+	<!-- Created with Adobe Animate version 20.0.3.25487 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="end down0000" x="930" y="308" width="76" height="35" frameX="-79" frameY="-78" frameWidth="250" frameHeight="223"/>
+	<SubTexture name="end down0001" x="172" y="746" width="166" height="146" frameX="-29" frameY="-3" frameWidth="250" frameHeight="223"/>
+	<SubTexture name="end down0002" x="734" y="558" width="215" height="184" frameX="-3" frameY="0" frameWidth="250" frameHeight="223"/>
+	<SubTexture name="end down0003" x="734" y="558" width="215" height="184" frameX="-3" frameY="0" frameWidth="250" frameHeight="223"/>
+	<SubTexture name="end down0004" x="2" y="197" width="230" height="192" frameX="0" frameY="-6" frameWidth="250" frameHeight="223"/>
+	<SubTexture name="end down0005" x="746" y="2" width="245" height="193" frameX="0" frameY="-22" frameWidth="250" frameHeight="223"/>
+	<SubTexture name="end down0006" x="734" y="391" width="241" height="165" frameX="-9" frameY="-58" frameWidth="250" frameHeight="223"/>
+	<SubTexture name="end down0007" x="734" y="391" width="241" height="165" frameX="-9" frameY="-58" frameWidth="250" frameHeight="223"/>
+	<SubTexture name="end left0000" x="930" y="197" width="77" height="35" frameX="-79" frameY="-78" frameWidth="252" frameHeight="224"/>
+	<SubTexture name="end left0001" x="653" y="744" width="168" height="146" frameX="-29" frameY="-3" frameWidth="252" frameHeight="224"/>
+	<SubTexture name="end left0002" x="2" y="560" width="215" height="184" frameX="-4" frameY="0" frameWidth="252" frameHeight="224"/>
+	<SubTexture name="end left0003" x="2" y="560" width="215" height="184" frameX="-4" frameY="0" frameWidth="252" frameHeight="224"/>
+	<SubTexture name="end left0004" x="234" y="197" width="230" height="192" frameX="-1" frameY="-6" frameWidth="252" frameHeight="224"/>
+	<SubTexture name="end left0005" x="2" y="2" width="246" height="193" frameX="0" frameY="-22" frameWidth="252" frameHeight="224"/>
+	<SubTexture name="end left0006" x="2" y="391" width="242" height="167" frameX="-10" frameY="-57" frameWidth="252" frameHeight="224"/>
+	<SubTexture name="end left0007" x="2" y="391" width="242" height="167" frameX="-10" frameY="-57" frameWidth="252" frameHeight="224"/>
+	<SubTexture name="end right0000" x="930" y="234" width="77" height="35" frameX="-79" frameY="-78" frameWidth="252" frameHeight="224"/>
+	<SubTexture name="end right0001" x="823" y="744" width="168" height="146" frameX="-29" frameY="-3" frameWidth="252" frameHeight="224"/>
+	<SubTexture name="end right0002" x="219" y="560" width="215" height="184" frameX="-4" frameY="0" frameWidth="252" frameHeight="224"/>
+	<SubTexture name="end right0003" x="219" y="560" width="215" height="184" frameX="-4" frameY="0" frameWidth="252" frameHeight="224"/>
+	<SubTexture name="end right0004" x="466" y="197" width="230" height="192" frameX="-1" frameY="-6" frameWidth="252" frameHeight="224"/>
+	<SubTexture name="end right0005" x="250" y="2" width="246" height="193" frameX="0" frameY="-22" frameWidth="252" frameHeight="224"/>
+	<SubTexture name="end right0006" x="246" y="391" width="242" height="167" frameX="-10" frameY="-57" frameWidth="252" frameHeight="224"/>
+	<SubTexture name="end right0007" x="246" y="391" width="242" height="167" frameX="-10" frameY="-57" frameWidth="252" frameHeight="224"/>
+	<SubTexture name="end up0000" x="930" y="271" width="77" height="35" frameX="-79" frameY="-78" frameWidth="252" frameHeight="224"/>
+	<SubTexture name="end up0001" x="2" y="746" width="168" height="146" frameX="-29" frameY="-3" frameWidth="252" frameHeight="224"/>
+	<SubTexture name="end up0002" x="436" y="560" width="215" height="184" frameX="-4" frameY="0" frameWidth="252" frameHeight="224"/>
+	<SubTexture name="end up0003" x="436" y="560" width="215" height="184" frameX="-4" frameY="0" frameWidth="252" frameHeight="224"/>
+	<SubTexture name="end up0004" x="698" y="197" width="230" height="192" frameX="-1" frameY="-6" frameWidth="252" frameHeight="224"/>
+	<SubTexture name="end up0005" x="498" y="2" width="246" height="193" frameX="0" frameY="-22" frameWidth="252" frameHeight="224"/>
+	<SubTexture name="end up0006" x="490" y="391" width="242" height="167" frameX="-10" frameY="-57" frameWidth="252" frameHeight="224"/>
+	<SubTexture name="end up0007" x="490" y="391" width="242" height="167" frameX="-10" frameY="-57" frameWidth="252" frameHeight="224"/>
+</TextureAtlas>

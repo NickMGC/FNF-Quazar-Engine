@@ -1,13 +1,11 @@
 package objects.editors;
 
-import states.editors.ChartEditor;
-
 class ChartNote extends FlxSprite {
 	public var index:Int = 0;
 
 	public var dir(get, default):String;
     function get_dir():String {
-        return Note.direction[index % Note.direction.length];
+        return Constants.DIRECTION[index % Constants.DIRECTION.length];
     }
 
 	public var data:NoteJSON;
@@ -18,9 +16,9 @@ class ChartNote extends FlxSprite {
         this.data = data;
 		index = data.data;
 
-		frames = Path.sparrow('game/noteSkins/default/notes');
+		frames = Path.sparrow('noteSkins/default/notes');
 
-		for (dir in Note.direction) {
+		for (dir in Constants.DIRECTION) {
 			for (name in ['strum', 'note', 'tail', 'hold']) {
 				animation.addByPrefix('$name$dir', '$name $dir', 24);
 			}

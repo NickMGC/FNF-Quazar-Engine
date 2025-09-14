@@ -29,12 +29,19 @@ import objects.game.ui.*;
 import objects.editors.*;
 import states.*;
 import tools.*;
+import managers.*;
 import sys.FileSystem;
 import sys.io.File;
 import flixel.input.keyboard.FlxKey;
 import states.PlayState.game;
-import states.PlayField.instance as playField;
+
 import backend.Controls.key as Key;
+
+import tools.Util;
+import tools.Util.UIUtil;
+import tools.Util.ImplementableUtil;
+
+import states.editors.ChartEditor;
 
 import flixel.util.FlxSort;
 
@@ -46,5 +53,6 @@ import flixel.addons.transition.FlxTransitionableState.skipNextTransIn;
 import flixel.addons.transition.FlxTransitionableState.skipNextTransOut;
 
 using Lambda;
+using tools.Util.ImplementableUtil;
 #end
 using StringTools;

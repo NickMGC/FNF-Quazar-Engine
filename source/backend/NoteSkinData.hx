@@ -4,16 +4,8 @@ import objects.Character.AnimArray;
 import objects.Character.GlobalAnimData;
 
 class NoteSkinData {
-    public var noteData:BaseData;
-    public var coverData:BaseData;
-    public var splashData:BaseData;
-    public var metadata:NoteMetadata;
-
+    public var meta:NoteMetadata;
     public var skin:String;
-
-    public var noteFrames:FlxAtlasFrames;
-    public var splashFrames:FlxAtlasFrames;
-	public var coverFrames:FlxAtlasFrames;
 
     public function new(skin:String):Void {
         loadSkin(skin);
@@ -22,20 +14,79 @@ class NoteSkinData {
     public function loadSkin(key:String):Void {
         skin = key;
 
-        noteData = loadData('notes');
-        coverData = loadData('covers');
-        splashData = loadData('splashes');
-        metadata = loadData('metadata');
+        meta = Path.parseJSON(Path.json('images/noteSkins/$skin/animData'));
 
-        noteFrames = Path.sparrow('game/noteSkins/$skin/${noteData.image}');
-        splashFrames = Path.sparrow('game/noteSkins/$skin/${splashData.image}');
-		coverFrames = Path.sparrow('game/noteSkins/$skin/${coverData.image}');
+        if (meta.hasSustainCovers == null) {
+            meta.hasSustainCovers = true;
+        }
+
+        if (meta.hasNoteSplashes == null) {
+            meta.hasNoteSplashes = true;
+        }
+
+        if (meta.hasSparks == null) {
+            meta.hasSparks = true;
+        }
+
+        if (meta.hasSustainLights == null) {
+            meta.hasSustainLights = true;
+        }
+
+        if (meta.sustainRender == null) {
+            meta.sustainRender = 'tiled';
+        }
+        
+        if (meta.scale == null) {
+            meta.scale = [1, 1];
+        }
+
+        if (meta.padding == null) {
+            meta.padding = 115;
+        }
+
+        if (meta.position == null) {
+            meta.position = [50, 50];
+        }
     }
 
-    function loadData<T>(key:String):T {
-        return Path.parseJSON('assets/images/game/noteSkins/$skin/$key.json');
+    public function getAtlas(base:BaseData):FlxAtlasFrames {
+        return Path.sparrow('noteSkins/$skin/${base.image}');
     }
 }
 
-typedef BaseData = {image:String, scale:Array<Float>, ?globalAnimData:GlobalAnimData, animations:Array<AnimArray>}
-typedef NoteMetadata = {name:String, hasSustainCovers:Bool, hasNoteSplashes:Bool, ?autoOffsetStrums:Bool, ?sustainRender:String}
+typedef BaseData = {image:String, ?globalAnimData:GlobalAnimData, animations:Array<AnimArray>}
+
+typedef NoteMetadata = {
+    var name:String;
+    @:optional var sustainRender:String;
+
+    @:optional var hasSustainCovers:Bool;
+    @:optional var hasSparks:Bool;
+    @:optional var hasSustainLights:Bool;
+    @:optional var hasNoteSplashes:Bool;
+
+    var scale:Array<Float>;
+    @:optional var padding:Float;
+    @:optional var position:Array<Float>;
+
+    var noteScale:Array<Float>;
+    var strumScale:Array<Float>;
+    @:optional var splashScale:Array<Float>;
+    @:optional var holdCoverScale:Array<Float>;
+    @:optional var endSplashScale:Array<Float>;
+    @:optional var sparkScale:Array<Float>;
+    @:optional var sustainLightScale:Array<Float>;
+
+
+
+    var notes:BaseData;
+    @:optional var splashes:BaseData;
+    @:optional var endSplashes:BaseData;
+    @:optional var covers:BaseData;
+    @:optional var sparks:BaseData;
+    @:optional var lights:BaseData;
+}
+
+typedef BasePropData = {
+    var scale:Array<Float>;
+}

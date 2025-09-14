@@ -1,0 +1,26 @@
+{
+	"name": "Week 1",
+	"desc": "Daddy Dearest",
+
+    "titleImage": "week1",
+
+	"weekBefore": "tutorial",
+	"characters": ["dad", "bf", "gf"],
+
+	"difficulties": [
+		{"name": "easy", "displayName": "Easy"},
+        {"name": "normal", "displayName": "Normal"},
+		{"name": "hard", "displayName": "Hard"}
+    ],
+
+	"songs": [
+		{"name": "Bopeebo", "icon": "dad", "color": "#9271fd"},
+		{"name": "Fresh", "icon": "dad", "color": "#9271fd"},
+		{"name": "Dad Battle", "icon": "dad", "color": "#9271fd"}
+	],
+
+	"locked": true,
+
+	"hideStory": false,
+	"hideFreeplay": false
+}

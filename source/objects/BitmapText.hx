@@ -6,7 +6,7 @@ import flixel.text.FlxText;
 
 class BitmapText extends FlxBitmapText {
 	public function new(x:Float = 0, y:Float = 0, path:String, text:String = '', alignment:FlxTextAlign = LEFT):Void {
-		super(x, y, text, FlxBitmapFont.fromAngelCode(Path.image(path, 'fonts/bitmap'), Path.fnt('fonts/bitmap/$path')));
+		super(x, y, text, FlxBitmapFont.fromAngelCode(Path.image(path, 'data/fonts/bitmap'), Path.fnt('data/fonts/bitmap/$path')));
 		this.alignment = alignment;
 		antialiasing = Data.antialiasing;
 	}
@@ -23,11 +23,11 @@ class BitmapText extends FlxBitmapText {
 		this.fieldWidth = fieldWidth;
 		return this;
 	}
-	
+
 	public function setFormat(path:String, scale:Float = 1, color:FlxColor = FlxColor.WHITE, ?alignment:FlxTextAlign, ?borderStyle:FlxTextBorderStyle, borderColor:FlxColor = FlxColor.TRANSPARENT):BitmapText {
 		this.borderStyle = (borderStyle == null) ? NONE : borderStyle;
 
-		var font = FlxBitmapFont.fromAngelCode(Path.image(path, 'fonts/bitmap'), Path.fnt('fonts/bitmap/$path'));
+		var font = FlxBitmapFont.fromAngelCode(Path.image(path, 'data/fonts/bitmap'), Path.fnt('data/fonts/bitmap/$path'));
 
 		this.font = (font == null) ? FlxBitmapFont.getDefaultFont() : font;
 
@@ -42,6 +42,21 @@ class BitmapText extends FlxBitmapText {
 		}
 
 		this.borderColor = borderColor;
+
+		return this;
+	}
+
+	public function fitToRect(maxScaleX:Float, maxScaleY:Float, maxWidth:Float, maxHeight:Float, ?alignment:FlxTextAlign):BitmapText {
+		scale.set(maxScaleX, maxScaleY);
+		if (alignment != null) setAlign(alignment, Std.int(maxWidth / scale.x));
+		updateHitbox();
+
+		while (height > maxHeight) {
+			scale.set(scale.x - 0.05, scale.y - 0.05);
+			updateHitbox();
+			if (alignment != null) setAlign(alignment, Std.int(maxWidth / scale.x));
+			updateHitbox();
+		}
 
 		return this;
 	}

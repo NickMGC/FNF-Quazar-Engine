@@ -1,44 +1,56 @@
 package objects;
 
 class Countdown extends FlxSpriteGroup {
-	public static var spriteNames:Array<String> = ['ready', 'set', 'go'];
-    public static var soundNames:Array<String> = ['three', 'two', 'one', 'go'];
+	public static var countdownArray:Array<FlxSprite> = [];
+	public var conductor:Conductor;
+	public var callback:Void -> Void;
 
-	public function new():Void {
+	public function new(conductor:Conductor, callback:Void -> Void):Void {
 		super();
 
-		playField.conductor.time = -playField.beatLength * 5;
-		playField.addBeatSignal(countdown);
+		this.conductor = conductor;
+		this.callback = callback;
+
+		conductor.time = -conductor.beat.length * 5;
+		conductor.beat.signal.add(countdown);
 	}
 
 	public function countdown():Void {
-		if (playField.curBeat == 0) {
-			playField.removeBeatSignal(countdown);
-			playField.startSong();
+		if (conductor.beat.cur == 0) {
+			conductor.beat.signal.remove(countdown);
+			callback();
 			destroy();
 			return;
 		}
 
-		if (playField.curBeat > -4) {
-			var countdownItem:FlxSprite = new FlxSprite();
-			countdownItem.frames = Path.sparrow('game/countdown');
-			countdownItem.animation.addByNames(spriteNames[playField.curBeat + 3], [spriteNames[playField.curBeat + 3]], 0, false);
-			countdownItem.animation.play(spriteNames[playField.curBeat + 3]);
-			countdownItem.updateHitbox();
+		if (conductor.beat.cur > -4) {
+			var sprite:String = Constants.COUNTDOWN_SPRITE_NAMES[conductor.beat.cur + 3];
+
+			var graphic = Path.image('uiSkins/${GameSession.uiSkin}/$sprite');
+			if (graphic == null) Path.image('uiSkins/default/$sprite');
+
+			var countdownItem:FlxSprite = new FlxSprite(graphic);
 			countdownItem.screenCenter();
+			countdownArray.push(countdownItem);
 			add(countdownItem);
 
-			FlxTween.num(1, 0, playField.beatLength / 1000, {ease: FlxEase.cubeInOut, onComplete: destroySprite.bind(countdownItem)}, updateAlpha.bind(countdownItem));	
+			FlxTween.num(1, 0, conductor.beat.length * 0.001, {ease: FlxEase.cubeInOut, onComplete: destroySpr.bind(countdownItem)}, updateAlpha.bind(countdownItem));	
 		}
 
-		FlxG.sound.play(Path.sound(soundNames[playField.curBeat + 4]));
+		var sound:String = Constants.COUNTDOWN_SOUND_NAMES[conductor.beat.cur + 4];
+
+		var audio = Path.sound('uiSkins/${GameSession.uiSkin}/$sound');
+		if (audio == null) Path.sound('uiSkins/default/$sound');
+
+		FlxG.sound.play(audio);
 	}
 
-	function updateAlpha(sprite:FlxSprite, value:Float):Void {
+	static function updateAlpha(sprite:FlxSprite, value:Float):Void {
 		sprite.alpha = value;
 	}
 
-	function destroySprite(sprite:FlxSprite, _:FlxTween):Void {
+	static function destroySpr(sprite:FlxSprite, _:FlxTween):Void {
+		countdownArray.remove(sprite);
 		sprite.destroy();
 	}
 }

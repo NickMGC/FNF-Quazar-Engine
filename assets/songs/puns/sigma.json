@@ -1,0 +1,3108 @@
+{
+	"speed": 3,
+	"stage": "stage",
+	"player1": "bf",
+	"player2": "dad",
+	"player3": "gf",
+	"events": [
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 0
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 1500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 3000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 4500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 6000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 7500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 9000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 10500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 12000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 13500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 15000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 16500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 18000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 19500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 21000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 22500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 24000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 25500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 27000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 28500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 30000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 31500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 33000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 34500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 36000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 37500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 39000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 40500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 42000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 43500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 45000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 46500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 48000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 49500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 51000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 52500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 54000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 55500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 57000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 58500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 60000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 61500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 63000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 64500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 66000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 67500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 69000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 70500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 72000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 73500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 75000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 76500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 78000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 79500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 81000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 82500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 84000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 85500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 87000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 88500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 90000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 91500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 93000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 94500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 96000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 97500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 99000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 100500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 102000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 103500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 105000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 106500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 108000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 109500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 111000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 112500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 114000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 115500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 117000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 118500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 120000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 121500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 123000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 124500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 126000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 127500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 129000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 130500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 132000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 133500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 135000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 136500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 138000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 139500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 141000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 142500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 144000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 145500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 147000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 148500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 150000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 151500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 153000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 154500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 156000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 157500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 159000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 160500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 162000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 163500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 165000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 166500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 168000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 169500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 171000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 172500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 174000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 175500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 177000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 178500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 180000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 181500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 183000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 184500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 186000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 187500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 189000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 190500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 192000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 193500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 195000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 196500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 198000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 199500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 201000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 202500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 204000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 205500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 207000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 208500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 210000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "dad",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 211500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 213000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 214500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 216000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 217500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 219000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 220500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 222000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 223500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 225000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 226500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 228000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 229500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 231000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 232500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 234000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 235500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 237000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 238500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 240000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 241500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 243000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 244500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 246000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 247500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 249000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 250500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 252000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 253500
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 255000
+		},
+		{
+			"events": [
+				{
+					"name": "Focus Camera",
+					"values": [
+						{
+							"value": "bf",
+							"name": "character"
+						},
+						{
+							"value": "true",
+							"name": "classic"
+						}
+					]
+				}
+			],
+			"time": 256500
+		}
+	],
+	"notes": [],
+	"bpm": 160,
+	"song": "Puns"
+}

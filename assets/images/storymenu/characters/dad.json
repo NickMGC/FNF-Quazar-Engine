@@ -1,0 +1,7 @@
+{
+    "image": "dad",
+    "danceEvery": 1,
+    "offsets": [70, 10],
+
+    "idleAnim": {"name": "idle", "fps": 24, "offsets": [0, 0]}
+}

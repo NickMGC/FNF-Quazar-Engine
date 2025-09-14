@@ -17,10 +17,10 @@ class SetCameraZoom implements BaseEvent {
         var easeDir:String = params.string('easeDir');
         if (easeDir == 'None') easeDir = '';
 
-        duration > 0 ? FlxTween.num(game.defaultCamZoom, zoom, duration, {ease: Util.getEase(ease + easeDir)}, setCamZoom) : game.defaultCamZoom = zoom;
+        duration > 0 ? FlxTween.num(game.cameraZoom, zoom, duration, {ease: Util.getEase(ease + easeDir)}, setCamZoom) : game.cameraZoom = zoom;
     }
 
     function setCamZoom(value:Float):Void {
-        game.defaultCamZoom = value;
+        game.cameraZoom = value;
     }
 }

@@ -1,0 +1,126 @@
+{
+    "name": "Hurt Notes",
+    "sustainRender": "stretched",
+
+    "scale": [1, 1],
+    "position": [50, 50],
+
+    "padding": 160,
+
+    "noteScale": [0.7, 0.7],
+    "strumScale": [0.7, 0.7],
+    "splashScale": [0.95, 0.95],
+    "holdCoverScale": [0.95, 0.95],
+    "endSplashScale": [0.95, 0.95],
+    "sparkScale": [0.6, 0.6],
+    "sustainLightScale": [0.675, 1.5],
+
+    "notes": {
+        "image": "notes",
+        "globalAnimData": {"fps": 24, "loop": false},
+
+        "animations": [
+            {"prefix": "note left", "name": "note left"},
+            {"prefix": "strum left", "name": "strum left"},
+            {"prefix": "press left", "name": "press left"},
+            {"prefix": "confirm left", "name": "confirm left"},
+            {"prefix": "tail left", "name": "tail left"},
+            {"prefix": "hold left", "name": "hold left"},
+
+            {"prefix": "note down", "name": "note down"},
+            {"prefix": "strum down", "name": "strum down"},
+            {"prefix": "press down", "name": "press down"},
+            {"prefix": "confirm down", "name": "confirm down"},
+            {"prefix": "tail down", "name": "tail down"},
+            {"prefix": "hold down", "name": "hold down"},
+
+            {"prefix": "note up", "name": "note up"},
+            {"prefix": "strum up", "name": "strum up"},
+            {"prefix": "press up", "name": "press up"},
+            {"prefix": "confirm up", "name": "confirm up"},
+            {"prefix": "tail up", "name": "tail up"},
+            {"prefix": "hold up", "name": "hold up"},
+
+            {"prefix": "note right", "name": "note right"},
+            {"prefix": "strum right", "name": "strum right"},
+            {"prefix": "press right", "name": "press right"},
+            {"prefix": "confirm right", "name": "confirm right"},
+            {"prefix": "tail right", "name": "tail right"},
+            {"prefix": "hold right", "name": "hold right"}
+        ]
+    },
+
+    "splashes": {
+        "image": "splashes",
+        "globalAnimData": {"fps": 24, "loop": false},
+
+        "animations": [
+            {"prefix": "splash1 left", "name": "splash1 left"},
+            {"prefix": "splash2 left", "name": "splash2 left"},
+
+            {"prefix": "splash1 down", "name": "splash1 down"},
+            {"prefix": "splash2 down", "name": "splash2 down"},
+
+            {"prefix": "splash1 up", "name": "splash1 up"},
+            {"prefix": "splash2 up", "name": "splash2 up"},
+
+            {"prefix": "splash1 right", "name": "splash1 right"},
+            {"prefix": "splash2 right", "name": "splash2 right"}
+        ]
+    },
+
+    "endSplashes": {
+        "image": "holdEffects",
+        "globalAnimData": {"offsets": [-8, -17], "fps": 24, "loop": false},
+
+        "animations": [
+            {"prefix": "end left", "name": "end left"},
+            {"prefix": "end down", "name": "end down"},
+            {"prefix": "end up", "name": "end up"},
+            {"prefix": "end right", "name": "end right"}
+        ]
+    },
+  
+    "covers": {
+        "image": "holdEffects",
+        "globalAnimData": {"offsets": [-3, 8], "fps": 24, "loop": false},
+
+        "animations": [
+            {"prefix": "start left", "name": "start left"},
+            {"prefix": "hold left", "name": "hold left", "loop": true},
+
+            {"prefix": "start down", "name": "start down"},
+            {"prefix": "hold down", "name": "hold down", "loop": true},
+
+            {"prefix": "start up", "name": "start up"},
+            {"prefix": "hold up", "name": "hold up", "loop": true},
+
+            {"prefix": "start right", "name": "start right"},
+            {"prefix": "hold right", "name": "hold right", "loop": true}
+        ]
+    },
+
+    "sparks": {
+        "image": "holdEffects",
+        "globalAnimData": {"fps": 24, "loop": true},
+
+        "animations": [
+            {"prefix": "spark left", "name": "sparks"},
+            {"prefix": "spark down", "name": "sparks"},
+            {"prefix": "spark up", "name": "sparks"},
+            {"prefix": "spark right", "name": "sparks"}
+        ]  
+    },
+
+    "lights": {
+        "image": "holdEffects",
+        "globalAnimData": {"fps": 24, "loop": false},
+
+        "animations": [
+            {"prefix": "light left", "name": "light left"},
+            {"prefix": "light down", "name": "light down"},
+            {"prefix": "light up", "name": "light up"},
+            {"prefix": "light right", "name": "light right"}
+        ]
+    }
+}

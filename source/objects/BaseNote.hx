@@ -5,17 +5,24 @@ interface BaseNote {
     public var healthLoss:Float;
     public var healthGainHold:Float;
 
+    public var scoreGainSick:Int;
+    public var scoreGainGood:Int;
+    public var scoreGainBad:Int;
+    public var scoreGainShit:Int;
+
+    public var scoreLoss:Int;
+    public var scoreGainHold:Int;
+
     public var mustPress:Bool;
+    public var hitCausesMiss:Bool;
     public var hitByOpponent:Bool;
 
-    public var texture:String;
-    public var splashTexture:String;
-    public var coverTexture:String;
+    public var skin:NoteSkinData;
 
-    public function onHit():Void;
-    public function onMiss():Void;
+    public function onHit(note:Note):Void;
+    public function onMiss(note:Note):Void;
 
-    public function onHold():Void;
-    public function onHoldFinish():Void;
-    public function onHoldRelease():Void;
+    public function onHold(note:Note):Void;
+    public function onHoldFinish(note:Note):Void;
+    public function onHoldRelease(note:Note):Void;
 }

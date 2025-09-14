@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="lights.png">
+	<SubTexture name="light up0000" x="2" y="2" width="64" height="253"/>
+	<SubTexture name="light up0001" x="2" y="2" width="64" height="253"/>
+	<SubTexture name="light up0002" x="2" y="2" width="64" height="253"/>
+	<SubTexture name="light up0003" x="2" y="2" width="64" height="253"/>
+
+	<SubTexture name="light down0000" x="134" y="2" width="64" height="253"/>
+	<SubTexture name="light left0000" x="200" y="2" width="64" height="253"/>
+	<SubTexture name="light right0000" x="68" y="2" width="64" height="253"/>
+</TextureAtlas>

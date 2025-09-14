@@ -3,36 +3,44 @@ package objects;
 class HealthBar extends FlxSpriteGroup {
 	public var playerBar:FlxSprite;
 	public var opponentBar:FlxSprite;
+	public var opponentSide:Bool = false;
 
-	public var iconP1:HealthIcon;
-	public var iconP2:HealthIcon;
+	public var health:Float = 0.5;
 
-	public function new(y:Float = 0):Void {
+	public var defaultColors:Bool = true;
+
+	public function new(y:Float = 0, opponentSide:Bool = false):Void {
 		super(0, y);
 
-		add(playerBar = new FlxSprite(Path.image('game/healthBar')));
-		playerBar.color = FlxColor.fromString(Path.character(playField.chart.player1).healthbarColor);
+		this.opponentSide = opponentSide;
 
-		add(opponentBar = new FlxSprite(Path.image('game/healthBar')));
-		opponentBar.color = FlxColor.fromString(Path.character(playField.chart.player2).healthbarColor);
+		var graphic = Path.image('uiSkins/${GameSession.uiSkin}/healthBar');
+		if (graphic == null) Path.image('uiSkins/default/healthBar');
+
+		add(playerBar = new FlxSprite(graphic));
+		add(opponentBar = new FlxSprite(graphic));
 		opponentBar.clipRect = FlxRect.get(0, 0, playerBar.width, playerBar.height);
-		opponentBar.clipRect.width = playerBar.width * (1 - playField.health);
+
+		snapToTarget();
 
 		screenCenter(X);
+	}
 
-		add(iconP1 = new HealthIcon(0, -75, playField.chart.player1, true));
-		add(iconP2 = new HealthIcon(0, -75, playField.chart.player2));
+	public function loadColors(player1:String, player2:String):Void {
+		playerBar.color = defaultColors ? 0xFF00FF00 : FlxColor.fromString(Path.character(player1).healthbarColor);
+		opponentBar.color = defaultColors ? 0xFFFF0000 : FlxColor.fromString(Path.character(player2).healthbarColor);
 	}
 
 	override public function update(elapsed:Float):Void {
 		super.update(elapsed);
 
-		opponentBar.clipRect.width = FlxMath.lerp(opponentBar.clipRect.width, playerBar.width * (1 - playField.health), 10 * elapsed);
+		var thing:Float = 1 - health;
 
-		for (i => icon in [iconP1, iconP2]) {
-			icon.scale.x = icon.scale.y = FlxMath.lerp(1, icon.scale.x, Math.exp(-elapsed * 9));
-			icon.updateHitbox();
-			icon.x = opponentBar.x + opponentBar.clipRect.width - (20 + (i * 100));
-		}
+		opponentBar.clipRect.width = FlxMath.lerp(opponentBar.clipRect.width, playerBar.width * (opponentSide ? 1 - thing : thing), 10 * elapsed);
+	}
+
+	public function snapToTarget():Void {
+		var thing:Float = 1 - health;
+		opponentBar.clipRect.width = playerBar.width * (opponentSide ? 1 - thing : thing);
 	}
 }

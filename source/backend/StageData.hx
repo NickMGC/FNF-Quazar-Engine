@@ -43,6 +43,8 @@ typedef StageData = {
 	var cameraZoom:Float;
     var cameraSpeed:Float;
 
+    @:optional var imagePath:String;
+
     @:optional var bgColor:String;
 
 	@:optional var preload:Array<String>;

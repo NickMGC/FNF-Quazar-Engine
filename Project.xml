@@ -4,7 +4,7 @@
 
 	<app title="Friday Night Funkin': Quazar Engine" file="QuazarEngine" main="Main" version="0.1.0" company="NickNGC"/>
 
-	<window width="1280" height="720" fps="150" background="#000000" hardware="true" vsync="true" orientation="landscape" fullscreen="false" resizable="true"/>
+	<window width="1280" height="720" fps="150" background="#000000" hardware="true" vsync="false" orientation="landscape" fullscreen="false" resizable="true"/>
 
 
 	<!-- Path Settings -->
@@ -25,6 +25,7 @@
 	<haxelib name="flixel-ui"/>
 	<haxelib name="moonchart"/>
 	<haxelib name="flixel-waveform"/>
+	<haxelib name="flixel-animate"/>
 
 
 	<!-- Haxe Defines -->
@@ -42,16 +43,28 @@
 	<haxedef name="HXCPP_CHECK_POINTER"/>
 	<haxedef name="HXCPP_STACK_LINE"/>
 	<haxedef name="HXCPP_STACK_TRACE"/>
+	<haxedef name="HXCPP_GC_BIG_BLOCKS"/>
 
 
 	<!-- Macros -->
 
-	<haxeflag name="--macro" value="include('stages')" />
-	<haxeflag name="--macro" value="include('events')" />
-	<haxeflag name="--macro" value="addGlobalMetadata('stages', '@:build(macros.StageMacro.build())')" />
-	<haxeflag name="--macro" value="addGlobalMetadata('events', '@:build(macros.EventMacro.build())')" />
+	<haxeflag name="--macro" value="include('stages')"/>
+	<haxeflag name="--macro" value="include('events')"/>
+	<haxeflag name="--macro" value="include('noteTypes')"/>
+	<haxeflag name="--macro" value="addGlobalMetadata('stages', '@:build(macros.StageMacro.build())')"/>
+	<haxeflag name="--macro" value="addGlobalMetadata('events', '@:build(macros.EventMacro.build())')"/>
+	<haxeflag name="--macro" value="addGlobalMetadata('noteTypes', '@:build(macros.NoteTypeMacro.build())')"/>
 
-	<haxeflag name="--macro" value="addGlobalMetadata('flixel.FlxBasic', '@:build(macros.ZIndexMacro.build())', false)" />
-	<haxeflag name="--macro" value="addGlobalMetadata('flixel.FlxCamera', '@:build(macros.CameraLerpMacro.build())', false)" />
+	<haxeflag name="--macro" value="addGlobalMetadata('flixel.FlxBasic', '@:build(macros.ZIndexMacro.build())', false)"/>
+	<haxeflag name="--macro" value="addGlobalMetadata('flixel.FlxCamera', '@:build(macros.CameraLerpMacro.build())', false)"/>
+
+
+	<!-- Custom -->
+
+	<icon path="art/icon16.png" size='16'/>
+	<icon path="art/icon32.png" size='32'/>
+	<icon path="art/icon64.png" size='64'/>
+	<icon path="art/iconOG.png"/>
+
 
 </project>

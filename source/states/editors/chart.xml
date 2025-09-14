@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<box width="100%" height="100%">
+    <vbox width="100%" height="100%" style="padding: 8px;">
+    
+        <menubar id="menubar" width="100%">
+            <menu text="File">
+                <menucheckbox id="menuCheck" text="New Chart" />
+                <menucheckbox id="menuCheck" text="Open Chart..." />
+                <menucheckbox id="menuCheck" text="Save Chart" />
+                <menucheckbox id="menuCheck" text="Save Chart As..." />
+            </menu>
+
+            <menu text="Edit">
+                <menucheckbox id="menuCheck" text="Value" />
+            </menu>
+
+            <menu text="Test">
+                <menucheckbox id="menuCheck" text="Value" />
+            </menu>
+        </menubar>
+
+        <spacer height="100%" />
+
+        <tabview id="tabView1" width="50%" height="100%">
+            <vbox text="Audio" icon="haxeui-core/styles/default/haxeui_tiny.png">
+                
+                <spacer height="10" />
+                <label text="HITSOUNDS" style="font-size: 20px; font-bold: true;"/>
+
+                <hbox id="hbox4" styleName="outline" style="padding:5px;justify-content:space-evenly" continuous="true">
+                    <item-renderer layout="vertical">
+                        <label text="Player - 100%" style="font-size: 15px;"/>
+                        <slider pos="0" minorTicks="5" majorTicks="10" />
+                    </item-renderer>
+                    <item-renderer layout="vertical">
+                        <label text="Enemy - 100%" style="font-size: 15px;"/>
+                        <slider pos="0" minorTicks="5" majorTicks="10" />
+                    </item-renderer>
+                </hbox>
+
+                <spacer height="10" />
+                <rule />
+                <spacer height="10" />
+
+                <label text="SONG" style="font-size: 20px; font-bold: true;"/>
+
+                <label text="Instrumental - 100%" style="font-size: 15px;"/>
+                <slider pos="0" minorTicks="5" majorTicks="10" />
+
+                <hbox id="hbox4" styleName="outline" style="padding:5px;justify-content:space-evenly" continuous="true">
+                    <item-renderer layout="vertical">
+                        <label text="Player - 100%" style="font-size: 15px;"/>
+                        <slider pos="0" minorTicks="5" majorTicks="10" />
+                    </item-renderer>
+                    <item-renderer layout="vertical">
+                        <label text="Enemy - 100%" style="font-size: 15px;"/>
+                        <slider pos="0" minorTicks="5" majorTicks="10" />
+                    </item-renderer>
+                </hbox>
+
+                <dropdown id="dropdownPage1">
+                   <data>
+                        <item id="foo" text="Foo" />
+                        <item id="position" text="Position" />
+                        <item id="bar" text="Bar" />
+                       <item id="baz" text="Baz" />
+                    </data>
+                </dropdown>
+            </vbox>
+
+            <vbox text="Note" icon="haxeui-core/styles/default/haxeui_tiny.png">
+                <button id="buttonPage2" text="Page 2's Button" />
+            </vbox>
+
+            <vbox text="Event" icon="haxeui-core/styles/default/haxeui_tiny.png">
+                <button id="buttonPage3" text="Page 3's Button" />
+            </vbox>
+
+            <vbox text="Section" icon="haxeui-core/styles/default/haxeui_tiny.png">
+                <button id="buttonPage4" text="Page 4's Button" />
+            </vbox>
+        </tabview>
+
+        <menubar id="bottomBar" width="100%">
+            <label text="00:00.00" style="font-size: 20px;font-bold: true;"/>
+            <button-bar width="50%">
+                <button text="|<" />
+                <button text="<<" />
+                <button text=">" />
+                <button text=">>" />
+                <button text=">|" />
+            </button-bar>
+        </menubar>
+    </vbox>
+</box>

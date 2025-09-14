@@ -15,7 +15,6 @@ class ChartEditor extends MusicScene {
 
 	public static inline var GRID_SIZE:Int = 40;
 
-	public static final quants:Array<Int> = [4, 8, 12, 16, 20, 24, 32, 48, 64, 96, 192];
 	public static var curQuant:Int = 3;
 
 	var inst:FlxSound;
@@ -25,8 +24,6 @@ class ChartEditor extends MusicScene {
 	var gridBG:FlxSprite;
 	var selectedBox:FlxSprite;
 	var timeline:FlxSprite;
-
-	var timelineY:Float = 100; //TODO: make this adjustable
 
 	var lines:FlxSpriteGroup;
 
@@ -55,11 +52,13 @@ class ChartEditor extends MusicScene {
 
 	public function new(chart:Chart = null):Void {
 		super();
-		ChartEditor.chart = chart ?? Path.chart('Test', 'normal');
+		ChartEditor.chart = (GameSession.chartingMode ? ChartEditor.chart : chart) ?? Path.chart('Test', 'normal');
 	}
 
 	override public function create():Void {
 		super.create();
+
+		GameSession.chartingMode = true;
 
 		bgColor = 0xFF252525;
 
@@ -76,7 +75,9 @@ class ChartEditor extends MusicScene {
 			val.pause();
 		}
 
-		add(gridBG = new FlxTiledSprite(FlxGridOverlay.createGrid(GRID_SIZE, GRID_SIZE, GRID_SIZE * 9, GRID_SIZE * 16, true, 0xFFAAAAAA, 0xFF616060), GRID_SIZE * 9, GRID_SIZE * 16));
+		final bitmapGrid = FlxGridOverlay.createGrid(GRID_SIZE, GRID_SIZE, GRID_SIZE * 9, GRID_SIZE * 16, true, 0xFFAAAAAA, 0xFF616060);
+
+		add(gridBG = new FlxTiledSprite(bitmapGrid, GRID_SIZE * 9, GRID_SIZE * 16));
 		gridBG.x = 440;
 
 		add(lines = new FlxSpriteGroup());
@@ -87,14 +88,14 @@ class ChartEditor extends MusicScene {
 		add(notes = new FlxTypedGroup());
 		add(events = new FlxTypedGroup());
 
-		add(timeline = new FlxSprite(440, timelineY).makeGraphic(Std.int(gridBG.width), 4, 0x50FF0000));
+		add(timeline = new FlxSprite(440, 100).makeGraphic(Std.int(gridBG.width), 4, 0x50FF0000));
 		timeline.scrollFactor.set();
 
-		add(playerWaveform = new FlxWaveform(gridBG.x + gridBG.width - 20, timelineY, 80, FlxG.height * 3, 0x00FFFFFF, 0x00FF0000, COMBINED));
+		add(playerWaveform = new FlxWaveform(gridBG.x + gridBG.width - 20, 100, 80, FlxG.height * 3, 0x00FFFFFF, 0x00FF0000, COMBINED));
 		playerWaveform.loadDataFromFlxSound(voices);
 		playerWaveform.scrollFactor.set();
 
-		add(opponentWaveform = new FlxWaveform(gridBG.x - 60, timelineY, 80, FlxG.height * 3, 0x00FFFFFF, 0x00FF0000, COMBINED));
+		add(opponentWaveform = new FlxWaveform(gridBG.x - 60, 100, 80, FlxG.height * 3, 0x00FFFFFF, 0x00FF0000, COMBINED));
 		opponentWaveform.loadDataFromFlxSound(voicesOpponent);
 		opponentWaveform.scrollFactor.set();
 
@@ -102,15 +103,17 @@ class ChartEditor extends MusicScene {
         playerWaveform.waveformDrawBaseline = opponentWaveform.waveformDrawBaseline = playerWaveform.waveformDrawRMS = opponentWaveform.waveformDrawRMS = true;
         playerWaveform.waveformOrientation = opponentWaveform.waveformOrientation = VERTICAL;
 
-		add(iconP2 = new HealthIcon(gridBG.x - 94, timelineY - 75, chart.player2));
+		add(iconP2 = new HealthIcon(gridBG.x - 94, 25, chart.player2));
 		iconP2.scrollFactor.set();
 		iconP2.scale.set(0.5, 0.5);
 		iconP2.updateHitbox();
 
-		add(iconP1 = new HealthIcon(gridBG.x + gridBG.width - 54, timelineY - 75, chart.player1, true));
+		add(iconP1 = new HealthIcon(gridBG.x + gridBG.width - 54, 25, chart.player1, true));
 		iconP1.scrollFactor.set();
 		iconP1.scale.set(0.5, 0.5);
 		iconP1.updateHitbox();
+
+		regenGrid();
 
 		//kill me
 		Key.onPress([FlxKey.ENTER], onBack);
@@ -123,13 +126,11 @@ class ChartEditor extends MusicScene {
 		Key.onHold(Key.down, moveStep.bind(4));
 		Key.onPress([FlxKey.LEFT], onQuantChange.bind(-1));
 		Key.onPress([FlxKey.RIGHT], onQuantChange.bind(1));
-		Key.onPress([FlxKey.Q], adjustSustain.bind(-stepLength));
-		Key.onPress([FlxKey.E], adjustSustain.bind(stepLength));
+		Key.onPress([FlxKey.Q], adjustSustain.bind(-1));
+		Key.onPress([FlxKey.E], adjustSustain.bind(1));
 
 		chart.notes.iter(createNote);
 		chart.events.iter(createEvent);
-
-		regenGrid();
 
 		var tabs:Array<{name:String, label:String}> = [
 			{name: 'Song', label: 'Song'},
@@ -156,7 +157,10 @@ class ChartEditor extends MusicScene {
 		speed = chart.speed;
 
 		tab_group.add(new FlxButton(15, 15, 'Save', saveChart));
-		tab_group.add(new FlxButton(110, 15, 'Reload Chart', FlxG.switchState.bind(new ChartEditor(Path.chart(chart.song, PlayField.difficulty)))));
+		tab_group.add(new FlxButton(110, 15, 'Reload Chart', () -> {
+			ChartEditor.chart = Path.chart(chart.song, GameSession.difficulty);
+			FlxG.switchState(new ChartEditor());
+		}));
 
 		var stepperBPM:FlxUINumericStepper = new FlxUINumericStepper(15, 70, 1, 1, 1, 400, 3);
 		stepperBPM.value = conductor.bpm;
@@ -165,7 +169,9 @@ class ChartEditor extends MusicScene {
 		tab_group.add(new FlxText(stepperBPM.x, stepperBPM.y - 15, 0, 'Song BPM:'));
 		tab_group.add(stepperBPM);
 
-		var speedSlider:FlxUISlider = new FlxUISlider(this, 'speed', 10, 100, 0.1, 10, 210, null, 5, FlxColor.WHITE, FlxColor.BLACK);
+		var nullThing:Null<Int> = null;
+
+		var speedSlider:FlxUISlider = new FlxUISlider(this, 'speed', 10, 100, 0.1, 10, 210, nullThing, 5, FlxColor.WHITE, FlxColor.BLACK);
 		speedSlider.nameLabel.text = 'Scroll Speed:';
 		speedSlider.value = chart.speed;
 		speedSlider.decimals = 1;
@@ -199,9 +205,29 @@ class ChartEditor extends MusicScene {
 	
 			switch(nums.name) {
 				case 'song_bpm':
-					chart.bpm = conductor.bpm = nums.value; //TODO: fix the visuals fucking up when changing the bpm
+					chart.bpm = conductor.bpm = nums.value;
+					regenGrid();
+                	repositionAll();
 			}
 		}
+	}
+
+	function repositionAll():Void {
+    	for (note in notes) {
+    	    note.y = getYfromStrum(note.data.time);
+    	}
+
+    	for (sustain in sustains) {
+    	    var noteSpr = notes.members.find(n -> n.data == sustain.data);
+
+			if (noteSpr == null) continue;
+    	    sustain.y = noteSpr.y + (noteSpr.height * 0.5);
+    	    sustain.setHeight(sustain.data.length, stepLength);
+    	}
+
+    	for (event in events) {
+    	    event.y = getYfromStrum(event.data.time);
+    	}
 	}
 
 	function onBack():Void {
@@ -217,9 +243,9 @@ class ChartEditor extends MusicScene {
 
 	function setTime(value:Float):Void {
 		time = value;
-		if (!conductor.paused) {
-			toggleSong();
-		}
+
+		if (conductor.paused) return;
+		toggleSong();
 	}
 
 	function moveSection(dir:Int):Void {
@@ -231,15 +257,14 @@ class ChartEditor extends MusicScene {
 	}
 
 	function onQuantChange(dir:Int):Void {
-		curQuant = (curQuant + dir + quants.length) % quants.length;
+		curQuant = (curQuant + dir + Constants.QUANTS.length) % Constants.QUANTS.length;
 	}
 
 	function createNote(note:NoteJSON):Void {
 		notes.add(new ChartNote(note.data * GRID_SIZE + gridBG.x, getYfromStrum(note.time), note));
 
-		if (note.length > 0) {
-			createSustain(note);
-		}
+		if (note.length <= 0) return;
+		createSustain(note);
 	}
 
 	function createSustain(note:NoteJSON):Void {
@@ -283,16 +308,16 @@ class ChartEditor extends MusicScene {
 		var direction = Math.floor((FlxG.mouse.x - GRID_SIZE) / GRID_SIZE) - 10;
 		if (direction > 7) return;
 
-		selectedNote = {time: getStrumTime(selectedBox.y), data: direction};
+		selectedNote = {time: getStrumTime(selectedBox.y), data: direction, length: 0};
 
 		chart.notes.push(selectedNote);
 		createNote(selectedNote);
 	}
 
-	function adjustSustain(delta:Float):Void {
+	function adjustSustain(delta:Int = 0):Void {
 		if (selectedNote == null) return;
-		
-		selectedNote.length += FlxG.keys.pressed.SHIFT ? delta * 2 : delta;
+
+		selectedNote.length += FlxG.keys.pressed.SHIFT ? (stepLength * delta) * 2 : (stepLength * delta);
 		if (selectedNote.length < 0) selectedNote.length = 0;
 
 		var sustain = sustains.members.find(s -> s.data == selectedNote);
@@ -322,7 +347,7 @@ class ChartEditor extends MusicScene {
 			}
 		}
 
-		FlxG.camera.scroll.y = getYfromStrum(time) - timelineY;
+		FlxG.camera.scroll.y = getYfromStrum(time) - 100;
 
 		checkNoteHits();
 		mouseInput();
@@ -336,7 +361,7 @@ class ChartEditor extends MusicScene {
 	function checkNoteHits():Void {
 		if (!conductor.song.playing) return;
 
-		for (note in notes.members.filter(byVisibleNote)) {
+		for (note in notes.members.filter(visibleNote)) {
 			if (note.data.time > time + hitOffset || note.data.time <= lastTime + hitOffset) continue;
 
 			FlxG.sound.play(Path.sound('hitsound'), note.data.data > 3 ? playerHitVolume : opponentHitVolume);
@@ -355,41 +380,36 @@ class ChartEditor extends MusicScene {
 			return;
 		}
 
-		var gridmult:Float = GRID_SIZE / (quants[curQuant] / 16);
+		var gridmult:Float = GRID_SIZE / (Constants.QUANTS[curQuant] / 16);
 		selectedBox.setPosition(Math.floor(FlxG.mouse.x / GRID_SIZE) * GRID_SIZE, Math.floor(FlxG.mouse.y / gridmult) * gridmult);
 
 		//HACK: Hacky way to get an overlapped group, but it's less code so it will do for now...
 		if (FlxG.mouse.justPressed) {
-			var overlappedNote = getOverlapped(notes, byVisibleNote);
+			var overlappedNote = notes.getOverlapped(visibleNote);
 			overlappedNote != null ? selectedNote = overlappedNote.data : addNote();
 
-			var overlappedEvent = getOverlapped(events, byVisibleEvent);
+			var overlappedEvent = events.getOverlapped(visibleEvent);
 			overlappedEvent != null ? selectedEvent = overlappedEvent.data : addEvent();
 		}
 
-		if (FlxG.mouse.pressedRight) {
-			var noteToRemove = getOverlapped(notes, byVisibleNote);
-			if (noteToRemove != null) {
-				removeNote(noteToRemove.data);
-			}
+		if (!FlxG.mouse.pressedRight) return;
 
-			var eventToRemove = getOverlapped(events, byVisibleEvent);
-			if (eventToRemove != null) {
-				removeEvent(eventToRemove.data);
-			}
+		var noteToRemove = notes.getOverlapped(visibleNote);
+		if (noteToRemove != null) {
+			removeNote(noteToRemove.data);
+		}
+
+		var eventToRemove = events.getOverlapped(visibleEvent);
+		if (eventToRemove != null) {
+			removeEvent(eventToRemove.data);
 		}
 	}
 
-	function getOverlapped<T:FlxBasic>(group:FlxTypedGroup<T>, filter:T -> Bool):T {
-		if (!FlxG.mouse.overlaps(group)) return null;
-		return group.members.find(item -> filter(item) && FlxG.mouse.overlaps(item));
-	}
-
-	function byVisibleNote(note:ChartNote):Bool {
+	function visibleNote(note:ChartNote):Bool {
 		return note.isOnScreen();
 	}
 
-	function byVisibleEvent(event:ChartEvent):Bool {
+	function visibleEvent(event:ChartEvent):Bool {
 		return event.isOnScreen();
 	}
 
@@ -415,12 +435,12 @@ class ChartEditor extends MusicScene {
 	}
 
 	function saveChart():Void {
-		if(chart.events != null && chart.events.length > 1) {
-			chart.events.sort(sortEventbyTime);
+		if (chart.events != null && chart.events.length > 1) {
+			chart.events.sort(Util.sortByEventTime);
 		}
 
-		if(chart.notes != null && chart.notes.length > 1) {
-			chart.notes.sort(sortNotebyTime);
+		if (chart.notes != null && chart.notes.length > 1) {
+			chart.notes.sort(Util.sortByNoteTime);
 		}
 
 		var data:String = haxe.Json.stringify(chart, '\t');
@@ -465,22 +485,19 @@ class ChartEditor extends MusicScene {
 }
 
 /**
-	ok i think imma organize mah plans so i dont get lost in the sauce
+	BUGs:
+    - The song stops playing after it reaches the finish line.  (still open)
+    - When opening the Chart Editor for the second time, the chart resets. [FIXED]
+    - Dispatched Events disappear from the Chart Editor after Playtesting the chart. [FIXED]
 
-	BUGS:
-	- The song stops playing after it reaches the finish line.
-	- Dispatched Events disappear from the Chart Editor after Playtesting the chart. [FIXED]
-
-	TODOS:
-	- Player/Opponent Icons [DONE]
-	- Hit sounds [DONE]
-	- Audio waveforms [DONE]
-	- User Interface [WIP]
-	- Ability to import chart files
-	- Ability to export chart files [DONE]
-	- Get rid of every instance of me using anonymous functions
-	- Adjust visuals to BPM changes (глп)
-	- Support different Time signatures (глп)
-
-	oh and also reorganize all this shit when its done so its under 1000 lines
+    TODOs:
+    • Player/Opponent Icons [DONE]
+    • Hit sounds [DONE]
+    • Audio waveforms [DONE]
+    • User Interface [WIP]
+    • Replace flixel‑ui with haxe‑ui
+    • Import / Export chart files
+    • Remove all anonymous functions
+    • Adjust visuals to BPM changes [DONE]
+    • Support different Time signatures
 **/

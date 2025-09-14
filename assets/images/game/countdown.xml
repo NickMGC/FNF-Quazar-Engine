@@ -1,6 +1,0 @@
-﻿<?xml version="1.0" encoding="utf8"?>
-<TextureAtlas imagePath="countdown.png">
-	<SubTexture name="go" x="706" y="368" width="309" height="238"/>
-	<SubTexture name="ready" x="2" y="2" width="757" height="364"/>
-	<SubTexture name="set" x="2" y="368" width="702" height="322"/>
-</TextureAtlas>

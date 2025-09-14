@@ -1,6 +1,7 @@
 export/*
 exportBACKUP/*
 .vscode/*
+.vscode
 .haxelib/
 *.code-workspace
 !.vscode/settings.json

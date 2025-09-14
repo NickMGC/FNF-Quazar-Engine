@@ -1,0 +1,51 @@
+{
+	"cameraZoom": 1.1,
+	"cameraSpeed": 1,
+ 
+	"gf": {
+		"position": [445, 120],
+		"cameraPosition": [0, 0],
+		"scroll": [0.95, 0.95],
+		"zIndex": 2
+	},
+
+	"dad": {
+		"position": [165, 100],
+		"cameraPosition": [0, 0],
+		"scroll": [0.95, 0.95],
+		"zIndex": 3
+	},
+
+	"bf": {
+		"position": [830, 455],
+		"cameraPosition": [50, -35],
+		"scroll": [0.95, 0.95],
+		"zIndex": 4
+	},
+
+	"objects": [
+		{
+			"name": "wall",
+			"path": "stageback",
+			"position": [-550, -200],
+			"scroll": [0.9, 0.9],
+			"zIndex": 0
+		}, 
+		{
+			"name": "floor",
+			"path": "stagefront",
+			"position": [-600, 590],
+			"scale": [1.1, 1.1],
+			"scroll": [0.9, 0.9],
+			"zIndex": 1
+		},
+		{
+			"name": "curtains",
+			"path": "stagecurtains",
+			"position": [-425, -300],
+			"scroll": [1.3, 1.3],
+			"scale": [0.9, 0.9],
+			"zIndex": 6
+		}
+	]
+}

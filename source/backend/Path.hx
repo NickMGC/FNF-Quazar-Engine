@@ -1,5 +1,6 @@
 package backend;
 
+import animate.FlxAnimateFrames;
 import objects.Character.CharacterData;
 import haxe.Json;
 import haxe.PosInfos;
@@ -20,13 +21,13 @@ import moonchart.formats.fnf.legacy.FNFPsych;
 	public static var localAssets:Array<String> = [];
 	public static var trackedImages:Map<String, FlxGraphic> = [];
 	public static var trackedAudio:Map<String, OpenFLSound> = [];
-	// public static var cachedSkins:Map<String, NoteSkinData> = [];
 
 	public static var exclusions:Array<String> = [
-		'assets/audio/music/freakyMenu.ogg', 'assets/audio/music/breakfast.ogg',
-		'assets/images/default.png', 'assets/images/default.fnt',
-		'assets/images/bold.png', 'assets/images/bold.fnt',
-		'assets/images/transition.png'
+		'assets/music/freakyMenu.ogg', 'assets/music/breakfast.ogg',
+		'assets/data/fonts/bitmap/default.png', 'assets/data/fonts/bitmap/default.fnt',
+		'assets/data/fonts/bitmap/bold.png', 'assets/data/fonts/bitmap/bold.fnt',
+		'assets/data/fonts/bitmap/vcr.png', 'assets/data/fonts/bitmap/vcr.fnt',
+		'assets/images/misc/transition.png'
 	];
 
 	public static function get(key:String, ?pos:PosInfos):String {
@@ -38,25 +39,28 @@ import moonchart.formats.fnf.legacy.FNFPsych;
 		return 'assets/$key';
 	}
 
-	//First argument, sound file
-	//Second argument, sound prefix
-	public static function preloadAudios(audios:Array<String>):Void {
-		if (audios == null) return;
-
-		for (audio in audios) {
-			final output:Array<String> = audio.split(':');
-			Path.audio(output[1] != null ? '${output[1]}/${output[0]}' : output[0]);
+	public static function preloadGameAssets(skin:String, song:String):Void {
+		for (sound in ['uiSkins/$skin/three', 'uiSkins/$skin/two', 'uiSkins/$skin/one', 'uiSkins/$skin/go', 'firstDeath', 'deathConfirm']) {
+			Path.sound(sound);
 		}
-	}
 
-	//First argument, image file
-	//Second argument, image prefix
-	public static function preloadImages(images:Array<String>):Void {
-		if (images == null) return;
+		for (audio in ['songs/$song/Inst', 'songs/$song/Voices-Player', 'songs/$song/Voices-Opponent']) {
+			Path.audio(audio);
+		}
 
-		for (image in images) {
-			final output:Array<String> = image.split(':');
-			Path.image(output[0], output[1] ?? 'images');
+		for (i in 1...3) {
+			Path.sound('miss$i');
+		}
+
+		Path.music('deathLoop');
+		Path.music('breakfast');
+
+		for (name in ['sick', 'good', 'bad', 'shit', 'healthBar', 'ready', 'set', 'go']) {
+			Path.image('uiSkins/$skin/$name');
+		}
+
+		for (i in 0...10) {
+			Path.image('uiSkins/$skin/num$i');
 		}
 	}
 
@@ -74,7 +78,9 @@ import moonchart.formats.fnf.legacy.FNFPsych;
 		localAssets.push(key);
 
 		if (!trackedImages.exists(key)) {
-			final bitmap:BitmapData = BitmapData.fromFile(get('$prefix/$key.png')) ?? FlxAssets.getBitmapData('flixel/images/logo/default.png');
+			final bitmap:BitmapData = BitmapData.fromFile(get('$prefix/$key.png'));
+			if (bitmap == null) return null;
+
 			if (Data.gpuRendering) bitmap.disposeImage();
 
 			final graphic:FlxGraphic = FlxGraphic.fromBitmapData(bitmap, false, key);
@@ -192,7 +198,7 @@ import moonchart.formats.fnf.legacy.FNFPsych;
 	}
 
 	inline public static function font(key:String):String {
-		return get('fonts/$key');
+		return get('data/fonts/$key');
 	}
 
 	inline public static function fnt(key:String):String {
@@ -216,15 +222,15 @@ import moonchart.formats.fnf.legacy.FNFPsych;
 	}
 
 	inline public static function stage(key:String):StageData {
-		return parseJSON(json('stages/$key/$key'));
+		return parseJSON(json('data/stages/$key'));
 	}
 
 	inline public static function character(key:String):CharacterData {
-		return parseJSON(json('characters/$key/$key'));
+		return parseJSON(json('data/characters/$key/$key'));
 	}
 
 	inline public static function characterPath(key:String):String {
-		return get('characters/$key');
+		return get('data/characters/$key');
 	}
 
 	inline public static function sound(key:String):OpenFLSound {
@@ -257,8 +263,12 @@ import moonchart.formats.fnf.legacy.FNFPsych;
 		return FlxAtlasFrames.fromSparrow(image(key, prefix), xml('$prefix/$key'));
 	}
 
+	public static function animateAtlas(key:String, ?prefix:String = 'images'):FlxAnimateFrames {
+		return FlxAnimateFrames.fromAnimate(Path.get('$prefix/$key'));
+	}
+
 	inline public static function exists(key:String):Bool {
-		return FileSystem.exists(get(key)) ? true : false;
+		return FileSystem.exists('assets/$key') ? true : false;
 	}
 
 	public static function clearUnusedMemory():Void {

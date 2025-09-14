@@ -4,31 +4,34 @@ import flixel.addons.display.FlxBackdrop;
 
 class Transition extends FlxBackdrop {
     var callback:Void -> Void;
+	var transitionTween:FlxTween;
 
-	var leTween:FlxTween;
 	public function new(transIn:Bool = false, callback:Void -> Void = null):Void {
-		super(Path.image('transition'), Y);
+		super(Path.image('misc/transition'), Y);
+
+		this.callback = callback;
 
 		camera = FlxG.cameras.list[FlxG.cameras.list.length - 1];
 
 		scale.set(scale.x / camera.zoom, scale.y / camera.zoom);
-		scrollFactor.set();
-		this.callback = callback;
+		updateHitbox();
 
-		final center:Float = (FlxG.width - width) / 2;
+		scrollFactor.set();
+
+		final center:Float = (FlxG.width - width) * 0.5;
 		final offscreen:Float = width / camera.zoom;
+		final duration:Float = Data.flashingLights ? 0.3 : 0.5;
 
 		if (transIn) {
-			leTween = FlxTween.num(offscreen, center, 0.3, {ease: FlxEase.circIn, onComplete: finish}, updatePosition);
+			transitionTween = FlxTween.num(offscreen, center, duration, {ease: Data.flashingLights ? FlxEase.circIn : FlxEase.quadIn, onComplete: finish}, updatePosition);
 		} else {
-			leTween = FlxTween.num(center, -offscreen, 0.3, {ease: FlxEase.circOut, onComplete: finish, startDelay: 0.1}, updatePosition);
+			transitionTween = FlxTween.num(center, -offscreen, duration, {ease: Data.flashingLights ? FlxEase.circOut : FlxEase.quadOut, onComplete: finish, startDelay: 0.1}, updatePosition);
 		}
 	}
 
 	override function update(elapsed:Float):Void {
 		super.update(elapsed);
-
-		leTween.active = true;
+		transitionTween.active = true;
 	}
 
 	inline function updatePosition(value:Float):Void {

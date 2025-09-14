@@ -1,151 +1,192 @@
 package states;
 
+import substates.GameOverSubState;
 import flixel.FlxSubState;
 
-class PlayState extends Scene {
+class PlayState extends MusicScene {
 	public static var game:PlayState;
+
+	public var song:SongManager = new SongManager();
+	public var rating:RatingManager = new RatingManager();
+
+	public var stage:BaseStage;
+	public var ui:UI;
 
 	public var camHUD:FlxCamera;
 	public var camOther:FlxCamera;
-
-	public var stage:BaseStage;
-	public var playField:PlayField;
-
 	public var camFollow:FlxObject;
-	public static var prevCamFollow:FlxObject;
+	public static var lastCamFollow:FlxObject;
 
-	public var defaultCamZoom:Float = 1;
+	public var cameraZoom:Float = 1;
 	public var cameraSpeed:Float = 1;
 
-	public var forceCameraPos:Bool = false;
+	public var disableCamera:Bool = false;
 	public var target:String;
 
-	override public function create():Void {
+	public var health(default, set):Float = 0.5;
+
+    override public function create():Void {
 		game = this;
+
+		Path.clearStoredMemory();
+		Path.preloadGameAssets(GameSession.uiSkin, GameSession.curSong);
 
 		FlxG.cameras.add(camHUD = new FlxCamera(), false).bgColor = 0x00000000;
 		FlxG.cameras.add(camOther = new FlxCamera(), false).bgColor = 0x00000000;
 
-		add(playField = new PlayField(camHUD));
-        add(stage = Stage.get(playField.chart.stage));
+		FlxG.sound.music.stop();
 
-		playField.opponentStrum.character = stage.dad;
-		playField.playerStrum.character = stage.bf;
+		song.load(GameSession.curSong, GameSession.difficulty);
+		conductor.bpm = song.chart.bpm;
 
+		add(stage = Stage.get(song.chart.stage, song.chart.player1, song.chart.player2, song.chart.player3));
+		add(ui = new UI(camHUD));
+
+		initCamera();
+		PlayerControls.init();
+
+		super.create();
+
+		Path.clearUnusedMemory();
+
+		stage.createPost();
+    }
+
+	function initCamera():Void {
 		add(camFollow = new FlxObject(0, 0, 1, 1));
 		moveCamera(stage.gf);
 
-		if (prevCamFollow != null) {
-			camFollow = prevCamFollow;
-			prevCamFollow = null;
+		if (lastCamFollow != null) {
+			camFollow = lastCamFollow;
+			lastCamFollow = null;
 		}
 
 		FlxG.camera.follow(camFollow, 0);
 		FlxG.camera.snapToTarget();
-		FlxG.camera.followLerp = 2.4 * cameraSpeed;
-		FlxG.camera.zoom = defaultCamZoom = stage.data.cameraZoom;
+		FlxG.camera.followLerp = Constants.CAMERA_LERP * cameraSpeed;
+		FlxG.camera.zoom = cameraZoom = stage.data.cameraZoom;
 
 		moveCamera(stage.dad);
 
-		playField.addBeatSignal(onBeat);
-		playField.addStepSignal(onStep);
-		playField.addMeasureSignal(onMeasure);
+		for (character in [stage.bf, stage.gf, stage.dad]) {
+			character.onAnimPlay.add(updateCamera);
+		}
+	}
 
-		super.create();
+	public function moveCamera(character:Character):Void {
+		if (disableCamera) return;
 
-		stage.createPost();
+		target = Util.getCharacterTarget(character);
+
+    	var xAdd:Float = target == 'gf' ? 0 : 150 * (target == 'dad' ? 1 : -1);
+    
+    	var newX:Float = character.getMidpoint().x + character.cameraPosition[0] + character.cameraOffset[0] + xAdd;
+    	var newY:Float = character.getMidpoint().y + character.cameraPosition[1] + character.cameraOffset[1] - 100;
+    
+    	if (camFollow.x == newX && camFollow.y == newY) return;
+    	camFollow.setPosition(newX, newY);
+    }
+
+	function updateCamera(name:String):Void {
+		if (disableCamera) return;
+		moveCamera(Util.getCharacter(target));
+	}
+
+	override function onBeat():Void {
+		if (song.ended) return;
+
+		for (char in [stage.bf, stage.dad, stage.gf]) {
+			char.onBeatHit(curBeat);
+		}
+
+		for (icon in [ui.iconP1, ui.iconP2]) {
+			icon.onBeatHit();
+		}
+
+		stage.onBeat(curBeat);
+	}
+
+	override function onStep():Void {
+		if (song.ended) return;
+		stage.onStep(curStep);
+	}
+
+	override function onMeasure():Void {
+		if (song.ended) return;
+
+		if (Data.cameraZooms && song.started && FlxG.camera.zoom < 1.35) {
+			FlxG.camera.zoom += 0.015;
+			camHUD.zoom += 0.03;
+		}
+
+		stage.onMeasure(curMeasure);
 	}
 
 	override function update(elapsed:Float):Void {
 		super.update(elapsed);
 
-		if (playField.paused) return;
+		if (song.paused) return;
 
-		FlxG.camera.followLerp = 2.4 * cameraSpeed;
+		for (char in [stage.bf, stage.dad, stage.gf]) {
+			char.stepLength = stepLength;
+		}
 
-		if (playField.songStarted && !playField.songEnded) {
-			FlxG.camera.zoom = FlxMath.lerp(defaultCamZoom, FlxG.camera.zoom, Math.exp(-elapsed * 3.125));
+		FlxG.camera.followLerp = Constants.CAMERA_LERP * cameraSpeed;
+
+		if (song.started && !song.ended) {
+			FlxG.camera.zoom = FlxMath.lerp(cameraZoom, FlxG.camera.zoom, Math.exp(-elapsed * 3.125));
 			camHUD.zoom = FlxMath.lerp(1, camHUD.zoom, Math.exp(-elapsed * 3.125));
 		}
 
 		triggerEvents();
 	}
 
-	function triggerEvents():Void {
-		if (playField.events == null || playField.events.length <= 0 || playField.conductor.time < playField.events[0].time) return;
+	public function triggerEvents():Void {
+		if (song.events == null || song.events.length <= 0 || conductor.time < song.events[0].time) return;
 
-		for (eventData in playField.events[0].events) {
+		for (eventData in song.events[0].events) {
         	Event.trigger(eventData.name, eventData.values);
         }
 
-		playField.events.shift();
+		song.events.shift();
     }
-
-	public function moveCamera(character:Character):Void {
-		if (forceCameraPos) return;
-
-		target = switch character {
-			case(_ == stage.gf) => true: 'gf';
-			case(_ == stage.dad) => true: 'dad';
-			case(_ == stage.bf) => true: 'bf';
-			default: 'invalid';
-		};
-
-		var xAdd:Float = target == 'gf' ? 0 : (target == 'dad' ? 150 : -150);
-
-		camFollow.x = character.getMidpoint().x + character.cameraPosition[0] + character.cameraOffset[0] + xAdd;
-		camFollow.y = character.getMidpoint().y + character.cameraPosition[1] + character.cameraOffset[1] - 100;
-    }
-
-	function onBeat():Void {
-		if (playField.songEnded) return;
-
-		for (char in [stage.bf, stage.dad, stage.gf]) {
-			if (playField.curBeat % Math.round(char.speed * char.danceEveryNumBeats) != 0 || char.animation.curAnim.name.startsWith('sing')) continue;
-			char.dance();
-		}
-
-		for (icon in [playField.healthBar.iconP1, playField.healthBar.iconP2]) {
-			icon.scale.set(1.15, 1.15);
-			icon.updateHitbox();
-		}
-
-		stage.onBeat();
-	}
-
-	function onStep():Void {
-		if (playField.songEnded) return;
-		stage.onStep();
-	}
-
-	function onMeasure():Void {
-		if (playField.songEnded) return;
-
-		if (playField.songStarted && FlxG.camera.zoom < 1.35) {
-			FlxG.camera.zoom += 0.015;
-			camHUD.zoom += 0.03;
-		}
-
-		stage.onMeasure();
-	}
 
 	override function openSubState(SubState:FlxSubState):Void {
 		super.openSubState(SubState);
-		playField.togglePause(true);
+		song.togglePause(true);
 	}
 
 	override function closeSubState():Void {
 		super.closeSubState();
-		playField.togglePause(false);
+		song.togglePause(false);
 	}
 
-	override public function destroy():Void {
-		super.destroy();
+	function prepareDeath():Void {
+		openSubState(new GameOverSubState(ui.curStrumline.character));
 
+		for (sound in [song.inst, song.voices, song.opponentVoices]) {
+			sound?.stop();
+		}
+
+		GameSession.blueballs++;
+        FlxG.camera.followLerp = 0;
+	}
+
+	function set_health(value:Float):Float {
+		ui.healthBar.health = value = FlxMath.bound(value, 0, 1);
+
+		if (value != 0 || GameSession.botplay || GameSession.practiceMode) return health = value;
+		prepareDeath();
+
+		return health = value;
+	}
+
+	override function destroy():Void {
+		super.destroy();
 		game = null;
 
-		playField.removeBeatSignal(onBeat);
-		playField.removeStepSignal(onStep);
-		playField.removeMeasureSignal(onMeasure);
+		for (character in [stage.bf, stage.gf, stage.dad]) {
+			character.onAnimPlay.remove(updateCamera);
+		}
 	}
 }

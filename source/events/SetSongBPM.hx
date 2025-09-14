@@ -15,10 +15,10 @@ class SetSongBPM implements BaseEvent {
         var ease:String = params.string('ease');
         var easeDir:String = params.string('easeDir');
 
-        duration > 0 ? FlxTween.num(playField.conductor.bpm, bpm, duration, {ease: Util.getEase(ease + easeDir)}, setBPM) : playField.conductor.bpm = bpm;
+        duration > 0 ? FlxTween.num(game.conductor.bpm, bpm, duration, {ease: Util.getEase(ease + easeDir)}, setBPM) : game.conductor.bpm = bpm;
     }
 
     function setBPM(value:Float):Void {
-        playField.conductor.bpm = value;
+        game.conductor.bpm = value;
     }
 }

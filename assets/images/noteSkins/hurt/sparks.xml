@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="sparks.png">
+	<SubTexture name="sparks0000" x="128" y="2" width="118" height="103" frameX="-5" frameY="-2" frameWidth="126" frameHeight="128"/>
+	<SubTexture name="sparks0001" x="128" y="2" width="118" height="103" frameX="-5" frameY="-2" frameWidth="126" frameHeight="128"/>
+	<SubTexture name="sparks0002" x="2" y="2" width="124" height="118" frameX="0" frameY="0" frameWidth="126" frameHeight="128"/>
+	<SubTexture name="sparks0003" x="2" y="2" width="124" height="118" frameX="0" frameY="0" frameWidth="126" frameHeight="128"/>
+	<SubTexture name="sparks0004" x="218" y="107" width="76" height="89" frameX="-41" frameY="-8" frameWidth="126" frameHeight="128"/>
+	<SubTexture name="sparks0005" x="218" y="107" width="76" height="89" frameX="-41" frameY="-8" frameWidth="126" frameHeight="128"/>
+	<SubTexture name="sparks0006" x="118" y="122" width="98" height="94" frameX="-23" frameY="-23" frameWidth="126" frameHeight="128"/>
+	<SubTexture name="sparks0007" x="118" y="122" width="98" height="94" frameX="-23" frameY="-23" frameWidth="126" frameHeight="128"/>
+	<SubTexture name="sparks0008" x="2" y="122" width="114" height="98" frameX="-12" frameY="-30" frameWidth="126" frameHeight="128"/>
+	<SubTexture name="sparks0009" x="2" y="122" width="114" height="98" frameX="-12" frameY="-30" frameWidth="126" frameHeight="128"/>
+</TextureAtlas>

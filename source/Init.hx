@@ -13,6 +13,28 @@ class Init extends FlxState {
 		Controls.init();
 		Settings.load();
 
+		var window = lime.app.Application.current.window;
+
+		switch Data.fullscrenType {
+			case "Windowed":
+				window.fullscreen = false;
+				Util.resizeWindow(Std.parseInt(Data.screenRes.split('x')[0]), Std.parseInt(Data.screenRes.split('x')[1]));
+
+			case "Fullscreen":
+				window.fullscreen = true;
+
+			case "Borderless":
+				window.fullscreen = false;
+
+				var display = lime.system.System.getDisplay(0);
+				Util.resizeWindow(Std.int(display.bounds.width), Std.int(display.bounds.width));
+		}
+
+		if (Data.fullscrenType == "Windowed") {
+			Util.resizeWindow(Std.parseInt(Data.screenRes.split('x')[0]), Std.parseInt(Data.screenRes.split('x')[1]));
+		}
+
+
 		Lib.current.stage.application.window.onClose.add(Settings.save);
 		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(ERROR, onError);
 
@@ -28,7 +50,7 @@ class Init extends FlxState {
 
 		FlxObject.defaultMoves = false;
 
-		// cacheSkins();
+		Highscore.load();
 
 		FlxG.switchState(new TitleState());
 
@@ -36,22 +58,6 @@ class Init extends FlxState {
 
 		#if !RELEASE_BUILD Logger.init(); #end
 	}
-
-	//really shitty and bad and shitty
-	// function cacheSkins():Void {
-    //     final noteSkinsPath:String = 'assets/images/noteSkins';
-
-    //     for (skin in FileSystem.readDirectory(noteSkinsPath)) {
-    //         if (FileSystem.isDirectory('$noteSkinsPath/$skin') && !Path.cachedSkins.exists(skin)) {
-    //             try {
-    //                 Path.cachedSkins.set(skin, NoteSkinData.get(skin));
-    //                 trace('Cached skin: $skin');
-    //             } catch(e:Dynamic) {
-    //                 trace('Failed to cache skin "$skin": $e');
-    //             }
-    //         }
-    //     }
-    // }
 
 	function onError(e:UncaughtErrorEvent):Void {
 		var errorMessage:String = '';

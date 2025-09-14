@@ -1,0 +1,10 @@
+{
+    "song": "Puns",
+    "artist": "SansPZSG",
+    "charter": "NickNGC",
+
+    "difficulties": [
+        {"name": "normal", "displayName": "Normal"},
+        {"name": "sigma", "displayName": "Super Duper Sigma"}
+    ]
+}

@@ -6,6 +6,6 @@ class ChangeCharacter implements BaseEvent {
     public var meta:Array<EventMeta> = [];
 
     public function execute(params:EventParams):Void {
-        playField.scrollSpeed = params.float('speed');
+        game.song.scrollSpeed = params.float('speed');
     }
 }

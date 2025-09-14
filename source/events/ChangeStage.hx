@@ -7,7 +7,7 @@ class ChangeStage implements BaseEvent {
     ];
 
     public function execute(params:EventParams):Void {
-        game.stage.loadStage(params.string('name'));
+        game.stage.load(params.string('name'));
         game.moveCamera(Util.getCharacter(game.target));
     }
 }
